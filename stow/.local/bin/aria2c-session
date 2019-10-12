@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Start a new aria2 transfer session.
+
+sessions=${TMPDIR:-$PWD}
+session=`mktemp -p "$sessions" -u -t aria2c-session.XXXXXXXXXX`
+
+if ! aria2c-resume "$session" "$@"; then
+    {
+        echo "Resume this interrupted transfer with:"
+        echo "aria2c-resume `printf "%q " "$session"`"
+        echo "aria2c-sessions  # to select one from a menu"
+    } >&2
+fi

@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+# Output the public key for a weechat irc server.
+
+name=${1:?missing server name}
+
+weechat=${WEECHAT_HOME:-$HOME/.weechat}
+pem=$weechat/$name.pem
+
+if ! test -e "$pem"; then
+    echo "Key $pem does not exist" >&2
+    exit 1
+fi
+
+openssl ec -noout -text -conv_form compressed -in "$pem" |
+    grep '^pub:' -A 3 | tail -n 3 | tr -d ' \n:' | xxd -r -p | base64

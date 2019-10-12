@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Find files and pass them to a command.
+# Usage: findexec dir pattern [command]
+
+dir=${1:?no directory given}
+pattern=${2:?no pattern given}
+
+find "$dir" \
+    -type f \
+    -iname "*$pattern*" \
+    -exec "$@" '{}' \;

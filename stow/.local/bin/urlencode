@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+
+"""URL encode key-value pairs."""
+
+from urllib.parse import urlencode
+from itertools import chain, repeat
+from argparse import ArgumentParser
+
+
+def grouper(n, itr, pad=None):
+    return zip(*[chain(itr, repeat(pad, n - 1))] * n)
+
+
+def parse_args():
+    p = ArgumentParser(description=__doc__)
+    p.add_argument(
+        'pairs',
+        nargs='+', metavar='pair',
+        help='key and value pair to encode'
+    )
+    return p.parse_args()
+
+
+def main():
+    args = parse_args()
+    print(urlencode(dict(grouper(2, args.pairs))))
+
+
+if __name__ == '__main__':
+    main()

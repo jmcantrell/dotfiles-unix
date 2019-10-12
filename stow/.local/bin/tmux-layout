@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+window=${1:?no window given}
+count=${2:-1}
+layout=${3:-main-vertical}
+
+tmux new-window -d -n "$window"
+
+for n in `seq "$count"`; do
+    tmux split-window -d -t "$window.1"
+done
+
+tmux select-layout -t "$window" "$layout"

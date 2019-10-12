@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+# Show frequencies of words in text.
+# Usage: freq [file...]
+# Examples:
+#   freq file.txt
+#   grep foo file.txt | freq
+
+cat "$@" |
+tr :upper: :lower: |  # lowercase everything
+tr -cs a-z '\n' |     # split words into lines
+sort | uniq -c |      # count unique words
+sort -nr              # sort by count, descending

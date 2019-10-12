@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+# Delete a branch locally and at the origin.
+
+branch=${1:?branch name}
+git branch -D "$branch" && git push origin ":$branch"

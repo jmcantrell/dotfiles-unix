@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Convert a magnet link to a torrent file.
+
+magnet=${1:?missing magnet link}
+downloads=${2:-$HOME/Downloads}
+
+id=${magnet#*xt=urn:btih:}; id=${id%%&*}
+torrent=$downloads/meta-$id.torrent
+
+echo "creating torrent for: $id" >&2
+echo "d10:magnet-uri${#magnet}:${magnet}e" >"$torrent"

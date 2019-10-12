@@ -1,0 +1,44 @@
+[core]
+excludesfile = ~/.gitignore.global
+
+[color]
+branch = auto
+diff = auto
+interactive = auto
+status = auto
+
+[push]
+default = simple
+
+[merge]
+tool = vimdiff
+
+[diff]
+mnemonicprefix = true
+
+[difftool]
+prompt = false
+
+[mergetool]
+prompt = false
+
+[branch]
+autosetupmerge = true
+
+[web]
+browser = vimb
+
+[include]
+path = .gitconfig.local
+
+[remote "origin"]
+fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
+
+[alias]
+ls = ls-files
+st = status
+cd = root
+ci = commit
+co = checkout
+fix = mergetool
+amend = commit --amend

@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+
+"""Rename files to a different case"""
+
+import os, argparse
+
+cases = ['lower', 'upper', 'title', 'capitalize', 'swapcase']
+
+
+def case(fn, casename):
+    d, n = os.path.split(fn)
+    return os.path.join(d, getattr(n, casename)())
+
+
+def parse_args():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument(
+        'files',
+        nargs='*', metavar="file",
+        help="file to rename"
+    )
+    p.add_argument(
+        '-n', '--noop',
+        action='store_true',
+        help='dry run'
+    )
+    p.add_argument(
+        '-l', '--list',
+        action='store_true',
+        help='list available cases (default is first)'
+    )
+    p.add_argument(
+        '-c', '--case',
+        default=cases[0], metavar='case', choices=cases,
+        help='case to use for rename'
+    )
+    return p.parse_args()
+
+
+def main():
+    args = parse_args()
+    if args.list:
+        print(os.linesep.join(cases))
+        return
+    for fn in args.files:
+        if not os.path.exists(fn):
+            continue
+        nf = case(fn, args.case)
+        if fn == nf:
+            continue
+        print(nf)
+        if not args.noop:
+            os.rename(fn, nf)
+
+
+if __name__ == '__main__':
+    main()

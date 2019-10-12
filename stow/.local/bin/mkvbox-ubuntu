@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+OSTYPE=Ubuntu_64 mkvbox "$@"

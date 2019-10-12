@@ -1,0 +1,35 @@
+port_range = 33101-33199
+port_random = yes
+
+encryption = allow_incoming,try_outgoing,enable_retry
+
+dht = auto
+dht_port = 6881
+peer_exchange = yes
+
+min_peers = 1
+max_peers = 100
+
+min_peers_seed = 1
+max_peers_seed = 50
+
+max_uploads = 10
+
+max_downloads_global = 10
+max_uploads_global = 10
+
+download_rate = 0
+upload_rate = 100
+
+check_hash = yes
+
+directory = ~/Downloads
+
+session = ~/.rtorrent.session
+
+# watch for torrent files in the downloads directory
+schedule = watch_directory,5,5,load_start=~/Downloads/*.torrent
+schedule = untied_directory,5,5,stop_untied=
+
+# stop torrents when disk space is low
+schedule = low_diskspace,5,60,close_low_diskspace=100M

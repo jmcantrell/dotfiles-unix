@@ -1,0 +1,28 @@
+# backup files
+*#
+*~
+*.bak
+*.swp
+*.swo
+
+# project files
+env/
+.envrc
+
+# merge artifacts
+*.orig
+*_BACKUP_*
+*_BASE_*
+*_LOCAL_*
+*_REMOTE_*
+
+# patch files
+*.diff
+
+# junk
+.DS_Store
+
+# project files
+TODO
+*.todo
+.mine

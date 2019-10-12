@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+# Install global python packages.
+
+set -e
+
+pip="pip install --user --upgrade --upgrade-strategy only-if-needed"
+
+# set default python version
+pydefault
+
+# enable python integration
+$pip i3ipc jedi neovim
+
+# python tools
+$pip autopep8 pep8 pep257 prospector
+$pip bpython pudb virtualenv pytest twine

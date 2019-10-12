@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+# Add user symlinks to override default python version.
+# Usage: pydefault [version]
+
+version=${1:-3}
+dir=$HOME/.local/bin
+
+mkdir -p "$dir"
+
+for bin in python pip pydoc idle; do
+    ln -sfv "`which ${bin}${version}`" "$dir/$bin"
+done
+
+ln -sfv "`which python${version}-config`" "$dir"/python-config

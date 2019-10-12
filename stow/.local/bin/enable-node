@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+# Install global node packages.
+
+set -e
+
+npm="npm install --global"
+
+$npm npm  # update installer first
+
+$npm node-inspect
+$npm eslint js-beautify tern
+
+bundle=$HOME/.vim/bundle/tern
+if test -f "$bundle/package.json"; then
+    cd "$bundle"
+    npm install
+    cd - &>/dev/null
+fi

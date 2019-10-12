@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+# Edit pipe output in EDITOR before continuing.
+# Usage: command1 | vipe | command2
+
+data=`mktemp`
+trap "rm -f '$data'" INT TERM EXIT
+
+cat >"$data"
+${EDITOR:-vim} "$data" </dev/tty >/dev/tty
+cat "$data"

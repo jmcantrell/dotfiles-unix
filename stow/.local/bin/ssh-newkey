@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+# Create an ssh key with sensible defaults.
+# Displays the resulting public key and copies it to the clipboard.
+# Usage: ssh-newkey [name]
+
+key=$HOME/.ssh/${1:-id_rsa}
+comment="`whoami`@`hostname` `date -I`"
+
+ssh-keygen -t rsa -b 4096 -f "$key" -C "$comment"
+
+# output to clipboard
+cat "$key.pub" | cbi
+
+# output to stdout
+cat "$key.pub"

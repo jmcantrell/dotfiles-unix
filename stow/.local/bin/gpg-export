@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+
+# Export all gnupg data to a directory.
+
+dir=${1:-$PWD}
+
+mkdir -p "$dir"
+
+gpg --export-ownertrust >"$dir"/ownertrust.txt
+for id in `gpg-secret-keys`; do
+    gpg -a --export "$id" >"$dir/$id.pub"
+    gpg -a --export-secret-keys "$id" >"$dir/$id.key"
+done

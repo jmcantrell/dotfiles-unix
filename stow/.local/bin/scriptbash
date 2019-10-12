@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# Start an interactive bash that's recorded to a file.
+# Usage: scriptbash [options] [file]
+# See `man script` for options.
+
+PS1='$ ' script -q -c 'bash --login --noprofile --norc' "$@"

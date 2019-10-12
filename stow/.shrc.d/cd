@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+# go to the dir holding a file
+cdto() {
+    local file=${1:?missing filename}
+    # resolve all symlinks
+    local path=`realpath "$file"`
+    local dir=`dirname "$path"`
+    cd "$dir"
+}
+
+# push/pop from directory stack
+alias pu='pushd'
+alias po='popd'
+
+# list directory stack
+alias dl='dirs -v -l'
+
+# always create parent directories
+alias mkdir='mkdir -p'
+alias md='mkdir'

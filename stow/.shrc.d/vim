@@ -1,0 +1,69 @@
+#!/usr/bin/env sh
+
+alias edit=$EDITOR
+alias e=edit
+alias se=sudoedit
+
+# edit a command
+ew() {
+    e `command which "$@"`
+}
+
+# edit the files found with ag
+ea() {
+    e `ag -l "$@"`
+}
+
+# edit the files found with ag
+eg() {
+    e `grep -l "$@"`
+}
+
+# edit, then source (be careful)
+es() {
+    e "$@" && source "$@"
+}
+
+ef() {
+    e `find "$@" -type f`
+}
+
+alias v=vim
+
+# generate code tags recursively
+alias vtags='ctags -R'
+
+# edit a tag from ctags file
+alias vt='v -t'
+
+# generate help tags for plugins
+vht() {
+    for dir in ~/.config/nvim/{doc,pack/default/start/*/doc}; do
+        vim -c "helptags $dir" -c q
+    done
+}
+
+# edit the stdout of a command
+vx() {
+    "$@" | vim -
+}
+
+# edit the std{out,err} of a command
+vX() {
+    "$@" 2>&1 | vim -
+}
+
+# exec command
+vc() {
+    v -c "$@"
+}
+
+# exec command then quit
+vcq() {
+    v -c "$@" -c q
+}
+
+# access vim help directly
+vh() {
+    v -c "help $@" -c only
+}

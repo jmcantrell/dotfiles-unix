@@ -1,0 +1,70 @@
+auto-reload yes
+refresh-on-startup yes
+reload-time 60
+reload-threads 2
+
+cleanup-on-quit yes
+goto-next-feed no
+
+always-display-description yes
+show-keymap-hint no
+
+feed-sort-order title-dec
+reload-only-visible-feeds yes
+
+#max-items 50
+#keep-articles-days 7
+#mark-as-read-on-hover yes
+
+datetime-format "%c"
+
+notify-format "newsboat: %f unread feeds (%n unread articles total)"
+notify-program notify-send
+notify-xterm yes
+notify-screen yes
+#notify-beep yes
+
+#show-read-articles no
+show-read-feeds no
+
+browser vimb
+bookmark-cmd readlater
+bookmark-interactive no
+bookmark-autopilot yes
+
+save-path ~/Media/articles
+
+ignore-article "*" "title =~ \"Sponsor\""
+ignore-article "*" "title =~ \"Advertisement\""
+ignore-mode download
+
+unbind-key j
+bind-key j down
+
+unbind-key k
+bind-key k up
+
+unbind-key J
+bind-key J next-feed
+
+unbind-key K
+bind-key K prev-feed
+
+unbind-key g
+bind-key g home
+
+unbind-key G
+bind-key G end
+
+bind-key ^b pageup
+bind-key ^f pagedown
+
+# color <fg> <bg> [attribute...]
+search-highlight-colors yellow black bold
+color background        white default
+color listnormal        white default
+color listnormal_unread white default bold
+color listfocus         white color5 bold
+color listfocus_unread  white color5 bold
+color info              white color1 bold
+color article           white default

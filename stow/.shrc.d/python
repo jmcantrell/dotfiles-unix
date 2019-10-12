@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+# install packages to the user's home directory
+alias pyi='pip install --upgrade --upgrade-strategy only-if-needed --user'
+
+alias pyll='pip freeze --local --all --user'
+alias pyls='pyll | cut -d= -f1'
+alias pyup='pyi `pyls`'
+
+# show the module paths visible to python
+alias pypath='python -c "import sys, pprint; pprint.pprint(sys.path)"'
+
+# serve the current directory over http
+alias pyhttpd='python -m http.server'
+
+# listen and display email being relayed through localhost
+alias pysmtpd='sudo python -m smtpd -n -c DebuggingServer localhost:25'

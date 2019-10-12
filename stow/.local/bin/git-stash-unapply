@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Unapply the given (or last stash).
+
+git stash show -p "$@" | git apply -R

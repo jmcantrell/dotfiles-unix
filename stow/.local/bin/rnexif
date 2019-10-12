@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+
+"""Rename images using EXIF data."""
+
+import os, argparse
+from PIL import Image
+from PIL.ExifTags import TAGS
+
+
+def exif(fn):
+    if not os.path.exists(fn):
+        raise Exception("File does not exist: {}".format(fn))
+    data = {}
+    try:
+        tags = Image.open(fn)._getexif() or {}
+    except (OSError, AttributeError):
+        raise Exception("Image has no exif data: {}".format(fn))
+    for name, value in tags.items():
+        decoded = TAGS.get(name, name)
+        data[decoded] = value
+    return data
+
+
+def incr_filename(fn):
+    incr = 0
+    root, ext = os.path.splitext(fn)
+    while os.path.exists(fn):
+        incr += 1
+        fn = ''.join([root, '_{}'.format(incr), ext])
+    return fn
+
+
+def exif_format(fn, fmt):
+    data = exif(fn)
+    if not data:
+        raise Exception("File has no exif data: {}".format(fn))
+    d, n = os.path.split(fn)
+    ext = os.path.splitext(n)[1]
+    try:
+        n = fmt.format(**data)
+    except KeyError:
+        # key in format that doesn't exist
+        pass
+    # parse date info for granular format
+    if 'DateTime' in data:
+        s = data['DateTime'].split()
+        ymd = s[0].split(':')
+        hms = s[1].split(':')
+        try:
+            dt = {
+                '%Y': ymd[0],
+                '%m': ymd[1],
+                '%d': ymd[2],
+                '%H': hms[0],
+                '%M': hms[1],
+                '%S': hms[2],
+            }
+        except IndexError:
+            raise Exception("Exif DateTime malformed: {}".format(fn))
+        for k, v in dt.items():
+            if k in n:
+                n = n.replace(k, v)
+    if '%' in n:
+        raise Exception("Image is missing exif data: {}".format(fn))
+    return os.path.join(d, n) + ext
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        'files',
+        nargs='*', metavar='file',
+        help='file to rename'
+    )
+    parser.add_argument(
+        '-f', '--format',
+        default='%Y-%m-%d_%H-%M-%S',
+        help='format to use for renaming'
+    )
+    parser.add_argument(
+        '-l', '--list',
+        action='store_true',
+        help='list exif tags'
+    )
+    parser.add_argument(
+        '-n', '--noop',
+        action='store_true',
+        help='dry run'
+    )
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    if args.list:
+        if args.files:
+            from pprint import pprint
+            for fn in args.files:
+                pprint(exif(fn))
+        else:
+            print(os.linesep.join(sorted(TAGS.values())))
+        return
+    for fn in args.files:
+        nf = exif_format(fn, args.format)
+        if fn == nf:
+            continue
+        nf = incr_filename(nf)
+        if not args.noop:
+            os.rename(fn, nf)
+        print(nf)
+
+
+if __name__ == '__main__':
+    main()

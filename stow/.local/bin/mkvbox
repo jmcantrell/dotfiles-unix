@@ -1,0 +1,63 @@
+#!/usr/bin/env sh
+
+# Create a new virtualbox instance.
+# Usage:
+#       vboxnew "Arch Linux"
+#       vboxnew "Arch Linux" archlinux.iso
+#       OSTYPE=ArchLinux_64 vboxnew "Arch Linux"
+
+name=${1:?missing machine name}
+isofile=$2
+
+ostype=${OSTYPE:-Linux_64}
+memory=${MEMORY:-4096}
+cpus=${CPUS:-2}
+
+VBoxManage createvm \
+    --name "$name" --ostype "$ostype" --register
+
+VBoxManage modifyvm "$name" \
+    --ioapic on --memory "$memory" --cpus "$cpus" \
+    --rtcuseutc on --clipboard bidirectional \
+    --usb on --usbehci on --usbxhci on \
+    --audiocontroller hda --vram 128 \
+    --boot1 dvd --boot2 disk --boot3 none --boot4 none
+
+vdifile="$HOME/VirtualBox VMs/$name.vdi"
+
+VBoxManage createhd \
+    --filename "$vdifile" --size $((50*1024))
+
+VBoxManage storagectl "$name" \
+    --name "SATA Controller" \
+    --add sata --controller IntelAHCI
+
+VBoxManage storageattach "$name" \
+    --storagectl "SATA Controller" \
+    --port 0 --device 0 --type hdd \
+    --medium "$vdifile"
+
+VBoxManage storagectl "$name" \
+    --name "IDE Controller" --add ide
+
+VBoxManage storageattach "$name" \
+    --storagectl "IDE Controller" \
+    --port 0 --device 0 --type dvddrive \
+    --medium "$isofile"
+
+bridgedif=$(
+    VBoxManage list bridgedifs |
+    grep "^Name:" | head -n1 |
+    sed 's/^Name: *\(.*\)$/\1/'
+)
+VBoxManage modifyvm "$name" \
+    --nic1 bridged --bridgeadapter1 "$bridgedif"
+
+# shared folders
+for dir in $HOME/{Desktop,Documents,Downloads}; do
+    test -d "$dir" && VBoxManage sharedfolder add "$name" \
+        --name "${dir##*/}" --hostpath "$dir" --automount
+done
+
+# take an initial snapshot
+VBoxManage snapshot "$name" take live

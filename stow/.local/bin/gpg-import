@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Import gnupg data from a directory.
+
+dir=${1:-$PWD}
+
+gpg --import-ownertrust "$dir/ownertrust.txt"
+
+for key in "$dir"/*.key; do
+    gpg --import "$key"
+done

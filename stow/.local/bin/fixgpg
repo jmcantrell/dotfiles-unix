@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Repair permissions on a gpg home directory.
+
+chmod -R go-rwx "${1:-${GNUPGHOME:-$HOME/.gnupg}}"

@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+name=${1:?missing submodule name}
+path=`git config -f .gitmodules submodule.$name.path`
+
+git submodule deinit "$name"
+git config -f .gitmodules --remove-section "submodule.$name"
+git config -f .git/config --remove-section "submodule.$name"
+git add .gitmodules
+git rm -rf "$path"
+rm -rf "$path"
+rm -rf ".git/modules/$name"

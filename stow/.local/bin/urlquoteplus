@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+
+"""Quote text for use in a URL query string."""
+
+from urllib.parse import quote_plus
+from argparse import ArgumentParser
+
+
+def parse_args():
+    p = ArgumentParser(description=__doc__)
+    p.add_argument('text', nargs='+', help='text to quote')
+    return p.parse_args()
+
+
+def main():
+    args = parse_args()
+    text = ' '.join(args.text)
+    print(quote_plus(text))
+
+
+if __name__ == '__main__':
+    main()

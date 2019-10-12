@@ -1,0 +1,21 @@
+#!/usr/bin/env sh
+
+# Generate a client key for a weechat irc server.
+
+name=${1:?missing server name}
+
+weechat=${WEECHAT_HOME:-$HOME/.weechat}
+pem=$weechat/$name.pem
+
+if test -e "$pem"; then
+    echo "Key $pem already exists" >&2
+    exit 1
+fi
+
+mkdir -p "$weechat"
+
+openssl ecparam -genkey -name prime256v1 >"$pem"
+
+weechat-pubkey "$name" | cbi
+
+echo "Public key for $name copied to clipboard" >&2

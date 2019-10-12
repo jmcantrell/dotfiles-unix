@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+
+alias updatedb='sudo updatedb'
+
+# case insensitive
+alias locate='locate -i'

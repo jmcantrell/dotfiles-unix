@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+
+# Create and run a virtual machine.
+# Usage: qemu-system <name> [iso image file]
+
+name=${1:?missing system name}
+iso=$2
+
+image=$HOME/.qemu/$name.cow
+format=qcow2
+mem=${mem:-4G}
+arch=${arch:-x86_64}
+
+# create initial image, if needed
+test -f "$image" || qemu-snapshot "$name"
+
+qemu-system-$arch -enable-kvm -m "$mem" \
+    ${iso:+-cdrom "$iso" -boot menu=on} \
+    -drive "file=`realpath "$image"`,format=$format"

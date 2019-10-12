@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Manage a python package (source dist and egg info).
+
+python setup.py sdist egg_info "$@"

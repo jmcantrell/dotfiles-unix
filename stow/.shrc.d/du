@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+alias du='du -sl'
+alias duh='du --si'  # human-readable
+alias dub='du -b'  # bytes
+alias duk='du -k'  # kilobytes
+alias dum='du -m'  # megabytes
+alias dug='du --block-size=1G'  # gigabytes
+
+# usage in tree form
+alias dut='tree --si --du'

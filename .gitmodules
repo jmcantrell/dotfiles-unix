@@ -1,0 +1,3 @@
+[submodule "ls_colors"]
+	path = stow/.ls_colors
+	url = https://github.com/trapd00r/LS_COLORS.git

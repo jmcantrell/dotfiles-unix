@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+ddiso() {
+    local iso=${1:?missing iso path}
+    local dev=${2:?missing device path}
+    sudo dd bs=4M "if=$iso" "of=$dev" status=progress && sync
+}
+

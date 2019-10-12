@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# set $LS_COLORS
+dircolors=$HOME/.dircolors
+test -f "$dircolors" && eval "`dircolors -b "$dircolors"`"

@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+set -e
+
+gitmodules=${1:?missing gitmodules file}
+
+git config -f "$gitmodules" --get-regexp '^submodule\..*\.path$' |
+while read path_key path; do
+    test -e "$path" && continue
+    sub_key=${path_key%.path}
+    url_key=${path_key/.path/.url}
+    name=${sub_key#submodule.}
+    url=`git config -f "$gitmodules" --get "$url_key"`
+    git submodule add --name "$name" "$url" "$path"
+done

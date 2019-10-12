@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+
+alias df='df -PT'
+alias dfh='df --si'  # human-readable
+alias dfb='df --block-size=1'  # bytes
+alias dfk='df -k'  # kilobytes
+alias dfm='df -m'  # megabytes
+alias dfg='df --block-size=1G'  # gigabytes

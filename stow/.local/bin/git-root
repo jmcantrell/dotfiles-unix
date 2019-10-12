@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+
+# Show the root directory for this git repository.
+
+dir=${1:-$PWD}
+
+# check each parent for the git directory
+while test -d "$dir" && ! test -d "$dir/.git"; do
+    dir+=/..
+done
+
+test -d "$dir" && echo "$dir"

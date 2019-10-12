@@ -1,0 +1,54 @@
+#!/usr/bin/env sh
+
+# Common actions for working with https certificates.
+# usage:
+#   mkssl self [name]
+#   mkssl key keyfile [keysize]
+#   mkssl csr keyfile [csrfile]
+#   mkssl crt keyfile [csrfile] [crtfile]
+
+mkkey() {
+    openssl genrsa -out "$1" $2 && echo "$1"
+}
+
+mkcsr() {
+    openssl req -new -key "$1" -out "$2" && echo "$2"
+}
+
+mkcrt() {
+    openssl x509 -req -in "$2" -signkey "$1" -out "$3" && echo "$3"
+}
+
+mkself() {
+    keyfile=`mkkey "$1.pem"`
+    csrfile=`mkcsr "$keyfile" "$1.csr"`
+    crtfile=`mkcrt "$keyfile" "$csrfile" "$1.crt"`
+    echo "$crtfile"
+}
+
+case $1 in
+    key|csr|crt)
+        keyfile=${2:?no key filename given}
+        keyfile=${keyfile%%.pem}.pem
+        ;;
+    csr|crt)
+        keyname=`basename "$keyfile" .pem`
+        csrfile=${3:-$keyname}
+        csrfile=${csrfile%%.csr}.csr
+        ;;
+    key)
+        keysize=${3:-1024}
+        mkkey "$keyfile" $keysize
+        ;;
+    csr)
+        mkcsr "$keyfile" "$csrfile"
+        ;;
+    crt)
+        crtfile=${4:-$keyname}
+        crtfile=${crtfile%%.crt}.crt
+        mkcrt "$keyfile" "$csrfile" "$crtfile"
+        ;;
+    self)
+        mkself "${2:-self}"
+        ;;
+esac

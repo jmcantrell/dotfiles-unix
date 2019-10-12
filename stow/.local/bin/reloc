@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+# Move a bunch of files to a directory,
+# then symlink them back to their original location.
+# Usage: reloc directory [path...]
+
+dir=${1:?no directory given}
+shift
+
+mkdir -p "$dir"
+
+for f in "$@"; do
+    mv -v -t "$dir" "$f"
+    name=`basename "$f"`
+    path=`readlink -f "$dir/$name"`
+    ln -sv "$path" "$f"
+done

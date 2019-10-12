@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Color given text.
+# Provides common functionality for `colorfg` and `colorbg`.
+
+capname=${1:?missing capname}
+color=${2:?missing color number}
+
+shift 2  # rest should be colored
+
+cap=`tput $capname $color`
+reset=`tput sgr0`
+
+echo "${cap}$@${reset}"

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+alias sshrm="ssh-keygen -f ~/.ssh/known_hosts -R"

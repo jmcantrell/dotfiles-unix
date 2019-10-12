@@ -1,0 +1,19 @@
+set bell-style none
+set visible-stats on
+set skip-completed-text on
+set page-completions off
+set show-all-if-ambiguous on
+set completion-ignore-case on
+set colored-stats on
+set blink-matching-paren on
+
+# make sure we can handle 8-bit characters
+set input-meta on
+set output-meta on
+set convert-meta off
+
+# tab: menu-complete
+"\e[A": history-search-backward
+"\eOA": history-search-backward
+"\e[B": history-search-forward
+"\eOB": history-search-forward

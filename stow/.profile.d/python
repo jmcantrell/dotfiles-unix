@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+export PYTHONSTARTUP=$HOME/.pythonrc
+export VIRTUALENV_DISTRIBUTE=1
+export VIRTUAL_ENV_DISABLE_PROMPT=1

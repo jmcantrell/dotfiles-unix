@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# Execute a command in a given directory.
+# usage: ind directory command [arg...]
+
+dir=${1:?no directory given}
+
+mkdir -p "$dir"
+cd "$dir" && "$@"

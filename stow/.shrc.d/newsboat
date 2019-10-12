@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+alias newsboat='newsboat -r'

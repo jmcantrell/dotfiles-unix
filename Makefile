@@ -8,7 +8,9 @@ update:
 	git pull --recurse-submodules origin master
 
 stow:
-	stow --no-folding -d . -t $$HOME -R stow
+	./bin/stow -R dotfiles
 
 unstow:
-	stow --no-folding -d . -t $$HOME -D stow
+	./bin/stow -D dotfiles
+
+.PHONY: stow

@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-stow --no-folding -d stow -t "$HOME" "$@"

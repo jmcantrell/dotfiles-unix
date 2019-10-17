@@ -1,0 +1,7 @@
+add_vimrc() {
+    local vimrc=`find_up .vimrc`
+    if test -f "$vimrc" && test "$vimrc" != "$HOME/.vimrc"; then
+        log_status "loading .vimrc"
+        path_add MYVIMRC_LOCAL "$vimrc"
+    fi
+}

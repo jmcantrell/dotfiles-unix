@@ -13,5 +13,5 @@ pydefault
 $pip i3ipc jedi neovim
 
 # python tools
-$pip autopep8 pep8 pep257 prospector
+$pip autopep8 pep8 pep257 flake8 mypy
 $pip bpython pudb virtualenv pytest twine

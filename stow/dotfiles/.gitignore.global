@@ -5,8 +5,8 @@
 *.swp
 *.swo
 
-# project files
-env/
+# local environment settings
+.env
 .envrc
 
 # merge artifacts

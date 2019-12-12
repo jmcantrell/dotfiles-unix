@@ -56,7 +56,7 @@ alias gX='git clean -fdx'
 alias gmv='git mv -vk'
 
 # remove files
-alias grm='git rm -v'
+alias grm='git rm'
 
 # remove path from index
 alias grmu='grm --cached'

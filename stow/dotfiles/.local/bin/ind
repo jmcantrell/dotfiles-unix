@@ -3,7 +3,9 @@
 # Execute a command in a given directory.
 # usage: ind directory command [arg...]
 
-dir=${1:?no directory given}
+dir=${1:?no directory given}; shift
 
-mkdir -p "$dir"
-cd "$dir" && "$@"
+test -d "$dir" || exit 1
+cd "$dir"
+pwd >&2
+"$@"

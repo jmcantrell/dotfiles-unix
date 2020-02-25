@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+"""Get a random line from the given file."""
+
+import random
+from argparse import ArgumentParser
+
+
+def parse_args():
+    p = ArgumentParser(description=__doc__)
+    p.add_argument(
+        'file', nargs=1,
+        metavar='file', help='source file'
+    )
+    return p.parse_args()
+
+
+# From: https://stackoverflow.com/a/3540315/18866
+def random_line(f):
+    line = next(f)
+    for num, current_line in enumerate(f, 2):
+        if random.randrange(num):
+            continue
+        line = current_line
+    return line
+
+
+def main():
+    args = parse_args()
+    print(random_line(open(args.file[0])))
+
+
+if __name__ == '__main__':
+    main()

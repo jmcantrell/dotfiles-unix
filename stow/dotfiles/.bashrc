@@ -4,7 +4,7 @@
 PS1='\$ '
 
 # common shell resources
-test -f ~/.shrc && source ~/.shrc
+[[ -f ~/.shrc ]] && . ~/.shrc
 
 # omit duplicates or lines starting with a space
 HISTCONTROL=ignoreboth

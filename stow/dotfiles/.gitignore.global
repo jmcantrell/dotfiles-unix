@@ -5,7 +5,7 @@
 *.swp
 *.swo
 
-# local environment settings
+# env files
 .env
 .envrc
 

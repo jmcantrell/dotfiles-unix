@@ -6,7 +6,7 @@ alias c='clear'
 alias cp='cp -v'
 alias mv='mv -v'
 
-if has trash; then
+if which trash >/dev/null 2>&1; then
     alias rm='trash'
 else
     alias rm='rm -v'

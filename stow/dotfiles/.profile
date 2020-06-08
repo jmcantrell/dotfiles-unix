@@ -2,10 +2,9 @@
 
 export LANG=en_US.UTF-8
 
-export PREFIX=$HOME/.local
-export PATH=$PREFIX/bin:$PATH
-export MANPATH=$PREFIX/share/man:$MANPATH
-export TMPDIR=$PREFIX/tmp
+export PATH=$HOME/.local/bin:$PATH
+export MANPATH=$HOME/.local/share/man:$MANPATH
+export TMPDIR=$HOME/.local/tmp
 
 export EDITOR=vim
 export PAGER=less

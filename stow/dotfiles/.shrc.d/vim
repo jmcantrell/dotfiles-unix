@@ -1,31 +1,22 @@
 #!/usr/bin/env sh
 
-alias edit=$EDITOR
+alias edit='$EDITOR'
 alias e=edit
 alias se=sudoedit
 
 # edit a command
 ew() {
-    e `command which "$@"`
+    local f=$(command which "$@")
+    test -f "$f" && e "$f"
 }
 
-# edit the files found with ag
-ea() {
-    e `ag -l "$@"`
-}
-
-# edit the files found with ag
-eg() {
-    e `grep -l "$@"`
-}
-
-# edit, then source (be careful)
-es() {
-    e "$@" && source "$@"
+# edit the files found with ack
+erg() {
+    e $(rg -l "$@")
 }
 
 ef() {
-    e `find "$@" -type f`
+    e $(find "$@" -type f)
 }
 
 alias v=vim
@@ -38,7 +29,7 @@ alias vt='v -t'
 
 # generate help tags for plugins
 vht() {
-    for dir in ~/.config/nvim/{doc,pack/default/start/*/doc}; do
+    for dir in ~/.config/nvim/doc ~/.config/nvim/pack/default/start/*/doc; do
         vim -c "helptags $dir" -c q
     done
 }
@@ -65,5 +56,5 @@ vcq() {
 
 # access vim help directly
 vh() {
-    v -c "help $@" -c only
+    v -c "help $*" -c only
 }

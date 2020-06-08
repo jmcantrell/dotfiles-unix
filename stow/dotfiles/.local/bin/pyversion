@@ -10,7 +10,7 @@ input() {
     local default=$2  # press enter to accept
     local prompt="Enter $value"
     test "$default" && prompt+=" [$default]"
-    read -p "$prompt: " reply
+    read -rp "$prompt: " reply
     test "$reply" || reply=$default
     echo "$reply"; test "$reply"
 }
@@ -26,9 +26,11 @@ while getopts ":hifvqMmbnv:" option; do
         h) echo "$usage" >&2 && exit 0 ;;
         *) echo "$usage" >&2 && exit 1 ;;
     esac
-done && shift $(($OPTIND - 1))
+done && shift $((OPTIND - 1))
 
-setup=${1:-$PWD}/setup.py
+dir=${1:-$PWD}
+setup=$dir/setup.py
+config=$dir/setup.cfg
 
 [[ -f $setup ]] || exit 1
 
@@ -40,9 +42,9 @@ if [[ ! $version_new ]]; then
     version_new=$(input "version for '$name'" "$default")
 fi
 
-if [[ $version != ${version_new:-$version} ]]; then
+if [[ $version != "${version_new:-$version}" ]]; then
     echo "$name: $version -> $version_new"
-    if [[ -z $noop ]]; then
-        sed -i "/^[ \t]*version[ \t]*=/s/=\([ \t]*\)\(['\"]\).*\2/=\1\2${version_new}\2/" "$setup"
-    fi
+    [[ -z $noop ]] && op="-i"
+    sed $op "/^[ \t]*version[ \t]*=/s/=.*/= $version_new/" "$config"
+    sed $op "/^__version__ *=/s/= *.*/= '$version_new'/" "$name/__init__.py"
 fi

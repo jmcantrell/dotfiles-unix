@@ -20,6 +20,7 @@ VBoxManage modifyvm "$name" \
     --ioapic on --memory "$memory" --cpus "$cpus" \
     --rtcuseutc on --clipboard bidirectional \
     --usb on --usbehci on --usbxhci on \
+    --graphicscontroller vmsvga \
     --audiocontroller hda --vram 128 \
     --boot1 dvd --boot2 disk --boot3 none --boot4 none
 

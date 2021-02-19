@@ -1,5 +1,3 @@
-init: submodules stow
-
 submodules:
 	git submodule update --init --recursive
 

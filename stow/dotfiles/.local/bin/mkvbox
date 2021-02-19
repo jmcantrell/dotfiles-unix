@@ -46,14 +46,6 @@ VBoxManage storageattach "$name" \
     --port 0 --device 0 --type dvddrive \
     --medium "$isofile"
 
-bridgedif=$(
-    VBoxManage list bridgedifs |
-    grep "^Name:" | head -n1 |
-    sed 's/^Name: *\(.*\)$/\1/'
-)
-VBoxManage modifyvm "$name" \
-    --nic1 bridged --bridgeadapter1 "$bridgedif"
-
 # shared folders
 for dir in $HOME/{Desktop,Documents,Downloads}; do
     test -d "$dir" && VBoxManage sharedfolder add "$name" \

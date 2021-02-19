@@ -1,16 +1,14 @@
 #!/usr/bin/env bash
 
 alias edit='$EDITOR'
-alias e=edit
-alias se=sudoedit
+alias v=edit
+alias sv=sudoedit
 
 # edit a command
-ew() {
+vw() {
     local f=$(command which "$@")
-    test -f "$f" && e "$f"
+    test -f "$f" && v "$f"
 }
-
-alias v=vim
 
 # generate code tags recursively
 alias vtags='ctags -R'

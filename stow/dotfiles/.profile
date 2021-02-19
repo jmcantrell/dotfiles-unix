@@ -11,6 +11,6 @@ export PAGER=less
 export BROWSER=lynx
 
 # source extra scripts in ~/.profile.d
-for profile in $HOME/.profile.d/*; do
-    test -f "$profile" && source "$profile"
+for profile in "$HOME/.profile.d/"*; do
+    test -f "$profile" && . "$profile"
 done

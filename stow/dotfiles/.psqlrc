@@ -1,0 +1,8 @@
+\set QUIET on
+
+\pset null NULL
+
+set timezone to 'UTC';
+set intervalstyle to postgres_verbose;
+
+\set QUIET off

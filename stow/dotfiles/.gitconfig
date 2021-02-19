@@ -21,6 +21,7 @@ tool = vimdiff
 
 [diff]
 mnemonicprefix = true
+submodule = log
 
 [difftool]
 prompt = false
@@ -48,3 +49,6 @@ ci = commit
 co = checkout
 fix = mergetool
 amend = commit --amend
+
+[init]
+defaultBranch = main

@@ -4,6 +4,18 @@ alias d='docker'
 alias dc='docker-compose'
 alias dm='docker-machine'
 
+drun() {
+	docker run -it --rm "$@"
+}
+
+dcup() {
+	docker-compose up --detach --build "$@"
+}
+
+dcdown() {
+	docker-compose down --remove-orphans "$@"
+}
+
 dmup() {
     local name=${1:-default}
     if [[ $DOCKER_MACHINE_NAME != "$name" ]]; then

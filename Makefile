@@ -2,10 +2,9 @@ init: submodules stow
 
 submodules:
 	git submodule update --init --recursive
-	git submodule foreach git checkout master
 
 update:
-	git pull --recurse-submodules origin master
+	git pull --recurse-submodules
 
 stow:
 	stow --no-folding -d stow -t ~ -R dotfiles

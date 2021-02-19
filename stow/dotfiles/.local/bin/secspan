@@ -10,23 +10,23 @@
 seconds=${1:-0}
 
 minute=60
-hour=$(( $minute * 60 ))
-day=$(( $hour * 24 ))
+hour=$(( minute * 60 ))
+day=$(( hour * 24 ))
 
-days=$(( $seconds / $day ))
-seconds=$(( $seconds - ($days * $day) ))
+days=$(( seconds / day ))
+seconds=$(( seconds - (days * day) ))
 
-hours=$(( $seconds / $hour ))
-seconds=$(( $seconds - ($hours * $hour) ))
+hours=$(( seconds / hour ))
+seconds=$(( seconds - (hours * hour) ))
 
-minutes=$(( $seconds / $minute ))
-seconds=$(( $seconds - ($minutes * $minute) ))
+minutes=$(( seconds / minute ))
+seconds=$(( seconds - (minutes * minute) ))
 
 unset summary
 
-[[ $days > 0 ]] && summary+=" ${days}d"
-[[ $hours > 0 ]] && summary+=" ${hours}h"
-[[ $minutes > 0 ]] && summary+=" ${minutes}m"
-[[ $seconds > 0 ]] && summary+=" ${seconds}s"
+[[ $days -gt 0 ]] && summary+=" ${days}d"
+[[ $hours -gt 0 ]] && summary+=" ${hours}h"
+[[ $minutes -gt 0 ]] && summary+=" ${minutes}m"
+[[ $seconds -gt 0 ]] && summary+=" ${seconds}s"
 
 echo "${summary## }"

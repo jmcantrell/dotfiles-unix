@@ -11,7 +11,7 @@ mkdir -p "$dir"
 
 for f in "$@"; do
     mv -v -t "$dir" "$f"
-    name=`basename "$f"`
-    path=`readlink -f "$dir/$name"`
+    name=$(basename "$f")
+    path=$(readlink -f "$dir/$name")
     ln -sv "$path" "$f"
 done

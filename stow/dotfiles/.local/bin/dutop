@@ -3,5 +3,5 @@
 # Show top disk usage offenders.
 
 cd "${1:-$PWD}" &&
-du -sb .* * | sort -nr | head |
+du -sb .* ./* | sort -nr | head |
 awk -F'\t' '{print $2}' | xargs du -sh

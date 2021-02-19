@@ -6,6 +6,6 @@
 dir=${1:?no directory given}; shift
 
 test -d "$dir" || exit 1
-cd "$dir"
+cd "$dir" || exit 1
 pwd >&2
 "$@"

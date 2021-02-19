@@ -2,5 +2,5 @@
 
 # extra scripts in ~/.shrc.d
 for shrc in ~/.shrc.d/*; do
-    test -f $shrc && source $_
+    test -f "$shrc" && . "$shrc"
 done

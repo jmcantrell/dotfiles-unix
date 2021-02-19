@@ -3,7 +3,7 @@
 # Edit pipe output in EDITOR before continuing.
 # Usage: command1 | vipe | command2
 
-data=`mktemp`
+data=$(mktemp)
 trap "rm -f '$data'" INT TERM EXIT
 
 cat >"$data"

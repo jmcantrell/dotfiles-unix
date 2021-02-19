@@ -75,15 +75,15 @@ has() {
 }
 
 unset log
-has logger && log="logger -t '$me'"
+has logger && log=(logger -t "$me")
 
 log() {
-    [[ $log ]] && $log "$@"
+    [[ ${log[*]} ]] && "${log[@]}" "$@"
     echo "$@" >&2
 }
 
 temp() {
-    local temp=$(mktemp -t $me.XXXXXXXXXX)
+    local temp=$(mktemp -t "$me.XXXXXXXXXX")
     trap "rm -f '$temp'" INT TERM EXIT
     echo "$temp"
 }
@@ -93,7 +93,7 @@ input() {
     local default=$2
     # press enter to accept default
     local reply
-    read -p "Enter $value${default:+ [$default]}: " reply
+    read -r -p "Enter $value${default:+ [$default]}: " reply
     [[ $reply ]] || reply=$default
     echo "$reply"; [[ $reply ]]
 }
@@ -151,11 +151,11 @@ get_feed_xml() {
 }
 
 is_url() {
-    egrep -q '^https?://' <<<$1
+    grep -E -q '^https?://' <<<"$1"
 }
 
 is_audio() {
-    egrep -q '^audio/' <<<$1
+    grep -E -q '^audio/' <<<"$1"
 }
 
 xpath() {
@@ -209,7 +209,7 @@ download() {
 
     # hash helps avoid collisions
     # easy solution for sane filenames
-    local id=$(md5sum <<<$url | cut -f1 -d' ')
+    local id=$(md5sum <<<"$url" | cut -f1 -d' ')
     # check for existing file
     local audio=$(find "$dir" -name "$id.*")
 
@@ -352,7 +352,7 @@ import_opml() {
 }
 
 podcasts=${PODCASTS:-$PWD}
-playlists=$PLAYlISTS
+playlists=${PLAYlISTS:-$PWD}
 
 # parse command line options
 unset query
@@ -365,7 +365,7 @@ while getopts ":hd:p:q:" option; do
         h) echo "$usage" >&2; exit 0 ;;
         *) echo "$usage" >&2; exit 1 ;;
     esac
-done && shift $(($OPTIND - 1))
+done && shift $((OPTIND - 1))
 
 if (( $# > 0 )); then
     for arg in "$@"; do

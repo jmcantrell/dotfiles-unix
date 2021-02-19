@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 alias edit='$EDITOR'
 alias e=edit
@@ -8,15 +8,6 @@ alias se=sudoedit
 ew() {
     local f=$(command which "$@")
     test -f "$f" && e "$f"
-}
-
-# edit the files found with ack
-erg() {
-    e $(rg -l "$@")
-}
-
-ef() {
-    e $(find "$@" -type f)
 }
 
 alias v=vim

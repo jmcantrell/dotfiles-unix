@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 ddiso() {
     local iso=${1:?missing iso path}

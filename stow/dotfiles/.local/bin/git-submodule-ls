@@ -1,9 +1,9 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Show all submodules for this repository.
 
 git config -f .gitmodules --name-only --get-regex '^submodule\..*\.path$' |
-while read path_key; do
+while read -r path_key; do
     mod_key=${path_key%.path}
     echo "${mod_key#submodule.}"
 done | sort

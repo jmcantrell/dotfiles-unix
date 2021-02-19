@@ -2,7 +2,7 @@
 
 # last page of history
 h() {
-    fc -l -`expr $LINES - 2`
+    fc -l -$(( LINES - 2 ))
 }
 
 # entire command history

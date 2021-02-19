@@ -1,12 +1,12 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # go to the dir holding a file
 cdto() {
     local file=${1:?missing filename}
     # resolve all symlinks
-    local path=`realpath "$file"`
-    local dir=`dirname "$path"`
-    cd "$dir"
+    local path=$(realpath "$file")
+    local dir=$(dirname "$path")
+    cd "$dir" || echo "unable to change directory to '$dir'" >&2
 }
 
 # push/pop from directory stack

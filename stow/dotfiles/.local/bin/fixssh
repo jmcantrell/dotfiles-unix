@@ -1,10 +1,10 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Repair permissions on an ssh directory.
 # Usage: fixssh [dir]
 
 dir=${1:-$HOME/.ssh}
 
-chmod go-w "`dirname "$dir"`"
+chmod go-w "$(dirname "$dir")"
 chmod 700 "$dir"
 chmod 600 "$dir"/{id_*,*.pub}

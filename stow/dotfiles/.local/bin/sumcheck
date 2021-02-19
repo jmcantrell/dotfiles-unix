@@ -7,7 +7,7 @@ for sumfile in "$@"; do
     alg=${sumfile##*.}
     case $alg in
         md5|sha*)
-            ${alg}sum -c "$sumfile"
+            "${alg}sum" -c "$sumfile"
             ;;
     esac
 done

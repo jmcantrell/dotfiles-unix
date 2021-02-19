@@ -8,7 +8,7 @@ color=${2:?missing color number}
 
 shift 2  # rest should be colored
 
-cap=`tput $capname $color`
-reset=`tput sgr0`
+cap=$(tput "$capname" "$color")
+reset=$(tput sgr0)
 
-echo "${cap}$@${reset}"
+echo "${cap}$*${reset}"

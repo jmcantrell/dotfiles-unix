@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-
-# Lookup the given words using dict.org.
-
-for word in "$@"; do
-    curl -sL "dict://dict.org/d:$word"
-done | ${PAGER:-less}

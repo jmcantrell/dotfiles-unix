@@ -1,18 +1,10 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 job_id() {
     local pid=${1:-$!}
     jobs -pl | grep "\b$pid\b" |
     sed 's/^\[\([0-9]\+\)\].*$/\1/'
 }
-
-for n in {0..9}; do
-    alias $n="fg %$n"
-    alias b$n="bg %$n"
-    alias D$n="disown %$n"
-    alias k$n="kill %$n"
-    alias K$n="kill -n9 %$n"
-done
 
 alias ja='jobs -pl'
 alias jd='ja -d'

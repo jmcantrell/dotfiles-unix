@@ -5,12 +5,12 @@
 # Usage: ssh-newkey [name]
 
 key=$HOME/.ssh/${1:-id_rsa}
-comment="`whoami`@`hostname` `date -I`"
+comment="$(whoami)@$(hostname) $(date -I)"
 
 ssh-keygen -t rsa -b 4096 -f "$key" -C "$comment"
 
 # output to clipboard
-cat "$key.pub" | cbi
+cbi <"$key.pub"
 
 # output to stdout
 cat "$key.pub"

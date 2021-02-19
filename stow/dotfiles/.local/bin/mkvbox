@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Create a new virtualbox instance.
 # Usage:
@@ -9,9 +9,9 @@
 name=${1:?missing machine name}
 isofile=$2
 
-ostype=${OSTYPE:-Linux_64}
-memory=${MEMORY:-4096}
-cpus=${CPUS:-2}
+ostype=${ostype:-linux_64}
+memory=${memory:-4096}
+cpus=${cpus:-2}
 
 VBoxManage createvm \
     --name "$name" --ostype "$ostype" --register

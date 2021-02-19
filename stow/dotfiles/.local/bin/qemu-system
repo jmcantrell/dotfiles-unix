@@ -14,6 +14,6 @@ arch=${arch:-x86_64}
 # create initial image, if needed
 test -f "$image" || qemu-snapshot "$name"
 
-qemu-system-$arch -enable-kvm -m "$mem" \
+"qemu-system-$arch" -enable-kvm -m "$mem" \
     ${iso:+-cdrom "$iso" -boot menu=on} \
-    -drive "file=`realpath "$image"`,format=$format"
+    -drive "file=$(realpath "$image"),format=$format"

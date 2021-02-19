@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Create a snapshot of a disk image.
 # Usage: qemu-snapshot <name> [base image name]
@@ -18,8 +18,8 @@ fstype() {
     # starting at $here, look for the closes mount point,
     # and if found, return the filesystem type
     while ! test "$fstype"; do
-        fstype=`mount | grep " $here " | cut -d' ' -f5`
-        here=`dirname "$here"`
+        fstype=$(mount | grep " $here " | cut -d' ' -f5)
+        here=$(dirname "$here")
     done
     echo "$fstype"
 }
@@ -27,20 +27,20 @@ fstype() {
 snapshot_names() {
     find "$snapshots" -name "${name}_*" |
     while read -r snapshot; do
-        echo "`basename "$snapshot"`"
+        basename "$snapshot"
     done
 }
 
 mkdir -p "$images"
 
 # disable btrfs copy-on-write for vm dir
-test `fstype "$images"` = btrfs && chattr +C "$images"
+test "$(fstype "$images")" = btrfs && chattr +C "$images"
 
 # if the string "menu" is given as the base,
 # then use a menu to select the base image
 if test "$base" = menu; then
     echo "Base snapshot on which image?" >&2
-    select snapshot in `snapshot_names`; do
+    select snapshot in $(snapshot_names); do
         base=$snapshots/$snapshot
         break
     done
@@ -48,7 +48,7 @@ fi
 
 # if no base image given, use the current one
 if ! test "$base" && test -f "$image"; then
-    base=`realpath "$image"`
+    base=$(realpath "$image")
 fi
 
 # if some base was given,
@@ -64,7 +64,7 @@ fi
 
 mkdir -p "$snapshots"
 
-ts=`date +%Y-%m-%d_%H-%M-%S`
+ts=$(date +%Y-%m-%d_%H-%M-%S)
 snapshot=$snapshots/${name}_${ts}.cow
 
 if test "$base"; then

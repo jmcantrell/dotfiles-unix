@@ -10,13 +10,7 @@ while getopts ":h" option; do
         h) echo "$usage" >&2; exit 0 ;;
         *) echo "$usage" >&2; exit 1 ;;
     esac
-done && shift $(($OPTIND - 1))
-
-# nothing was passed, so grab stdin
-if (( $# == 0 )); then
-    stdin=($(cat))
-    set -- "${stdin[@]}"
-fi
+done && shift $((OPTIND - 1))
 
 oldtmp=$(mktemp)
 for fn in "$@"; do
@@ -44,7 +38,7 @@ for (( i = 0; i <= ${#newlines[@]}; i += 1 )); do
     newfn=${newlines[$i]}
     newdir=$(dirname "$newfn")
     test -d "$newdir" || mkdir -p "$newdir"
-    if [[ $oldfn != $newfn ]]; then
+    if [[ "$oldfn" != "$newfn" ]]; then
         mv -fv "$oldfn" "$newfn"
     fi
 done

@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 alias g='git'
 
@@ -138,7 +138,7 @@ alias gmR='gmfor "git reset --hard HEAD"'
 # exec commands for each submodule
 gmfor() {
     # ensure submodules are on master
-    gm foreach "git checkout master; $@"
+    gm foreach "git checkout master; $*"
 }
 
 # add changes to index
@@ -170,14 +170,8 @@ alias gnvm='git reset .; git checkout .; git checkout master'
 alias gr='git reset'
 alias grh='gr --hard'
 
-# reset aliases for the last 9 commits
-for n in {1..9}; do
-    alias gr$n="git reset HEAD^$n"
-    alias grh$n="git reset --hard HEAD^$n"
-done
-
 # change directory to the repo root
 cdg() {
-    local root=`git root "$@"`
-    test -d "$root" && cd "$root"
+    local root=$(git root "$@")
+    test -d "$root" && cd "$root" || echo "unable to change directory to '$root'" >&2
 }

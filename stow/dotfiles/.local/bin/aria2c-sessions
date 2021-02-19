@@ -1,10 +1,10 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Choose an aria2 transfer session to resume.
 
 sessions=${TMPDIR:-$PWD}
 
-if ! find "$sessions" -name aria2c-session.* &>/dev/null; then
+if ! find "$sessions" -name "aria2c-session.*" &>/dev/null; then
     {
         echo "No sessions found in $sessions."
         echo "Resume a specific session file with:"

@@ -1,3 +1,3 @@
 #!/usr/bin/env sh
 
-OSTYPE=ArchLinux_64 mkvbox "$@"
+ostype=ArchLinux_64 mkvbox "$@"

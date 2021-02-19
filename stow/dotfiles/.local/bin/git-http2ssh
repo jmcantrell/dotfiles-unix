@@ -2,10 +2,10 @@
 
 # Convert a git repository origin from http to ssh.
 
-url=`git config remote.origin.url`
+url=$(git config remote.origin.url)
 
 # ensure starting with http url
-echo "$url" | egrep -q '^https?://' || exit 1
+echo "$url" | grep -E -q '^https?://' || exit 1
 
 name=${url##*/}
 user=${url%/*}; user=${user##*/}

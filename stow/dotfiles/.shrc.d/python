@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
 # install packages to the user's home directory
-alias pyi='pip install --upgrade --upgrade-strategy only-if-needed --user'
+alias pyi='pip install --upgrade --upgrade-strategy only-if-needed'
 
-alias pyll='pip freeze --local --all --user'
+alias pyll='pip freeze --local --all'
 alias pyls='pyll | cut -d= -f1'
 alias pyup='pyi `pyls`'
 

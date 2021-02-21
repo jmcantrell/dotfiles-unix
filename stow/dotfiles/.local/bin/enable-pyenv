@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+dir=${PYENV_ROOT:-$HOME/.pyenv}
+
+if [[ -d $dir ]]; then
+	cd "$dir"
+	git fetch --tags origin
+else
+	git clone https://github.com/pyenv/pyenv.git "$dir"
+	cd "$dir"
+fi
+
+git checkout "$(git latest-tag)"
+
+eval "$(./bin/pyenv init -)"
+
+latest=$(pyenv install --list | tr -d ' ' | grep -E '^[0-9.]+$' | tail -n1)
+
+pyenv install -s "$latest"
+
+pyenv global "$latest"

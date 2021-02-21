@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+read -r -s -n1 -p "press any key to continue"
+echo >&2

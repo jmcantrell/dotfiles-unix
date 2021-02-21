@@ -52,3 +52,5 @@ amend = commit --amend
 
 [init]
 defaultBranch = main
+[advice]
+	detachedHead = false

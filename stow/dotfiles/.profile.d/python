@@ -3,6 +3,3 @@
 export PYTHONSTARTUP=$HOME/.pythonrc
 export VIRTUALENV_DISTRIBUTE=1
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-
-# prefix=$(python -c 'import site; print(site.USER_BASE)')
-# export PATH="${prefix}/bin:$PATH"

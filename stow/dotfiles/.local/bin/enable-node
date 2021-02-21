@@ -4,8 +4,12 @@
 
 set -e
 
-npm="npm install --global"
+npm_install() {
+	npm install --global "$@"
+}
 
-$npm npm  # update installer first
+npm_install npm
 
-$npm eslint prettier
+npm_install npm-upgrade
+
+npm_install eslint prettier

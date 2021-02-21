@@ -120,24 +120,6 @@ alias gf='git ls-files | grep -i'
 # submodules
 alias gm='git submodule'
 alias gma='gm add'
-alias gmrm='gm rm'
-
-# update submodules
-alias gmp='gmfor "git pull origin master"'
-
-# cleanup submodules
-alias gmx='gmX --dry-run'
-alias gmx='gmfor "git clean -fdx --dry-run"'
-alias gmX='gmfor "git clean -fdx"'
-
-# abandon changes in all submodules
-alias gmR='gmfor "git reset --hard HEAD"'
-
-# exec commands for each submodule
-gmfor() {
-    # ensure submodules are on master
-    gm foreach "git checkout master; $*"
-}
 
 # add changes to index
 alias ga='git add'

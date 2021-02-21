@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
-
 # case insensitive
 alias locate='locate -i'
+
+# vi:ft=sh

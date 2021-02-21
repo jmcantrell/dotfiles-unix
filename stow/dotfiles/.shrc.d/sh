@@ -1,5 +1,3 @@
-#!/usr/bin/env sh
-
 alias c='clear'
 
 # verbose by default
@@ -15,7 +13,9 @@ fi
 alias ln='ln -vsf'  # symlink by default
 
 # rehash tab completion
-alias rh='hash -r'
+alias rehash='hash -r'
 
 # unified diffs by default
 alias diff='diff -u'
+
+# vi:ft=sh

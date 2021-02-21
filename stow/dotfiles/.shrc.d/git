@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 alias g='git'
 
 # update and publish
@@ -172,6 +170,7 @@ alias grh='gr --hard'
 
 # change directory to the repo root
 cdg() {
-    local root=$(git root "$@")
-    test -d "$root" && cd "$root" || echo "unable to change directory to '$root'" >&2
+    cd "$(git root "$@")" || return 0
 }
+
+# vi:ft=sh

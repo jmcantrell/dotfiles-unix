@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
-
 alias grep='grep -I --color=auto'
 alias egrep='grep -E'
+
+# vi:ft=sh

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 dir=${PYENV_ROOT:-$HOME/.pyenv}
 
 if [[ -d $dir ]]; then

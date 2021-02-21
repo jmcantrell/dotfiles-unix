@@ -1,5 +1,3 @@
-#!/usr/bin/env sh
-
 alias m='mpc'
 
 alias mq='mpc playlist'
@@ -24,3 +22,5 @@ alias mZ='mpc random'
 alias mR='mpc repeat'
 alias mS='mpc single'
 alias mC='mpc consume'
+
+# vi:ft=sh

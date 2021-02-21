@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+readarray -t paths < <(which "$@" 2>/dev/null)
+
+if (( ${#paths[@]} == 0 )); then
+    echo "no program found" >&2
+    exit 1
+fi
+
+edit "${paths[@]}"

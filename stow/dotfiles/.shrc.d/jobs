@@ -1,12 +1,6 @@
-#!/usr/bin/env bash
-
-job_id() {
-    local pid=${1:-$!}
-    jobs -pl | grep "\b$pid\b" |
-    sed 's/^\[\([0-9]\+\)\].*$/\1/'
-}
-
 alias ja='jobs -pl'
 alias jd='ja -d'
 alias jr='ja -r'
 alias js='ja -s'
+
+# vi:ft=sh

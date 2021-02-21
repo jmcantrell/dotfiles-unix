@@ -1,5 +1,3 @@
-#!/usr/bin/env sh
+test -f ~/.dircolors && eval "$(dircolors -b ~/.dircolors)"
 
-# set $LS_COLORS
-dircolors=$HOME/.dircolors
-test -f "$dircolors" && eval "$(dircolors -b "$dircolors")"
+# vi:ft=sh

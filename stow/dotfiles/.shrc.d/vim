@@ -1,14 +1,7 @@
-#!/usr/bin/env bash
-
-alias edit='$EDITOR'
 alias v=edit
-alias sv=sudoedit
 
-# edit a command
-vw() {
-    local f=$(command which "$@")
-    test -f "$f" && v "$f"
-}
+# edit a program in $PATH
+alias vw=edit-which
 
 # generate code tags recursively
 alias vtags='ctags -R'
@@ -19,7 +12,8 @@ alias vt='v -t'
 # generate help tags for plugins
 vht() {
     for dir in ~/.config/nvim/doc ~/.config/nvim/pack/default/start/*/doc; do
-        vim -c "helptags $dir" -c q
+        echo "generating help tags for $dir" >&2
+        vim -c "helptags $dir" -c q >/dev/null 2>&1
     done
 }
 
@@ -47,3 +41,5 @@ vcq() {
 vh() {
     v -c "help $*" -c only
 }
+
+# vi:ft=sh

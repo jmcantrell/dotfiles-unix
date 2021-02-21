@@ -1,5 +1,3 @@
-#!/usr/bin/env sh
-
 # create new or attach to session
 alias tn='tmux new-session -AD'
 
@@ -21,3 +19,5 @@ alias tlk='tmux list-keys'
 # kill session or server
 alias tk='tmux kill-session'
 alias tko='tmux kill-server'
+
+# vi:ft=sh

@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 alias d='docker'
 alias dc='docker-compose'
 alias dm='docker-machine'
@@ -16,15 +14,4 @@ dcdown() {
 	docker-compose down --remove-orphans "$@"
 }
 
-dmup() {
-    local name=${1:-default}
-    if [[ $DOCKER_MACHINE_NAME != "$name" ]]; then
-        if ! docker-machine status "$name" | grep -q '^Running$' ; then
-            docker-machine start "$name" || return 1
-        fi
-        if test -z "$DOCKER_MACHINE_NAME"; then
-            eval "$(docker-machine env "$name")" || return 1
-        fi
-    fi
-    set | grep '^DOCKER_'
-}
+# vi:ft=sh

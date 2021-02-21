@@ -1,14 +1,3 @@
-#!/usr/bin/env bash
-
-# go to the dir holding a file
-cdto() {
-    local file=${1:?missing filename}
-    # resolve all symlinks
-    local path=$(realpath "$file")
-    local dir=$(dirname "$path")
-    cd "$dir" || echo "unable to change directory to '$dir'" >&2
-}
-
 # push/pop from directory stack
 alias pu='pushd'
 alias po='popd'
@@ -19,3 +8,5 @@ alias dl='dirs -v -l'
 # always create parent directories
 alias mkdir='mkdir -p'
 alias md='mkdir'
+
+# vi:ft=sh

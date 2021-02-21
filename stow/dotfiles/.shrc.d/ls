@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
-
 alias ls='ls -CF --si --color=auto'
 alias ll='ls -l'   # long listing
 alias la='ls -A'   # listing with hidden
 alias lla='ll -A'  # long listing with hidden
+
+# vi:ft=sh

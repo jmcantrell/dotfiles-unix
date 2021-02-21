@@ -1,0 +1,4 @@
+[submodule "ls_colors"]
+	path = stow/dotfiles/.ls_colors
+	url = https://github.com/trapd00r/LS_COLORS.git
+	branch = master

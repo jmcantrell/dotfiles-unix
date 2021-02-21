@@ -13,6 +13,12 @@ ostype=${ostype:-linux_64}
 memory=${memory:-4096}
 cpus=${cpus:-2}
 
+bridgedif=$(
+    VBoxManage list bridgedifs |
+    grep "^Name:" | head -n1 |
+    sed 's/^Name: *\(.*\)$/\1/'
+)
+
 VBoxManage createvm \
     --name "$name" --ostype "$ostype" --register
 
@@ -22,6 +28,7 @@ VBoxManage modifyvm "$name" \
     --usb on --usbehci on --usbxhci on \
     --graphicscontroller vmsvga --vram 128 \
     --audiocontroller hda --audioin on --audioout on \
+    --nic1 bridged --bridgeadapter1 "$bridgedif" \
     --boot1 dvd --boot2 disk --boot3 none --boot4 none
 
 vdifile="$HOME/VirtualBox VMs/$name.vdi"
@@ -47,9 +54,11 @@ VBoxManage storageattach "$name" \
     --medium "$isofile"
 
 # shared folders
-for dir in $HOME/{Desktop,Documents,Downloads}; do
-    test -d "$dir" && VBoxManage sharedfolder add "$name" \
-        --name "${dir##*/}" --hostpath "$dir" --automount
+for dir in ~/{Desktop,Documents,Downloads}; do
+    if [[ -d $dir ]]; then
+        VBoxManage sharedfolder add "$name" \
+            --name "${dir##*/}" --hostpath "$dir" --automount
+    fi
 done
 
 # take an initial snapshot

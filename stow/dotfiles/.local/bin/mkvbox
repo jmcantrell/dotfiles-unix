@@ -20,8 +20,8 @@ VBoxManage modifyvm "$name" \
     --ioapic on --memory "$memory" --cpus "$cpus" \
     --rtcuseutc on --clipboard bidirectional \
     --usb on --usbehci on --usbxhci on \
-    --graphicscontroller vmsvga \
-    --audiocontroller hda --vram 128 \
+    --graphicscontroller vmsvga --vram 128 \
+    --audiocontroller hda --audioin on --audioout on \
     --boot1 dvd --boot2 disk --boot3 none --boot4 none
 
 vdifile="$HOME/VirtualBox VMs/$name.vdi"

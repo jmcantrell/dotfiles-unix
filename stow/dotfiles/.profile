@@ -10,7 +10,6 @@ export EDITOR=vim
 export PAGER=less
 export BROWSER=lynx
 
-# source extra scripts in ~/.profile.d
-for profile in "$HOME/.profile.d/"*; do
+for profile in ~/.profile.d/*; do
     test -f "$profile" && . "$profile"
 done

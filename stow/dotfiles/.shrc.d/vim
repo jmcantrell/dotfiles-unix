@@ -1,7 +1,9 @@
 alias v=edit
 
 # edit a program in $PATH
-alias vw=edit-which
+vw() {
+    which "$@" 2>/dev/null | edit-stdin
+}
 
 # generate code tags recursively
 alias vtags='ctags -R'

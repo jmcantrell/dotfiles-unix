@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-readarray -t paths < <(which "$@" 2>/dev/null)
+readarray -t paths
 
 if (( ${#paths[@]} == 0 )); then
-    echo "no program found" >&2
+    echo "nothing to edit" >&2
     exit 1
 fi
 

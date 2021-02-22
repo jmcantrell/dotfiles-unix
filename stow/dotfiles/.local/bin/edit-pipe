@@ -1,11 +1,13 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Edit pipe output in EDITOR before continuing.
-# Usage: command1 | vipe | command2
+# Usage: command1 | edit-pipe | command2
 
 data=$(mktemp)
 trap "rm -f '$data'" INT TERM EXIT
 
 cat >"$data"
-${EDITOR:-vim} "$data" </dev/tty >/dev/tty
+
+"${EDITOR[@]}" "$data" </dev/tty >/dev/tty
+
 cat "$data"

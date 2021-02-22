@@ -12,15 +12,15 @@ test "$width" -lt "$minwidth" && width=$minwidth
 # header
 printf " %*s " $minwidth " "
 for bgn in {0..15}; do
-    printf " %*s " "$width" "$bgn"
+	printf " %*s " "$width" "$bgn"
 done
 echo
 
 # rows = fg, columns = bg
 for fgn in {0..15}; do
-    printf " %*s" "$minwidth" "$fgn"
-    for bgn in {0..15}; do
-        printf " %s %-*s" "${fg[$fgn]}${bg[$bgn]}" $width "$sample"
-    done
-    echo " $reset"
+	printf " %*s" "$minwidth" "$fgn"
+	for bgn in {0..15}; do
+		printf " %s %-*s" "${fg[$fgn]}${bg[$bgn]}" $width "$sample"
+	done
+	echo " $reset"
 done

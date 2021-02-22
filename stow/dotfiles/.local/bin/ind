@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 # Execute a command in a given directory.
 # usage: ind directory command [arg...]
 
 dir=${1:?no directory given}; shift
 
-test -d "$dir" || exit 1
+[[ -d $dir ]] || exit 1
 cd "$dir" || exit 1
 pwd >&2
 "$@"

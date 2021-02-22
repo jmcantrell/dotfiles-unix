@@ -7,6 +7,6 @@ dir=${1:?no directory given}
 pattern=${2:?no pattern given}
 
 find "$dir" \
-    -type f \
-    -iname "*$pattern*" \
-    -exec "$@" '{}' \;
+	-type f \
+	-iname "*$pattern*" \
+	-exec "$@" '{}' \;

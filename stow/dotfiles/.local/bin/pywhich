@@ -7,18 +7,18 @@ from argparse import ArgumentParser
 
 
 def parse_args():
-    p = ArgumentParser(description=__doc__)
-    p.add_argument('module', nargs=1, metavar='name', help="module name")
-    return p.parse_args()
+	p = ArgumentParser(description=__doc__)
+	p.add_argument('module', nargs=1, metavar='name', help="module name")
+	return p.parse_args()
 
 
 def main():
-    args = parse_args()
-    name = args.module[0]
-    __import__(name)
-    m = sys.modules[name]
-    print(m.__file__)
+	args = parse_args()
+	name = args.module[0]
+	__import__(name)
+	m = sys.modules[name]
+	print(m.__file__)
 
 
 if __name__ == '__main__':
-    main()
+	main()

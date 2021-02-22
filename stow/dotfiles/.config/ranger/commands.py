@@ -11,160 +11,160 @@ pager = os.environ.get('PAGER', ranger.DEFAULT_PAGER)
 
 
 def escape(value):
-    if isinstance(value, dict):
-        return {k: esc(v) for k, v in value.items()}
-    if isinstance(value, (tuple, list)):
-        return [esc(v) for v in value]
-    return esc(value)
+	if isinstance(value, dict):
+		return {k: esc(v) for k, v in value.items()}
+	if isinstance(value, (tuple, list)):
+		return [esc(v) for v in value]
+	return esc(value)
 
 
 def get_trashinfo():
-    t = os.path.expanduser('~/.local/share/Trash')
-    return glob(os.path.join(t, 'info', '*.trashinfo'))
+	t = os.path.expanduser('~/.local/share/Trash')
+	return glob(os.path.join(t, 'info', '*.trashinfo'))
 
 
 class UserCommand(Command):
 
-    command = ''
+	command = ''
 
-    def run(self, command=None, **kwargs):
-        command = command or self.command
-        if '%' in command:
-            command = self.fm.substitute_macros(command, escape=True)
-        self.fm.execute_command(command, **kwargs)
+	def run(self, command=None, **kwargs):
+		command = command or self.command
+		if '%' in command:
+			command = self.fm.substitute_macros(command, escape=True)
+		self.fm.execute_command(command, **kwargs)
 
-    def untag(self):
-        for f in self.fm.tags.tags:
-            if str(f).startswith(self.fm.thisfile.path):
-                self.fm.tags.remove(f)
+	def untag(self):
+		for f in self.fm.tags.tags:
+			if str(f).startswith(self.fm.thisfile.path):
+				self.fm.tags.remove(f)
 
 
 class bulkrename(UserCommand):
-    """:bulkrename
+	""":bulkrename
 
-    This command opens a list of selected files in an external editor.
-    After you edit and save the file, it rename the files accordingly.
-    """
+	This command opens a list of selected files in an external editor.
+	After you edit and save the file, it rename the files accordingly.
+	"""
 
-    command = 'rn %s'
+	command = 'rn %s'
 
 
 class apack(UserCommand):
-    """:pack <archive>
+	""":pack <archive>
 
-    Pack the selected files using apack.
-    """
+	Pack the selected files using apack.
+	"""
 
-    command = 'apack {} %s'
+	command = 'apack {} %s'
 
-    def execute(self):
-        archive = self.rest(1)
-        if not archive:
-            self.fm.notify("Missing archive filename!", bad=True)
-            return
-        command = self.command.format(archive)
-        self.run([command, archive])
+	def execute(self):
+		archive = self.rest(1)
+		if not archive:
+			self.fm.notify("Missing archive filename!", bad=True)
+			return
+		command = self.command.format(archive)
+		self.run([command, archive])
 
-    def tab(self, tabnum):
-        return self._tab_directory_content()
+	def tab(self, tabnum):
+		return self._tab_directory_content()
 
 
 class aunpack(UserCommand):
-    """:unpack
+	""":unpack
 
-    Unpack the selected files using aunpack.
-    """
+	Unpack the selected files using aunpack.
+	"""
 
-    command = 'aunpack %s'
+	command = 'aunpack %s'
 
 
 class trash(UserCommand):
-    """:trash
+	""":trash
 
-    Trash the selected files.
-    """
+	Trash the selected files.
+	"""
 
-    command = 'trash %s'
+	command = 'trash %s'
 
-    def execute(self):
-        confirm = self.fm.settings.confirm_on_delete
-        cwd = self.fm.thisdir
-        cf = self.fm.thisfile
+	def execute(self):
+		confirm = self.fm.settings.confirm_on_delete
+		cwd = self.fm.thisdir
+		cf = self.fm.thisfile
 
-        if not cwd or not cf:
-            self.fm.notify("No file selected for deletion!", bad=True)
-            return
+		if not cwd or not cf:
+			self.fm.notify("No file selected for deletion!", bad=True)
+			return
 
-        many_files = (
-            self.fm.thisdir.marked_items or (
-                cf.is_directory and not cf.is_link and len(os.listdir(cf.path)) > 0
-            )
-        )
+		many_files = (
+			self.fm.thisdir.marked_items or (
+				cf.is_directory and not cf.is_link and len(os.listdir(cf.path)) > 0
+			)
+		)
 
-        if confirm != 'never' and (confirm != 'multiple' or many_files):
-            selection = self.fm.thistab.get_selection()
-            num_files = len(selection)
-            self.fm.ui.console.ask(
-                "Confirm trash of {} {}? (y/N)".format(
-                    num_files, 'files' if num_files > 1 else 'file'
-                ),
-                self._ask_callback, ('n', 'N', 'y', 'Y')
-            )
-        else:
-            # no need for a confirmation
-            self.run()
+		if confirm != 'never' and (confirm != 'multiple' or many_files):
+			selection = self.fm.thistab.get_selection()
+			num_files = len(selection)
+			self.fm.ui.console.ask(
+				"Confirm trash of {} {}? (y/N)".format(
+					num_files, 'files' if num_files > 1 else 'file'
+				),
+				self._ask_callback, ('n', 'N', 'y', 'Y')
+			)
+		else:
+			# no need for a confirmation
+			self.run()
 
-    def _ask_callback(self, answer):
-        if answer.lower() == 'y':
-            self.run()
+	def _ask_callback(self, answer):
+		if answer.lower() == 'y':
+			self.run()
 
 
 class trashrestore(UserCommand):
-    """:trashrestore
+	""":trashrestore
 
-    Restore file from the trash.
-    """
+	Restore file from the trash.
+	"""
 
-    command = 'trash-restore'
+	command = 'trash-restore'
 
 
 class trashlist(UserCommand):
-    """:trashlist
+	""":trashlist
 
-    List the trash contents.
-    """
+	List the trash contents.
+	"""
 
-    command = 'trash-list'
+	command = 'trash-list'
 
-    def execute(self):
-        trashinfo = get_trashinfo()
-        if not trashinfo:
-            self.fm.notify("Trash is empty.")
-            return
-        self.run()
+	def execute(self):
+		trashinfo = get_trashinfo()
+		if not trashinfo:
+			self.fm.notify("Trash is empty.")
+			return
+		self.run()
 
 
 class trashempty(UserCommand):
-    """:trashempty
+	""":trashempty
 
-    Empty the trash.
-    """
+	Empty the trash.
+	"""
 
-    command = 'trash-empty'
+	command = 'trash-empty'
 
-    def execute(self):
-        trashinfo = get_trashinfo()
-        if not trashinfo:
-            self.fm.notify("Trash is already empty!", bad=True)
-            return
-        num = len(trashinfo)
-        self.fm.ui.console.ask(
-            "Empty trash of {} {}? (y/N)".format(
-                num, 'items' if num > 1 else 'item'
-            ),
-            self._ask_callback, 'nNyY'
-        )
+	def execute(self):
+		trashinfo = get_trashinfo()
+		if not trashinfo:
+			self.fm.notify("Trash is already empty!", bad=True)
+			return
+		num = len(trashinfo)
+		self.fm.ui.console.ask(
+			"Empty trash of {} {}? (y/N)".format(
+				num, 'items' if num > 1 else 'item'
+			),
+			self._ask_callback, 'nNyY'
+		)
 
-    def _ask_callback(self, answer):
-        if answer.lower() == 'y':
-            self.run()
+	def _ask_callback(self, answer):
+		if answer.lower() == 'y':
+			self.run()

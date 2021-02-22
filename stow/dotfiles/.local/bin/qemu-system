@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Create and run a virtual machine.
 # Usage: qemu-system <name> [iso image file]
@@ -15,5 +15,5 @@ arch=${arch:-x86_64}
 test -f "$image" || qemu-snapshot "$name"
 
 "qemu-system-$arch" -enable-kvm -m "$mem" \
-    ${iso:+-cdrom "$iso" -boot menu=on} \
-    -drive "file=$(realpath "$image"),format=$format"
+	${iso:+-cdrom "$iso" -boot menu=on} \
+	-drive "file=$(realpath "$image"),format=$format"

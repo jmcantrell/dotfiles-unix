@@ -9,13 +9,13 @@ session=$1; shift
 options=(--save-session "$session")
 
 if test -f "$session"; then
-    echo "Resuming session from $session" >&2
-    options=("${options[@]}" -i "$session")
+	echo "Resuming session from $session" >&2
+	options=("${options[@]}" -i "$session")
 elif test $# -eq 0; then
-    # if session file exists, no other args are required
-    # if it doesn't, ensure there's something to download
-    echo "Nothing to download" >&2
-    exit 1
+	# if session file exists, no other args are required
+	# if it doesn't, ensure there's something to download
+	echo "Nothing to download" >&2
+	exit 1
 fi
 
 aria2c "${options[@]}" "$@" && rm -f "$session"

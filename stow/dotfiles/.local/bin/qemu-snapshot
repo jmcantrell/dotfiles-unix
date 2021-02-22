@@ -13,22 +13,22 @@ size=${size:-50G}
 format=qcow2
 
 fstype() {
-    local fstype
-    local here=${1:-$PWD}
-    # starting at $here, look for the closes mount point,
-    # and if found, return the filesystem type
-    while ! test "$fstype"; do
-        fstype=$(mount | grep " $here " | cut -d' ' -f5)
-        here=$(dirname "$here")
-    done
-    echo "$fstype"
+	local fstype
+	local here=${1:-$PWD}
+	# starting at $here, look for the closes mount point,
+	# and if found, return the filesystem type
+	while ! test "$fstype"; do
+		fstype=$(mount | grep " $here " | cut -d' ' -f5)
+		here=$(dirname "$here")
+	done
+	echo "$fstype"
 }
 
 snapshot_names() {
-    find "$snapshots" -name "${name}_*" |
-    while read -r snapshot; do
-        basename "$snapshot"
-    done
+	find "$snapshots" -name "${name}_*" |
+	while read -r snapshot; do
+		basename "$snapshot"
+	done
 }
 
 mkdir -p "$images"
@@ -39,27 +39,27 @@ test "$(fstype "$images")" = btrfs && chattr +C "$images"
 # if the string "menu" is given as the base,
 # then use a menu to select the base image
 if test "$base" = menu; then
-    echo "Base snapshot on which image?" >&2
-    select snapshot in $(snapshot_names); do
-        base=$snapshots/$snapshot
-        break
-    done
+	echo "Base snapshot on which image?" >&2
+	select snapshot in $(snapshot_names); do
+		base=$snapshots/$snapshot
+		break
+	done
 fi
 
 # if no base image given, use the current one
 if ! test "$base" && test -f "$image"; then
-    base=$(realpath "$image")
+	base=$(realpath "$image")
 fi
 
 # if some base was given,
 # but it's not a file, try to build it
 if test "$base" && ! test -f "$base"; then
-    base=$snapshots/${base%%.cow}.cow
+	base=$snapshots/${base%%.cow}.cow
 fi
 
 if test "$base" && ! test -f "$base"; then
-    echo "Image $base does not exist" >&2
-    exit 1
+	echo "Image $base does not exist" >&2
+	exit 1
 fi
 
 mkdir -p "$snapshots"
@@ -68,12 +68,12 @@ ts=$(date +%Y-%m-%d_%H-%M-%S)
 snapshot=$snapshots/${name}_${ts}.cow
 
 if test "$base"; then
-    qemu-img create -f "$format" \
-        -o "backing_file=$base,backing_fmt=$format" \
-        "$snapshot"
+	qemu-img create -f "$format" \
+		-o "backing_file=$base,backing_fmt=$format" \
+		"$snapshot"
 else
-    # initial image creation
-    qemu-img create -f "$format" "$snapshot" "$size"
+	# initial image creation
+	qemu-img create -f "$format" "$snapshot" "$size"
 fi
 
 ln -sfvT "$snapshot" "$image"

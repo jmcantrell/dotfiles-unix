@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 name=${1:?missing submodule name}
+
 path=$(git config -f .gitmodules "submodule.$name.path")
 
 git submodule deinit "$name"

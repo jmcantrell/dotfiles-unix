@@ -6,7 +6,7 @@ dir=${1:-$PWD}
 
 # check each parent for the git directory
 while test -d "$dir" && ! test -d "$dir/.git"; do
-    dir+=/..
+	dir+=/..
 done
 
 test -d "$dir" && echo "$dir"

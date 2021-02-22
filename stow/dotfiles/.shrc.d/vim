@@ -2,7 +2,7 @@ alias v=edit
 
 # edit a program in $PATH
 vw() {
-    which "$@" 2>/dev/null | edit-stdin
+    /usr/bin/which "$@" 2>/dev/null | edit-stdin
 }
 
 # generate code tags recursively

@@ -1,56 +1,51 @@
 [core]
-excludesfile = ~/.gitignore.global
+	excludesfile = ~/.gitignore.global
 
 [color]
-branch = auto
-diff = auto
-interactive = auto
-status = auto
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
 
 [pull]
-rebase = false
+	rebase = false
 
 [push]
-default = simple
+	default = simple
 
 [submodule]
-recurse = true
+	recurse = true
 
 [merge]
-tool = vimdiff
+	tool = vimdiff
 
 [diff]
-mnemonicprefix = true
-submodule = log
+	mnemonicprefix = true
+	submodule = log
 
 [difftool]
-prompt = false
+	prompt = false
 
 [mergetool]
-prompt = false
+	prompt = false
 
 [branch]
-autosetupmerge = true
+	autosetupmerge = true
 
 [web]
-browser = vimb
+	browser = vimb
 
 [include]
-path = .gitconfig.local
-
-[remote "origin"]
-fetch = +refs/pull/*/head:refs/remotes/origin/pr/*
+	path = .gitconfig.local
 
 [alias]
-ls = ls-files
-st = status
-cd = root
-ci = commit
-co = checkout
-fix = mergetool
-amend = commit --amend
+	ls = ls-files
+	st = status
+	cd = root
+	ci = commit
+	co = checkout
+	fix = mergetool
+	amend = commit --amend
 
-[init]
-defaultBranch = main
 [advice]
 	detachedHead = false

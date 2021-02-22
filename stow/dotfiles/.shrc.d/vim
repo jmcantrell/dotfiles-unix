@@ -1,4 +1,5 @@
 alias v=editor
+alias vs=sudoedit
 
 # edit a program in $PATH
 vw() {

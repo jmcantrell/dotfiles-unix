@@ -1,8 +1,8 @@
-alias v=edit
+alias v=editor
 
 # edit a program in $PATH
 vw() {
-    /usr/bin/which "$@" 2>/dev/null | edit-stdin
+    /usr/bin/which "$@" 2>/dev/null | editor-stdin
 }
 
 # generate code tags recursively

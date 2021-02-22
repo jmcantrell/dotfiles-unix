@@ -7,4 +7,4 @@ if (( ${#paths[@]} == 0 )); then
 	exit 1
 fi
 
-edit "${paths[@]}"
+editor "${paths[@]}"

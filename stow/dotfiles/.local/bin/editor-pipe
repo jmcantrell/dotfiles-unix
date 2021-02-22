@@ -8,6 +8,6 @@ trap "rm -f '$data'" INT TERM EXIT
 
 cat >"$data"
 
-"${EDITOR[@]}" "$data" </dev/tty >/dev/tty
+editor "$data" </dev/tty >/dev/tty
 
 cat "$data"

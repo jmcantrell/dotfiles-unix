@@ -13,7 +13,3 @@ else
 fi
 
 git checkout "$(git latest-tag)"
-
-. "$dir/nvm.sh"
-
-nvm install node

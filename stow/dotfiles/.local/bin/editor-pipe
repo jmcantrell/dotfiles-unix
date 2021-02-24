@@ -4,7 +4,7 @@
 # Usage: command1 | edit-pipe | command2
 
 data=$(mktemp)
-trap "rm -f '$data'" INT TERM EXIT
+trap "rm -f $(printf "%q" "$data")" INT TERM EXIT
 
 cat >"$data"
 

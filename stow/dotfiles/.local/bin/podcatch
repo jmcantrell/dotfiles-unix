@@ -84,7 +84,7 @@ log() {
 
 temp() {
     local temp=$(mktemp -t "$me.XXXXXXXXXX")
-    trap "rm -f '$temp'" INT TERM EXIT
+	trap "rm -f $(printf "%q" "$temp")" INT TERM EXIT
     echo "$temp"
 }
 

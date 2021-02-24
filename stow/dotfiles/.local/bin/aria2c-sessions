@@ -2,11 +2,13 @@
 
 # Choose an aria2 transfer session to resume.
 
-sessions=${TMPDIR:-$PWD}
+dir=${TMPDIR:-$PWD}
 
-if ! find "$sessions" -name "aria2c-session.*" &>/dev/null; then
+readarray -t sessions < <(find "$dir" -type f -name "aria2c-session.*")
+
+if (( ${#sessions} == 0 )); then
 	{
-		echo "No sessions found in $sessions."
+		echo "No sessions found in $dir."
 		echo "Resume a specific session file with:"
 		echo "aria2c-resume /path/to/sessionfile"
 	} >&2
@@ -14,7 +16,7 @@ if ! find "$sessions" -name "aria2c-session.*" &>/dev/null; then
 fi
 
 echo "Resume which session?" >&2
-select session in "$sessions"/aria2c-session.*; do
+select session in "${sessions[@]}"; do
 	aria2c-resume "$session" "$@"
 	break
 done

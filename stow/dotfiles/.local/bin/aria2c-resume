@@ -3,15 +3,15 @@
 # Start or resume an aria2 transfer session.
 
 # no session file given, so choose one
-test $# -eq 0 && exec aria2c-sessions
+(( $# ==  0 )) && exec aria2c-sessions
 
 session=$1; shift
 options=(--save-session "$session")
 
-if test -f "$session"; then
+if [[ -f $session ]]; then
 	echo "Resuming session from $session" >&2
-	options=("${options[@]}" -i "$session")
-elif test $# -eq 0; then
+	options+=(-i "$session")
+elif (( $# == 0 )); then
 	# if session file exists, no other args are required
 	# if it doesn't, ensure there's something to download
 	echo "Nothing to download" >&2

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+url=$1
+dir=${2:-$HOME/Downloads}
+
+exec aria2c-session -d "$dir" "$url"

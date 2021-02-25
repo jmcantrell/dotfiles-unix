@@ -211,7 +211,7 @@ download() {
     # easy solution for sane filenames
     local id=$(md5sum <<<"$url" | cut -f1 -d' ')
     # check for existing file
-    local audio=$(find "$dir" -name "$id.*")
+    local audio=$(find "$dir" -name "$id.*" 2>/dev/null)
 
     if [[ ! $audio ]]; then
 

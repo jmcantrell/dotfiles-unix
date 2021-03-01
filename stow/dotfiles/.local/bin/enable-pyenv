@@ -6,10 +6,8 @@ dir=${PYENV_ROOT:-$HOME/.pyenv}
 
 if [[ -d $dir ]]; then
 	cd "$dir"
-	git fetch --tags origin
+	git pull origin master
 else
 	git clone https://github.com/pyenv/pyenv.git "$dir"
 	cd "$dir"
 fi
-
-git checkout "$(git latest-tag)"

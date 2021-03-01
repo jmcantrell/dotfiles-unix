@@ -6,10 +6,8 @@ dir=${NVM_DIR:-$HOME/.nvm}
 
 if [[ -d $dir ]]; then
 	cd "$dir"
-	git fetch --tags origin
+	git pull origin master
 else
 	git clone https://github.com/nvm-sh/nvm.git "$dir"
 	cd "$dir"
 fi
-
-git checkout "$(git latest-tag)"

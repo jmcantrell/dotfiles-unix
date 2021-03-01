@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+
+export PATH=$HOME/.cargo/bin:$PATH
+
+mkdir -p "$HOME/.local/share/zsh/functions"
+rustup completions zsh >"$_/_rustup"
+
+mkdir -p "$HOME/.local/share/bash-completion/completions"
+rustup completions bash >"$_/rustup"

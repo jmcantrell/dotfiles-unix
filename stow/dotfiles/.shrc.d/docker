@@ -3,15 +3,15 @@ alias dc='docker-compose'
 alias dm='docker-machine'
 
 drun() {
-	docker run -it --rm "$@"
+    docker run -it --rm "$@"
 }
 
 dcup() {
-	docker-compose up --detach --build "$@"
+    docker-compose up --detach --build "$@"
 }
 
 dcdown() {
-	docker-compose down --remove-orphans "$@"
+    docker-compose down --remove-orphans "$@"
 }
 
 # vi:ft=sh

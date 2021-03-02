@@ -7,40 +7,40 @@ from argparse import ArgumentParser
 
 
 def dupes(*dirs):
-	hashes = dict()
-	for d in dirs:
-		for root, dirs, files in os.walk(os.path.expanduser(d)):
-			for f in files:
-				fn = os.path.join(root, f)
-				hashes.setdefault(md5sum(fn), []).append(fn)
-	return hashes
+    hashes = dict()
+    for d in dirs:
+        for root, dirs, files in os.walk(os.path.expanduser(d)):
+            for f in files:
+                fn = os.path.join(root, f)
+                hashes.setdefault(md5sum(fn), []).append(fn)
+    return hashes
 
 
 def md5sum(fn):
-	md5 = hashlib.md5()
-	f = open(fn, 'rb')
-	while True:
-		data = f.read(128)
-		if data:
-			md5.update(data)
-		else:
-			break
-	return md5.hexdigest()
+    md5 = hashlib.md5()
+    f = open(fn, 'rb')
+    while True:
+        data = f.read(128)
+        if data:
+            md5.update(data)
+        else:
+            break
+    return md5.hexdigest()
 
 
 def parse_args():
-	p = ArgumentParser(description=__doc__)
-	p.add_argument('dirs', metavar='dir', nargs='+', help='directory to search')
-	return p.parse_args()
+    p = ArgumentParser(description=__doc__)
+    p.add_argument('dirs', metavar='dir', nargs='+', help='directory to search')
+    return p.parse_args()
 
 
 def main():
-	args = parse_args()
-	hashes = dupes(args.dirs)
-	for k, v in hashes.items():
-		if len(v) > 1:
-			print(', '.join(v))
+    args = parse_args()
+    hashes = dupes(args.dirs)
+    for k, v in hashes.items():
+        if len(v) > 1:
+            print(', '.join(v))
 
 
 if __name__ == '__main__':
-	main()
+    main()

@@ -3,8 +3,8 @@
 readarray -t paths
 
 if (( ${#paths[@]} == 0 )); then
-	echo "nothing to edit" >&2
-	exit 1
+    echo "nothing to edit" >&2
+    exit 1
 fi
 
 editor "${paths[@]}"

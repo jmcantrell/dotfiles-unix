@@ -5,7 +5,7 @@
 set -e
 
 npm_install() {
-	npm install --global "$@"
+    npm install --global "$@"
 }
 
 npm_install npm

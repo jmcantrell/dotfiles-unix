@@ -5,7 +5,7 @@
 set -e
 
 pip_install() {
-	pip install --upgrade --upgrade-strategy only-if-needed "$@"
+    pip install --upgrade --upgrade-strategy only-if-needed "$@"
 }
 
 pip_install pip

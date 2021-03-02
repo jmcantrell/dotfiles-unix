@@ -14,51 +14,51 @@ memory=${memory:-4096}
 cpus=${cpus:-2}
 
 bridgedif=$(
-	VBoxManage list bridgedifs |
-	grep "^Name:" | head -n1 |
-	sed 's/^Name: *\(.*\)$/\1/'
+    VBoxManage list bridgedifs |
+    grep "^Name:" | head -n1 |
+    sed 's/^Name: *\(.*\)$/\1/'
 )
 
 VBoxManage createvm \
-	--name "$name" --ostype "$ostype" --register
+    --name "$name" --ostype "$ostype" --register
 
 VBoxManage modifyvm "$name" \
-	--ioapic on --memory "$memory" --cpus "$cpus" \
-	--rtcuseutc on --clipboard bidirectional \
-	--usb on --usbehci on --usbxhci on \
-	--graphicscontroller vmsvga --vram 128 \
-	--audiocontroller hda --audioin on --audioout on \
-	--nic1 bridged --bridgeadapter1 "$bridgedif" \
-	--boot1 dvd --boot2 disk --boot3 none --boot4 none
+    --ioapic on --memory "$memory" --cpus "$cpus" \
+    --rtcuseutc on --clipboard bidirectional \
+    --usb on --usbehci on --usbxhci on \
+    --graphicscontroller vmsvga --vram 128 \
+    --audiocontroller hda --audioin on --audioout on \
+    --nic1 bridged --bridgeadapter1 "$bridgedif" \
+    --boot1 dvd --boot2 disk --boot3 none --boot4 none
 
 vdifile="$HOME/VirtualBox VMs/$name.vdi"
 
 VBoxManage createhd \
-	--filename "$vdifile" --size $((50*1024))
+    --filename "$vdifile" --size $((50*1024))
 
 VBoxManage storagectl "$name" \
-	--name "SATA Controller" \
-	--add sata --controller IntelAHCI
+    --name "SATA Controller" \
+    --add sata --controller IntelAHCI
 
 VBoxManage storageattach "$name" \
-	--storagectl "SATA Controller" \
-	--port 0 --device 0 --type hdd \
-	--medium "$vdifile"
+    --storagectl "SATA Controller" \
+    --port 0 --device 0 --type hdd \
+    --medium "$vdifile"
 
 VBoxManage storagectl "$name" \
-	--name "IDE Controller" --add ide
+    --name "IDE Controller" --add ide
 
 VBoxManage storageattach "$name" \
-	--storagectl "IDE Controller" \
-	--port 0 --device 0 --type dvddrive \
-	--medium "$isofile"
+    --storagectl "IDE Controller" \
+    --port 0 --device 0 --type dvddrive \
+    --medium "$isofile"
 
 # shared folders
 for dir in ~/{Desktop,Documents,Downloads}; do
-	if [[ -d $dir ]]; then
-		VBoxManage sharedfolder add "$name" \
-			--name "${dir##*/}" --hostpath "$dir" --automount
-	fi
+    if [[ -d $dir ]]; then
+        VBoxManage sharedfolder add "$name" \
+            --name "${dir##*/}" --hostpath "$dir" --automount
+    fi
 done
 
 # take an initial snapshot

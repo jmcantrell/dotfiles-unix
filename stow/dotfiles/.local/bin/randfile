@@ -7,34 +7,34 @@ from argparse import ArgumentParser
 
 
 def find_files(directory):
-	for root, dirs, files in os.walk(directory):
-		for f in files:
-			yield os.path.join(root, f)
+    for root, dirs, files in os.walk(directory):
+        for f in files:
+            yield os.path.join(root, f)
 
 
 def parse_args():
-	p = ArgumentParser(description=__doc__)
-	p.add_argument(
-		'dirs',
-		metavar='dir', nargs='+',
-		help='directory to search'
-	)
-	p.add_argument(
-		'-n', '--num',
-		default=1, type=int,
-		help='number of files to draw'
-	)
-	return p.parse_args()
+    p = ArgumentParser(description=__doc__)
+    p.add_argument(
+        'dirs',
+        metavar='dir', nargs='+',
+        help='directory to search'
+    )
+    p.add_argument(
+        '-n', '--num',
+        default=1, type=int,
+        help='number of files to draw'
+    )
+    return p.parse_args()
 
 
 def main():
-	args = parse_args()
-	pool = []
-	for d in args.dirs:
-		pool.extend(find_files(d))
-	for n in range(args.num):
-		print(random.choice(pool))
+    args = parse_args()
+    pool = []
+    for d in args.dirs:
+        pool.extend(find_files(d))
+    for n in range(args.num):
+        print(random.choice(pool))
 
 
 if __name__ == '__main__':
-	main()
+    main()

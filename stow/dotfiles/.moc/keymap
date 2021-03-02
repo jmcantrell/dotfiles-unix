@@ -121,5 +121,5 @@ exec_command10        = F10
 # The following commands are available but not assigned to any keys by
 # default:
 #
-#   toggle_percent	 Switch on/off play progress bar time percentage
+#   toggle_percent     Switch on/off play progress bar time percentage
 #

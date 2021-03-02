@@ -9,6 +9,6 @@ mkdir -p "$dir"
 gpg --export-ownertrust >"$dir"/ownertrust.txt
 
 for id in $(gpg-secret-keys); do
-	gpg -a --export "$id" >"$dir/$id.pub"
-	gpg -a --export-secret-keys "$id" >"$dir/$id.key"
+    gpg -a --export "$id" >"$dir/$id.pub"
+    gpg -a --export-secret-keys "$id" >"$dir/$id.key"
 done

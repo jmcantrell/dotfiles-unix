@@ -9,4 +9,12 @@ alias dl='dirs -v -l'
 alias mkdir='mkdir -p'
 alias md='mkdir'
 
+# quickly traverse directory ancestry
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias ......='cd ../../../../..'
+alias .......='cd ../../../../../..'
+alias ........='cd ../../../../../../..'
+
 # vi:ft=sh

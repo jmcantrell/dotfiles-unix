@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
 
-if ! which rustup 2>/dev/null; then
+if ! which rustup >/dev/null 2>&1; then
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 fi
 
 export PATH=$HOME/.cargo/bin:$PATH
 
-mkdir -p "$HOME/.local/share/zsh/functions"
-rustup completions zsh >"$_/_rustup"
+zsh_completions=$HOME/.local/share/zsh/functions
+mkdir -p "$zsh_completions"
+rustup completions zsh >"$zsh_completions/_rustup"
+rustup completions zsh cargo >"$zsh_completions/_cargo"
 
-mkdir -p "$HOME/.local/share/bash-completion/completions"
-rustup completions bash >"$_/rustup"
+bash_completions=$HOME/.local/share/bash-completion/completions
+mkdir -p "$bash_completions"
+rustup completions bash >"$bash_completions/rustup"
+rustup completions bash cargo >"$bash_completions/cargo"
+
+# install cargo {add,rm,upgrade} commands
+cargo install cargo-edit

@@ -3,7 +3,7 @@
 # Create fg and bg color value arrays to be sourced.
 
 # already sourced
-test "$reset" && exit 0
+[[ $reset ]] && exit 0
 
 reset=$(tput sgr0)
 

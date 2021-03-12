@@ -16,5 +16,7 @@ mkdir -p "$bash_completions"
 rustup completions bash >"$bash_completions/rustup"
 rustup completions bash cargo >"$bash_completions/cargo"
 
+rustup component add rls
+
 # install cargo {add,rm,upgrade} commands
 cargo install cargo-edit

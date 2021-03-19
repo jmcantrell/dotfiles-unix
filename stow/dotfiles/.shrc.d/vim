@@ -1,4 +1,5 @@
 alias v=editor
+alias gv=gvim
 alias sv=sudoedit
 alias vin=editor-stdin
 

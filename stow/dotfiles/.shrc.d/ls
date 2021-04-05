@@ -1,9 +1,4 @@
-if has exa; then
-    alias ls='exa --git'
-else
-    alias ls='ls -CF --si --color=auto'
-fi
-
+alias ls='ls -CF --si --color=auto'
 alias ll='ls -l'   # long listing
 alias la='ls -a'   # listing with hidden
 alias lla='ll -a'  # long listing with hidden

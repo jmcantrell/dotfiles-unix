@@ -9,7 +9,4 @@ npm_install() {
 }
 
 npm_install npm
-
-npm_install npm-upgrade
-
-npm_install eslint prettier
+npm_install npm-upgrade eslint prettier

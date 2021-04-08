@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# Install global rust packages.
+
+set -e
+
+rustup component add rls
+
+# install cargo {add,rm,upgrade} commands
+cargo install cargo-edit

@@ -17,4 +17,9 @@ alias ......='cd ../../../../..'
 alias .......='cd ../../../../../..'
 alias ........='cd ../../../../../../..'
 
+# create a directory and cd after
+mkcd() {
+    mkdir -p "$1"; cd "$1" || return 1
+}
+
 # vi:ft=sh

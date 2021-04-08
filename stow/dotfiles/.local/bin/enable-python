@@ -8,13 +8,5 @@ pip_install() {
     pip install --upgrade --upgrade-strategy only-if-needed "$@"
 }
 
-pip_install pip
-
-# package tools
-pip_install wheel twine virtualenv
-
-# python developer tools
-pip_install autopep8 pep8 pep257 flake8 bpython pudb
-
-# tool integration
-pip_install i3ipc jedi neovim
+pip_install pip wheel
+pip_install poetry virtualenv black bpython pudb i3ipc jedi-language-server neovim

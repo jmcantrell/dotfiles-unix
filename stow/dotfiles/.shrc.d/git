@@ -100,7 +100,7 @@ alias glfo='glf "@{u}.."'
 # list files
 alias gls='git ls-files'
 alias glsd='gd --name-only'  # changed since last commit
-alias glsdm='glsd master'  # changed since master
+alias glsdm='glsd master'    # changed since master
 alias glsdo='glsd "@{u}.."'  # changed since push
 alias glsdi='glsd "..@{u}"'  # changed since pull
 

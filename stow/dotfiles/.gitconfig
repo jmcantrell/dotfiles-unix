@@ -1,6 +1,9 @@
 [core]
     excludesfile = ~/.gitignore.global
 
+[include]
+    path = .gitconfig.local
+
 [color]
     branch = auto
     diff = auto
@@ -13,11 +16,11 @@
 [push]
     default = simple
 
+[branch]
+    autosetupmerge = true
+
 [submodule]
     recurse = true
-
-[merge]
-    tool = vimdiff
 
 [diff]
     mnemonicprefix = true
@@ -26,24 +29,17 @@
 [difftool]
     prompt = false
 
+[merge]
+    tool = vimdiff
+
 [mergetool]
     prompt = false
-
-[branch]
-    autosetupmerge = true
 
 [web]
     browser = vimb
 
-[include]
-    path = .gitconfig.local
-
 [alias]
     ls = ls-files
-    st = status
-    cd = root
-    ci = commit
-    co = checkout
     fix = mergetool
     amend = commit --amend
 

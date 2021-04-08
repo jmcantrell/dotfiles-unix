@@ -8,5 +8,6 @@ pip_install() {
     pip install --upgrade --upgrade-strategy only-if-needed "$@"
 }
 
-pip_install pip wheel
-pip_install poetry virtualenv black bpython pudb i3ipc jedi-language-server neovim
+pip_install pip
+pip_install wheel poetry virtualenv
+pip_install black bpython pudb i3ipc jedi-language-server neovim

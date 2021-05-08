@@ -20,9 +20,6 @@
 [branch]
     autosetupmerge = true
 
-[submodule]
-    recurse = true
-
 [diff]
     mnemonicprefix = true
     submodule = log

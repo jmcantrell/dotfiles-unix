@@ -1,5 +1,5 @@
 # install packages to the user's home directory
-alias pyi='pip install --upgrade --upgrade-strategy only-if-needed'
+alias pyi='pip install --user --upgrade --upgrade-strategy only-if-needed'
 
 alias pyll='pip freeze --local --all'
 alias pyls='pyll | cut -d= -f1'

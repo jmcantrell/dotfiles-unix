@@ -12,33 +12,37 @@ while getopts ":h" option; do
     esac
 done && shift $((OPTIND - 1))
 
-oldtmp=$(mktemp)
+srctmp=$(mktemp -t "${me}-src.XXXXXXXXXX")
+trap "rm -f $(printf "%q" "$srctmp")" INT TERM EXIT
+
 for fn in "$@"; do
     [[ -e "$fn" ]] && echo "$fn"
-done >"$oldtmp"
+done >"$srctmp"
 
-newtmp=$(mktemp)
-cat "$oldtmp" >"$newtmp"
+dsttmp=$(mktemp -t "${me}-dst.XXXXXXXXXX")
+trap "rm -f $(printf "%q" "$dsttmp")" INT TERM EXIT
 
-if ! ${EDITOR:-vim} "$newtmp"; then
+cat "$srctmp" >"$dsttmp"
+
+if ! ${EDITOR:-vim} "$dsttmp"; then
     echo "$me: edit failed"
     exit 1
 fi
 
-readarray -t oldlines <"$oldtmp"
-readarray -t newlines <"$newtmp"
+readarray -t srclines <"$srctmp"
+readarray -t dstlines <"$dsttmp"
 
-if (( ${#oldlines[@]} != ${#newlines[@]} )); then
+if (( ${#srclines[@]} != ${#dstlines[@]} )); then
     echo "$me: lines were added or removed"
     exit 1
 fi
 
-for (( i = 0; i <= ${#newlines[@]}; i += 1 )); do
-    oldfn=${oldlines[$i]}
-    newfn=${newlines[$i]}
-    newdir=$(dirname "$newfn")
-    test -d "$newdir" || mkdir -p "$newdir"
-    if [[ "$oldfn" != "$newfn" ]]; then
-        mv -fv "$oldfn" "$newfn"
+for (( i = 0; i <= ${#dstlines[@]}; i += 1 )); do
+    srcfn=${srclines[$i]}
+    dstfn=${dstlines[$i]}
+    dstdir=$(dirname "$dstfn")
+    test -d "$dstdir" || mkdir -p "$dstdir"
+    if [[ "$srcfn" != "$dstfn" ]]; then
+        mv -fv "$srcfn" "$dstfn"
     fi
 done

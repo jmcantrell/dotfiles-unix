@@ -2,4 +2,6 @@ export NVM_DIR=$HOME/.nvm
 export NODE_VERSION_PREFIX=
 export NODE_VERSIONS=$NVM_DIR/versions/node
 
+test -f "$NVM_DIR/nvm.sh" && . "$NVM_DIR/nvm.sh"
+
 # vi:ft=sh

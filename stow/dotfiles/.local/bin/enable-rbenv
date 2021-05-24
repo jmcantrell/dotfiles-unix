@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+set -e
+
+dir=${RBENV_ROOT:-$HOME/.rbenv}
+
+mkdir -p "$(rbenv root)"/plugins
+git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
+
+if [[ -d $dir ]]; then
+    cd "$dir"
+    git pull origin master
+else
+    git clone https://github.com/rbenv/rbenv.git "$dir"
+    cd "$dir"
+fi
+
+declare -A plugins
+
+plugins[ruby-build]=https://github.com/rbenv/ruby-build.git
+
+for name in "${!plugins[@]}"; do
+    plugin_dir=$dir/plugins/$name
+
+    if [[ -d $plugin_dir ]]; then
+        cd "$plugin_dir"
+        git pull origin master
+    else
+        git clone "${plugins[$name]}" "$plugin_dir"
+        cd "$plugin_dir"
+    fi
+done

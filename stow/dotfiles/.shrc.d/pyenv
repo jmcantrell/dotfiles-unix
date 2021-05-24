@@ -1,3 +1,0 @@
-has pyenv && eval "$(pyenv init --path)"
-
-# vi:ft=sh

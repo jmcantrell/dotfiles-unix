@@ -1,0 +1,3 @@
+has rbenv && eval "$(rbenv init -)"
+
+# vi:ft=sh

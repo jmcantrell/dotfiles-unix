@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [[ $DISPLAY ]]; then
+    exec gvim "$@"
+else
+    exec vim "$@"
+fi

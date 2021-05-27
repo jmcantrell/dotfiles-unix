@@ -1,0 +1,9 @@
+*#
+*.bak
+*.swo
+*.swp
+*~
+.DS_Store
+.Trash-*
+.Trashes
+.Spotlight-*

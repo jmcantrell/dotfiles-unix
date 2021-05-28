@@ -20,7 +20,7 @@ core:
   regular_file: {}
 
   directory:
-    foreground: light_blue
+    foreground: blue
     font-style: bold
 
   executable_file:
@@ -107,7 +107,7 @@ media:
     foreground: cyan
 
 office:
-  foreground: brown
+  foreground: light_blue
 
 archives:
   foreground: pink

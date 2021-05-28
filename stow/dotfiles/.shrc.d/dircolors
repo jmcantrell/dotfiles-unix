@@ -1,3 +1,0 @@
-test -f ~/.dircolors && eval "$(dircolors -b ~/.dircolors)"
-
-# vi:ft=sh

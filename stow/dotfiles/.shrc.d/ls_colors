@@ -1,3 +1,5 @@
-export LS_COLORS="$(vivid -m 8-bit generate minecraft)"
+data=$HOME/.ls_colors/LS_COLORS
+
+test -f "$data" && eval "$(dircolors -b "$data")"
 
 # vi:ft=sh

@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+set -e
+
+me=${0##*/}
+usage="Interact with text snippets.
+Usage: $me [-h] [-l] [-p|e|c|s|t name]"
+
+config_dir=${XDG_CONFIG_HOME:-$HOME/.config}/snip
+snippets=$config_dir/snippets
+
+die() {
+	echo "$*" >&2
+	exit 1
+}
+
+get_snippet_file() {
+	local query=$1
+
+	[[ $query ]] || die "no snippet name provided"
+
+	for file in "$snippets"/*; do
+		name=$(basename "$file")
+		if [[ "$name" == "$query" ]]; then
+			echo "$file"
+			return
+		fi
+	done
+
+	die "snippet '$name' not found"
+}
+
+list_snippets() {
+	for file in "$snippets"/*; do
+		basename "$file"
+	done
+}
+
+print_snippet() {
+	local name=${1:?missing snippet name}
+	local file=$snippets/$name
+
+	[[ -f $file ]] || die "snippet '$name' not found"
+
+	cat "$(get_snippet_file "$1")"
+}
+
+edit_snippet() {
+	local name=${1:?missing snippet name}
+	local file=$snippets/$name
+
+	mkdir -p "$snippets"
+
+	exec "${VISUAL[@]}" "$file"
+}
+
+copy_snippet() {
+	local name=${1:?missing snippet name}
+	local file=$snippets/$name
+
+	[[ -f $file ]] || die "snippet '$name' not found"
+
+	cbi <"$file"
+
+	notify-send "snippet text for $name copied to clipboard"
+}
+
+save_snippet() {
+	local name=${1:?missing snippet name}
+	local file=$snippets/$name
+
+	mkdir -p "$snippets"
+
+	cbo >"$file"
+
+	notify-send "snippet text for $name saved from clipboard"
+}
+
+type_snippet() {
+	local name=${1:?missing snippet name}
+	local file=$snippets/$name
+
+	[[ -f $file ]] || die "snippet '$name' not found"
+
+	keystroke <"$file"
+}
+
+(( $# == 0 )) && set -- -h
+
+unset OPTIND
+while getopts ":hlp:e:c:s:t:" option; do
+	case $option in
+		l) list_snippets ;;
+		p) print_snippet "$OPTARG" ;;
+		e) edit_snippet "$OPTARG" ;;
+		c) copy_snippet "$OPTARG" ;;
+		s) save_snippet "$OPTARG" ;;
+		t) type_snippet "$OPTARG" ;;
+		h) echo "$usage" >&2; exit 0 ;;
+		*) echo "$usage" >&2; exit 1 ;;
+	esac
+done && shift $((OPTIND - 1))

@@ -1,0 +1,5 @@
+data=$HOME/.ls_colors/LS_COLORS
+
+test -f "$data" && eval "$(dircolors -b "$data")"
+
+# vi:ft=sh

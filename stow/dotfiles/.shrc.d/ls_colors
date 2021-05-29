@@ -1,3 +1,0 @@
-export LS_COLORS="$(vivid -m 8-bit generate minecraft)"
-
-# vi:ft=sh

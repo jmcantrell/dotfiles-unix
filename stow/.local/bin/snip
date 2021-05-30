@@ -31,9 +31,11 @@ get_snippet_file() {
 }
 
 list_snippets() {
-	for file in "$snippets"/*; do
-		basename "$file"
-	done
+	if [[ -d $snippets ]]; then
+		find "$snippets" -type f | while read -r file; do
+			basename "$file"
+		done
+	fi
 }
 
 print_snippet() {
@@ -62,7 +64,7 @@ copy_snippet() {
 
 	cbi <"$file"
 
-	notify-send "snippet text for $name copied to clipboard"
+	notify-send "snippet text for '$name' copied to clipboard"
 }
 
 save_snippet() {
@@ -73,7 +75,7 @@ save_snippet() {
 
 	cbo >"$file"
 
-	notify-send "snippet text for $name saved from clipboard"
+	notify-send "snippet text for '$name' saved from clipboard"
 }
 
 type_snippet() {

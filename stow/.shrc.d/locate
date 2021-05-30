@@ -1,4 +1,4 @@
 # case insensitive
-alias locate='locate -i'
+alias locate='plocate -i'
 
 # vi:ft=sh

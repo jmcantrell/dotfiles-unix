@@ -4,6 +4,9 @@
 [include]
     path = .gitconfig.local
 
+[init]
+    defaultBranch = master
+
 [color]
     ui = auto
     branch = auto

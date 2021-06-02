@@ -11,3 +11,9 @@ else
     git clone https://github.com/nvm-sh/nvm.git "$dir"
     cd "$dir"
 fi
+
+cat >"$dir/default-packages" <<-EOF
+npm-upgrade
+prettier
+eslint
+EOF

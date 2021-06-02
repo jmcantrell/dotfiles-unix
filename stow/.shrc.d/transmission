@@ -1,0 +1,14 @@
+transmission_done() {
+    transmission-remote -l |
+        awk '{print $1,$2}' |
+        tail -n+2 | head -n-1 |
+        grep '\b100%\b' |
+        awk '{print $1}'
+}
+
+alias tx=transmission-remote
+alias txc='tx -t "$(transmission_done | paste -sd,)" -r'
+alias txl='tx -l | grep -vi queued'
+alias txla='tx -l'
+
+# vi:ft=sh

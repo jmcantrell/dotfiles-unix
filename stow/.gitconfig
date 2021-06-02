@@ -4,6 +4,9 @@
 [include]
     path = .gitconfig.local
 
+[init]
+    defaultBranch = master
+
 [color]
     ui = auto
     branch = auto
@@ -34,7 +37,7 @@
     prompt = false
 
 [web]
-    browser = vimb
+    browser = browser
 
 [alias]
     ls = ls-files

@@ -30,20 +30,6 @@ fi
 data_dir=${XDG_DATA_HOME:-$HOME/.local/share}/aria2
 session=$data_dir/session
 
-hook_complete() {
-    # local gid=$1
-    # local num_files=$2
-    local file=${3:?missing file}
-
-    if [[ -f $file ]]; then
-        echo "ERROR: file '$file' does not exist" >&2
-        exit 1
-    fi
-
-    mv "$file" "$dest"
-    notify-download "$file"
-}
-
 add_uris() {
     local target=${1:?missing download target}
 
@@ -58,7 +44,7 @@ start_session() {
     cd "$data_dir"
 
     local options=(
-        --dir="$data_dir"
+        --dir="$dest"
         --save-session="$session"
         --enable-rpc --rpc-secret="$token"
         --follow-torrent=mem
@@ -84,14 +70,13 @@ unset OPTIND concurrent
 while getopts ":hH:j:" option; do
     case $option in
         j) concurrent=$OPTARG ;;
-        H) hook_"${OPTARG}" "$@"; exit 0 ;;
         h) echo "$usage" >&2; exit 0 ;;
         *) echo "$usage" >&2; exit 1 ;;
     esac
 done && shift $((OPTIND - 1))
 
 if pgrep aria2c &>/dev/null; then
-    add_uris "$@"
+    (( $# > 0 )) && add_uris "$@"
 else
     start_session "$@"
 fi

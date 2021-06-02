@@ -9,5 +9,5 @@ pip_install() {
 }
 
 pip_install pip
-pip_install wheel poetry virtualenv
-pip_install black bpython pudb i3ipc jedi-language-server neovim
+pip_install wheel poetry
+pip_install black bpython pudb i3ipc jedi-language-server pynvim

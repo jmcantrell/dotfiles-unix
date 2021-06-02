@@ -37,7 +37,7 @@
     prompt = false
 
 [web]
-    browser = vimb
+    browser = browser
 
 [alias]
     ls = ls-files

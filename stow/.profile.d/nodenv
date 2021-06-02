@@ -1,0 +1,4 @@
+export NODENV_ROOT=$HOME/.nodenv
+export PATH=$NODENV_ROOT/bin:$PATH
+
+# vi:ft=sh

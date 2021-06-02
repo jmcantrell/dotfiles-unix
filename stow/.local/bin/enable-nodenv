@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e
+
+dir=${NODENV_ROOT:-$HOME/.nvm}
+
+if [[ -d $dir ]]; then
+    cd "$dir"
+    git pull origin master
+else
+    git clone https://github.com/nodenv/nodenv.git "$dir"
+    cd "$dir"
+fi
+
+declare -A plugins
+
+plugins[node-build]=https://github.com/nodenv/node-build.git
+
+for name in "${!plugins[@]}"; do
+    plugin_dir=$dir/plugins/$name
+
+    if [[ -d $plugin_dir ]]; then
+        cd "$plugin_dir"
+        git pull origin master
+    else
+        git clone "${plugins[$name]}" "$plugin_dir"
+    fi
+done

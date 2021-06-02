@@ -14,6 +14,7 @@ fi
 
 declare -A plugins
 
+plugins[pyenv-doctor]=https://github.com/pyenv/pyenv-doctor.git
 plugins[pyenv-virtualenv]=https://github.com/pyenv/pyenv-virtualenv.git
 
 for name in "${!plugins[@]}"; do

@@ -11,3 +11,18 @@ else
     git clone https://github.com/pyenv/pyenv.git "$dir"
     cd "$dir"
 fi
+
+declare -A plugins
+
+plugins[pyenv-virtualenv]=https://github.com/pyenv/pyenv-virtualenv.git
+
+for name in "${!plugins[@]}"; do
+    plugin_dir=$dir/plugins/$name
+
+    if [[ -d $plugin_dir ]]; then
+        cd "$plugin_dir"
+        git pull origin master
+    else
+        git clone "${plugins[$name]}" "$plugin_dir"
+    fi
+done

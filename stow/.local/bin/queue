@@ -1,0 +1,88 @@
+#!/usr/bin/env bash
+
+set -e
+
+me=${0##*/}
+usage="Safely manage a queue of items.
+Usage: $me [options]
+
+Options:
+    -h             Display help.
+    -f FILENAME    Use FILENAME as queue file.
+    -a ITEM        Add ITEM to queue.
+    -l             List items in the queue (this is the default).
+    -p             Pop the next item from the queue and echo it.
+    -c             Clear the queue."
+
+action="list"
+unset OPTIND queue item
+while getopts ":hf:a:lpc" option; do
+	case $option in
+        f) queue=$OPTARG ;;
+        a) action="add"; item=$OPTARG ;;
+        p) action="pop" ;;
+        l) action="list" ;;
+        c) action="clear" ;;
+        h) echo "$usage" >&2; exit 0 ;;
+        *) echo "$usage" >&2; exit 1 ;;
+    esac
+done && shift $((OPTIND - 1))
+
+# Ensure this invocation has exclusive access to the queue file.
+# If it doesn't, wait until it does.
+
+if [[ "$FLOCKER" != "$0" ]]; then
+    if [[ ! $queue ]]; then
+        echo "ERROR: no queue file provided" >&2
+        exit 1
+    fi
+
+    export FLOCKER=$0
+    export QUEUE=$queue
+    export ACTION=$action
+    export ITEM=$item
+    exec flock "$queue" "$0" "$@"
+fi
+
+unset FLOCKER
+
+queue_list() {
+    grep -v -E "$@" '^\s*(#|$)' "$QUEUE"
+}
+
+queue_add() {
+    if [[ ! $ITEM ]]; then
+        echo "ERROR: no item provided" >&2
+        exit 1
+    fi
+
+    echo "$ITEM" >>"$QUEUE"
+}
+
+queue_pop() {
+    # Get the first line in the queue that isn't blank or commented out.
+    # The line number is included so that it can be referenced directly with sed.
+    next=$(queue_list -m1 -n)
+
+    # As soon as the queue is empty, the grep command will fail and this script will
+    # exit with a non-zero status.
+
+    line_num=${next%%:*}
+    line=${next#*:}
+
+    # Comment out the line that was just retrieved.
+    sed -E -i "${line_num}s/^\s*/# /" "$QUEUE"
+
+    echo "$line"
+}
+
+queue_clear() {
+    sed -E -i "/^\s*[^#]/s/^\s*/# /" "$QUEUE"
+}
+
+case $ACTION in
+    list) queue_list ;;
+    add) queue_add ;;
+    pop) queue_pop ;;
+    clear) queue_clear ;;
+esac

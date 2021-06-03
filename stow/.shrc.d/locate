@@ -1,4 +1,10 @@
-# case insensitive
-alias locate='plocate -i'
+if has plocate; then
+    alias locate=plocate
+elif has mlocate; then
+    alias locate=mlocate
+fi
+
+alias locate='locate -i'
+alias updatedb='sudo updatedb'
 
 # vi:ft=sh

@@ -1,3 +1,4 @@
+alias ssh="ssh -A"  # ssh-agent forwarding
 alias sshrm="ssh-keygen -f ~/.ssh/known_hosts -R"
 
 # vi:ft=sh

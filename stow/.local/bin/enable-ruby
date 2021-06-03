@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Install global ruby packages.
+
+set -e
+
+gem install bundler solargraph rufo neovim

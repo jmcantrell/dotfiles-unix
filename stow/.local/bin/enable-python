@@ -1,13 +1,12 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Install global python packages.
 
 set -e
 
 pip_install() {
-    pip install --user --upgrade --upgrade-strategy only-if-needed "$@"
+    pip install --user --force-reinstall "$@"
 }
 
 pip_install pip
-pip_install pipenv wheel poetry
-pip_install black bpython pudb i3ipc jedi-language-server neovim
+pip_install pipenv wheel poetry black bpython pudb i3ipc jedi-language-server neovim

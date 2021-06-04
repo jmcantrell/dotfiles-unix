@@ -16,6 +16,7 @@ declare -A plugins
 
 plugins[pyenv-doctor]=https://github.com/pyenv/pyenv-doctor.git
 plugins[pyenv-virtualenv]=https://github.com/pyenv/pyenv-virtualenv.git
+plugins[pyenv-default-packages]=https://github.com/jawshooah/pyenv-default-packages.git
 
 for name in "${!plugins[@]}"; do
     plugin_dir=$dir/plugins/$name
@@ -27,3 +28,31 @@ for name in "${!plugins[@]}"; do
         git clone "${plugins[$name]}" "$plugin_dir"
     fi
 done
+
+cat >"$dir"/default-packages <<-EOF
+black
+bpython
+i3ipc
+jedi-language-server
+neovim
+pip
+pipenv
+poetry
+pudb
+wheel
+EOF
+
+eval "$("$dir"/bin/pyenv init -)"
+
+latest=$(
+    pyenv install -l 2>/dev/null |
+        grep -E '^\s*[0-9.]+$' |
+        tail -n1 |
+        sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//'
+)
+
+if ! pyenv versions --bare | grep -q "^${latest}$"; then
+    pyenv install "$latest"
+fi
+
+pyenv global "$latest"

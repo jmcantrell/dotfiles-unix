@@ -1,4 +1,0 @@
-export DENO_INSTALL_ROOT=$HOME/.deno
-export PATH=$PATH:$HOME/.deno/bin
-
-# vi:ft=sh

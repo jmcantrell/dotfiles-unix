@@ -1,12 +1,13 @@
 #!/usr/bin/env sh
 
-test -f /etc/profile && . /etc/profile
-
 export LANG=en_US.UTF-8
 
-export PATH=$HOME/.local/bin:$PATH
-export MANPATH=$HOME/.local/share/man:$MANPATH
-export TMPDIR=$HOME/.local/tmp
+prefix=$HOME/.local
+
+export PATH=$prefix/bin:$PATH
+export MANPATH=$prefix/share/man:$MANPATH
+
+export TMPDIR=$prefix/tmp
 
 export EDITOR=vim
 export SUDO_EDITOR=$EDITOR

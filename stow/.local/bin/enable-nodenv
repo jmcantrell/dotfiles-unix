@@ -2,7 +2,7 @@
 
 set -e
 
-dir=${NODENV_ROOT:-$HOME/.nvm}
+dir=${NODENV_ROOT:-$HOME/.nodenv}
 
 if [[ -d $dir ]]; then
     cd "$dir"
@@ -15,6 +15,7 @@ fi
 declare -A plugins
 
 plugins[node-build]=https://github.com/nodenv/node-build.git
+plugins[nodenv-default-packages]=https://github.com/nodenv/nodenv-default-packages.git
 
 for name in "${!plugins[@]}"; do
     plugin_dir=$dir/plugins/$name
@@ -26,3 +27,26 @@ for name in "${!plugins[@]}"; do
         git clone "${plugins[$name]}" "$plugin_dir"
     fi
 done
+
+cat >"$dir"/default-packages <<-EOF
+eslint
+neovim
+npm
+npm-upgrade
+prettier
+EOF
+
+eval "$("$dir"/bin/nodenv init -)"
+
+latest=$(
+    nodenv install -l 2>/dev/null |
+        grep -E '^\s*[0-9.]+$' |
+        tail -n1 |
+        sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//'
+)
+
+if ! nodenv versions --bare | grep -q "^${latest}$"; then
+    nodenv install "$latest"
+fi
+
+nodenv global "$latest"

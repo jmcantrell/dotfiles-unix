@@ -1,7 +1,0 @@
-alias a='aria2c-session -d ~/Downloads'
-alias aa=aria2c-sessions
-
-# start transfer of whatever is in the clipboard
-alias ab='a "`cbo`"'
-
-# vi:ft=sh

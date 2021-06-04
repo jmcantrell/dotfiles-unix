@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-if ! which rustup >/dev/null 2>&1; then
+if which rustup >/dev/null 2>&1; then
+    rustup update
+else
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 fi
 
@@ -15,3 +17,8 @@ bash_completions=$HOME/.local/share/bash-completion/completions
 mkdir -p "$bash_completions"
 rustup completions bash >"$bash_completions/rustup"
 rustup completions bash cargo >"$bash_completions/cargo"
+
+rustup component add rls
+
+# install cargo {add,rm,upgrade} commands
+cargo install cargo-edit

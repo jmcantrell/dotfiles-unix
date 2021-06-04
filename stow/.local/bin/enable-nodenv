@@ -15,6 +15,7 @@ fi
 declare -A plugins
 
 plugins[node-build]=https://github.com/nodenv/node-build.git
+plugins[nodenv-update]=https://github.com/nodenv/nodenv-update.git
 plugins[nodenv-default-packages]=https://github.com/nodenv/nodenv-default-packages.git
 
 for name in "${!plugins[@]}"; do

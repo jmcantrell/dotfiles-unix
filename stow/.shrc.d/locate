@@ -1,10 +1,11 @@
 if has plocate; then
-    alias locate=plocate
+    alias locate='plocate -i'
 elif has mlocate; then
-    alias locate=mlocate
+    alias locate='mlocate -i'
+else
+    alias locate='locate -i'
 fi
 
-alias locate='locate -i'
 alias updatedb='sudo updatedb'
 
 # vi:ft=sh

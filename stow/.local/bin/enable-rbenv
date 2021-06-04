@@ -15,6 +15,7 @@ fi
 declare -A plugins
 
 plugins[ruby-build]=https://github.com/rbenv/ruby-build.git
+plugins[rbenv-update]=https://github.com/rkh/rbenv-update.git
 plugins[rbenv-default-gems]=https://github.com/rbenv/rbenv-default-gems.git
 
 for name in "${!plugins[@]}"; do

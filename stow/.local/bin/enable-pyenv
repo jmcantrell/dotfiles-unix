@@ -15,6 +15,7 @@ fi
 declare -A plugins
 
 plugins[pyenv-doctor]=https://github.com/pyenv/pyenv-doctor.git
+plugins[pyenv-update]=https://github.com/pyenv/pyenv-update.git
 plugins[pyenv-virtualenv]=https://github.com/pyenv/pyenv-virtualenv.git
 plugins[pyenv-default-packages]=https://github.com/jawshooah/pyenv-default-packages.git
 

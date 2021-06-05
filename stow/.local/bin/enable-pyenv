@@ -37,7 +37,6 @@ i3ipc
 jedi-language-server
 neovim
 pip
-pipenv
 poetry
 pudb
 wheel

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e
+
+dir=${GOENV_ROOT:-$HOME/.goenv}
+
+if [[ -d $dir ]]; then
+    cd "$dir"
+    git pull origin master
+else
+    git clone https://github.com/syndbg/goenv.git "$dir"
+    cd "$dir"
+fi
+
+eval "$("$dir"/bin/goenv init -)"
+
+latest=$(
+    goenv install -l 2>/dev/null |
+        grep -E '^\s*[0-9.]+$' |
+        tail -n1 |
+        sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//'
+)
+
+if ! goenv versions --bare | grep -q "^${latest}$"; then
+    goenv install "$latest"
+fi
+
+goenv global "$latest"

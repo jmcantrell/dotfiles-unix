@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [[ $DISPLAY ]]; then
-    exec gvim "$@"
+if [[ $DISPLAY && $VISUAL ]]; then
+    exec "${VISUAL[@]}" "$@"
 else
-    exec vim "$@"
+    exec editor "$@"
 fi

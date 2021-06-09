@@ -3,43 +3,41 @@ from datetime import datetime, timedelta
 from configparser import ConfigParser
 
 from trashcli.fs import FileSystemReader
-from trashcli.list_mount_points import mount_points
-from trashcli.trash import Harvester, TrashDirs, TopTrashDirRules
+from trashcli.list import DeletionDateExtractor
+from trashcli.list_mount_points import os_mount_points
+from trashcli.trash import TrashDir, TopTrashDirRules, TrashDirsScanner
+from trashcli.trash import parse_deletion_date, parse_path, unknown_date
 
 from command import UserCommand
-
-
-def read_trashinfo(file_name):
-    config = ConfigParser()
-    config.read(file_name)
-    return config
 
 
 def get_trashinfos(older_than=None):
     trashinfos = []
 
-    def on_trashinfo_found(file_name):
-        trashinfo = read_trashinfo(file_name)
-
-        if older_than:
-            deletion_date = datetime.fromisoformat(
-                trashinfo["Trash Info"]["DeletionDate"]
-            )
-            if deletion_date < older_than:
-                return
-
-        nonlocal trashinfos
-        trashinfos.append(file_name)
-
     file_reader = FileSystemReader()
-    harvester = Harvester(file_reader)
-    harvester.on_trashinfo_found = on_trashinfo_found
-
-    trashdirs = TrashDirs(
-        os.environ, os.getuid, mount_points, TopTrashDirRules(file_reader)
+    extractor = DeletionDateExtractor()
+    trashdirs_scanner = TrashDirsScanner(
+        os.environ, os.getuid, os_mount_points, TopTrashDirRules(file_reader)
     )
-    trashdirs.on_trash_dir_found = harvester.analize_trash_directory
-    trashdirs.list_trashdirs()
+
+    trash_dirs = trashdirs_scanner.scan_trash_dirs()
+
+    for event, args in trash_dirs:
+        if event == TrashDirsScanner.Found:
+            path, volume = args
+            trash_dir = TrashDir(file_reader)
+            for trashinfo in trash_dir.list_trashinfo(path):
+                try:
+                    contents = file_reader.contents_of(trashinfo)
+                except IOError as e:
+                    print(f"unable to read trashinfo file: {trashinfo}")
+                else:
+                    if older_than:
+                        deletion_date = extractor.extract_attribute(trashinfo, contents)
+                        if deletion_date < older_than:
+                            continue
+
+                    trashinfos.append(trashinfo)
 
     return trashinfos
 

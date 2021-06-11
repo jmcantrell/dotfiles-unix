@@ -9,14 +9,21 @@
 name=${1:?missing machine name}
 isofile=$2
 
-ostype=${ostype:-linux_64}
+ostype=${ostype:-Linux_64}
 memory=${memory:-4096}
 cpus=${cpus:-2}
 
+vmsdir=$(
+    vboxmanage list systemproperties |
+        grep '^Default machine folder:' |
+        cut -d: -f2 |
+        sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//'
+)
+
 bridgedif=$(
     VBoxManage list bridgedifs |
-    grep "^Name:" | head -n1 |
-    sed 's/^Name: *\(.*\)$/\1/'
+        grep "^Name:" | head -n1 |
+        sed 's/^Name: *\(.*\)$/\1/'
 )
 
 VBoxManage createvm \
@@ -31,10 +38,10 @@ VBoxManage modifyvm "$name" \
     --nic1 bridged --bridgeadapter1 "$bridgedif" \
     --boot1 dvd --boot2 disk --boot3 none --boot4 none
 
-vdifile="$HOME/VirtualBox VMs/$name.vdi"
+vdifile="$vmsdir/$name.vdi"
 
 VBoxManage createhd \
-    --filename "$vdifile" --size $((50*1024))
+    --filename "$vdifile" --size $((50 * 1024))
 
 VBoxManage storagectl "$name" \
     --name "SATA Controller" \

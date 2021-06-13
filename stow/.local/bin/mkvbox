@@ -14,7 +14,7 @@ memory=${memory:-4096}
 cpus=${cpus:-2}
 
 vmsdir=$(
-    vboxmanage list systemproperties |
+    VBoxManage list systemproperties |
         grep '^Default machine folder:' |
         cut -d: -f2 |
         sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//'
@@ -30,13 +30,16 @@ VBoxManage createvm \
     --name "$name" --ostype "$ostype" --register
 
 VBoxManage modifyvm "$name" \
-    --ioapic on --memory "$memory" --cpus "$cpus" \
+    --ioapic on --memory "$memory" --cpus "$cpus" --pae on \
+    --hwvirtex on --paravirtprovider kvm --nestedpaging on \
+    --largepages on --nested-hw-virt on \
     --rtcuseutc on --clipboard bidirectional \
     --usb on --usbehci on --usbxhci on \
     --graphicscontroller vmsvga --vram 128 \
     --audiocontroller hda --audioin on --audioout on \
     --nic1 bridged --bridgeadapter1 "$bridgedif" \
-    --boot1 dvd --boot2 disk --boot3 none --boot4 none
+    --boot1 dvd --boot2 disk --boot3 none --boot4 none \
+    --defaultfrontend headless
 
 vdifile="$vmsdir/$name.vdi"
 

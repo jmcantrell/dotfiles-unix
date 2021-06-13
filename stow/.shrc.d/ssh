@@ -1,4 +1,5 @@
 alias ssh="ssh -A"  # ssh-agent forwarding
 alias sshrm="ssh-keygen -f ~/.ssh/known_hosts -R"
+alias sshtmp='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
 # vi:ft=sh

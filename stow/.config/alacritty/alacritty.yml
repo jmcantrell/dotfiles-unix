@@ -1,3 +1,6 @@
+import:
+    - ~/.config/alacritty/local.yml
+
 colors:
   primary:
     background: "#000000"
@@ -26,12 +29,6 @@ colors:
 scrolling:
   history: 100000
 
-font:
-  size: 8.0
-
 cursor:
   style:
     blinking: Always
-
-key_bindings:
-  - { key: Insert, mods: Control, action: Copy }

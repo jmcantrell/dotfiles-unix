@@ -63,13 +63,10 @@ VBoxManage storageattach "$name" \
     --port 0 --device 0 --type dvddrive \
     --medium "$isofile"
 
-# shared folders
-for dir in ~/{Desktop,Documents,Downloads}; do
-    if [[ -d $dir ]]; then
-        VBoxManage sharedfolder add "$name" \
-            --name "${dir##*/}" --hostpath "$dir" --automount
-    fi
-done
+VBoxManage sharedfolder add "$name" \
+    --automount --name init \
+    --hostpath "$HOME/.init" \
+    --auto-mount-point /home/user/.init
 
 # take an initial snapshot
 VBoxManage snapshot "$name" take live

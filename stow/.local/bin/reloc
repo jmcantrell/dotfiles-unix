@@ -1,17 +1,23 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Move a bunch of files to a directory,
 # then symlink them back to their original location.
 # Usage: reloc directory [path...]
 
-dir=${1:?no directory given}
+if (($# < 2)); then
+    echo "ERROR: there must be at least one file and a directory" >&2
+    exit 1
+fi
+
+dst=$1
 shift
 
-mkdir -p "$dir"
+mkdir -p "$dst"
+mv -v -t "$dst" "$@"
 
-for f in "$@"; do
-    mv -v -t "$dir" "$f"
-    name=$(basename "$f")
-    path=$(readlink -f "$dir/$name")
-    ln -sv "$path" "$f"
+for src in "$@"; do
+    dir=$(dirname "$src")
+    file=$(basename "$src")
+    rel=$(realpath --relative-to "$dir" "$dst")
+    ln -sv "$rel/$file" "$src"
 done

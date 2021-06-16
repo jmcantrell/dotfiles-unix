@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+src=${1:?first argument must be the item to post}
+action=$2
+
+if [[ ! $action ]]; then
+    if [[ $src == http://* || $src == https://* ]]; then
+        action="url"
+    else
+        action="file"
+    fi
+fi
+
+exec curl -F "$action=$src" https://0x0.st

@@ -4,7 +4,7 @@
 
 name=${1:?missing server name}
 
-weechat=${XDG_CONFIG_DIR:-$HOME}/weechat
+weechat=${XDG_CONFIG_DIR:-$HOME/.config}/weechat
 pem=$weechat/$name.pem
 
 if [[ -e $pem ]]; then
@@ -14,7 +14,7 @@ fi
 
 mkdir -p "$weechat"
 
-openssl ecparam -genkey -name prime256v1 >"$pem"
+openssl ecparam -genkey -name prime256v1 -out "$pem"
 
 weechat-pubkey "$name" | cbi
 

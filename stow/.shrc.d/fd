@@ -1,0 +1,7 @@
+alias fd='noglob fd'
+alias fdl='fd -l'
+alias fda='fd -H'
+alias fdla='fd -lH'
+alias fdlA='fd -lHI'
+
+# vi:ft=sh

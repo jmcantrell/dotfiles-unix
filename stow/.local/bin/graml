@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+yq . "$@" | gron | sed 's/^json\./yaml./'

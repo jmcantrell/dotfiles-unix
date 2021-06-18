@@ -11,8 +11,11 @@ export TMPDIR=$prefix/tmp
 
 export EDITOR=vim
 export SUDO_EDITOR=$EDITOR
-export PAGER=less
+
 export BROWSER=lynx
+
+export PAGER=less
+export LESS="-R --mouse"
 
 for profile in ~/.profile.d/*; do
     test -f "$profile" && . "$profile"

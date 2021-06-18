@@ -1,5 +1,5 @@
 [core]
-    excludesfile = ~/.gitignore.global
+    excludesFile = ~/.gitignore.global
 
 [include]
     path = .gitconfig.local
@@ -21,11 +21,12 @@
     default = simple
 
 [branch]
-    autosetupmerge = true
+    autoSetupMerge = true
 
 [diff]
-    mnemonicprefix = true
+    mnemonicPrefix = true
     submodule = log
+    colorMoved = default
 
 [difftool]
     prompt = false
@@ -35,6 +36,15 @@
 
 [mergetool]
     prompt = false
+
+[pager]
+    diff = delta
+    log = delta
+    reflog = delta
+    show = delta
+
+[interactive]
+    diffFilter = delta --color-only
 
 [web]
     browser = browser
@@ -46,3 +56,6 @@
 
 [advice]
     detachedHead = false
+
+[delta]
+    features = line-numbers decorations navigate

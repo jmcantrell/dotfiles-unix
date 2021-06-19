@@ -7,42 +7,55 @@ Usage: $me [-h] [file...]"
 unset OPTIND
 while getopts ":h" option; do
     case $option in
-        h) echo "$usage" >&2; exit 0 ;;
-        *) echo "$usage" >&2; exit 1 ;;
+    h)
+        echo "$usage" >&2
+        exit 0
+        ;;
+    *)
+        echo "$usage" >&2
+        exit 1
+        ;;
     esac
 done && shift $((OPTIND - 1))
 
-srctmp=$(mktemp -t "${me}-src.XXXXXXXXXX")
-trap "rm -f $(printf "%q" "$srctmp")" INT TERM EXIT
+temp_dir=$(mktemp -t "${me}.XXXXXXXXXX")
+trap "rm -f $(printf "%q" "$temp_dir")" INT TERM EXIT
+
+src=$temp_dir/src
+dst=$temp_dir/dst
 
 for fn in "$@"; do
     [[ -e "$fn" ]] && echo "$fn"
-done >"$srctmp"
+done >"$src"
 
-dsttmp=$(mktemp -t "${me}-dst.XXXXXXXXXX")
-trap "rm -f $(printf "%q" "$dsttmp")" INT TERM EXIT
+cat "$src" >"$dst"
 
-cat "$srctmp" >"$dsttmp"
+if [[ ! $EDITOR ]]; then
+    EDITOR=vim
+fi
 
-if ! ${EDITOR:-vim} "$dsttmp"; then
+if ! "${EDITOR[@]}" "$dst"; then
     echo "$me: edit failed"
     exit 1
 fi
 
-readarray -t srclines <"$srctmp"
-readarray -t dstlines <"$dsttmp"
+readarray -t src_lines <"$src"
+readarray -t dst_lines <"$dst"
 
-if (( ${#srclines[@]} != ${#dstlines[@]} )); then
-    echo "$me: lines were added or removed"
+if ((${#src_lines[@]} != ${#dst_lines[@]})); then
+    echo "ERROR: unable to rename; lines were added or removed" >&2
     exit 1
 fi
 
-for (( i = 0; i <= ${#dstlines[@]}; i += 1 )); do
-    srcfn=${srclines[$i]}
-    dstfn=${dstlines[$i]}
-    dstdir=$(dirname "$dstfn")
-    test -d "$dstdir" || mkdir -p "$dstdir"
-    if [[ "$srcfn" != "$dstfn" ]]; then
-        mv -fv "$srcfn" "$dstfn"
+for ((i = 0; i <= ${#dst_lines[@]}; i += 1)); do
+    src_fn=${src_lines[$i]}
+    dst_fn=${dst_lines[$i]}
+
+    # The file may have been moved.
+    dst_dir=$(dirname "$dst_fn")
+    [[ -d $dst_dir ]] || mkdir -p "$dst_dir"
+
+    if [[ "$src_fn" != "$dst_fn" ]]; then
+        mv -fv "$src_fn" "$dst_fn"
     fi
 done

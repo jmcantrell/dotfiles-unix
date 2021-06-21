@@ -3,6 +3,8 @@
 # Color given text.
 # Provides common functionality for `colorfg` and `colorbg`.
 
+set -e
+
 capname=${1:?missing capname}
 color=${2:?missing color number}
 

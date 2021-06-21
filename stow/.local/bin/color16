@@ -3,6 +3,8 @@
 # Show a 16x16 grid of combinations of fg/bg colors.
 # Usage: color16 [text]
 
+set -e
+
 source colors
 
 sample=${1:-0}

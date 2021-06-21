@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 src=${1:?first argument must be the item to post}
 action=$2
 

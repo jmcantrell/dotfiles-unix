@@ -2,6 +2,8 @@
 
 # Create fg and bg color value arrays to be sourced.
 
+set -e
+
 # already sourced
 [[ $reset ]] && exit 0
 

@@ -8,10 +8,7 @@ from argparse import ArgumentParser
 
 def parse_args():
     p = ArgumentParser(description=__doc__)
-    p.add_argument(
-        'file', nargs=1,
-        metavar='file', help='source file'
-    )
+    p.add_argument("file", nargs=1, metavar="file", help="source file")
     return p.parse_args()
 
 
@@ -30,5 +27,5 @@ def main():
     print(random_line(open(args.file[0])))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

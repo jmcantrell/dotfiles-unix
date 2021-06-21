@@ -4,7 +4,7 @@
 
 import os, argparse
 
-cases = ['lower', 'upper', 'title', 'capitalize', 'swapcase']
+cases = ["lower", "upper", "title", "capitalize", "swapcase"]
 
 
 def case(fn, casename):
@@ -14,25 +14,21 @@ def case(fn, casename):
 
 def parse_args():
     p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("files", nargs="*", metavar="file", help="file to rename")
+    p.add_argument("-n", "--noop", action="store_true", help="dry run")
     p.add_argument(
-        'files',
-        nargs='*', metavar="file",
-        help="file to rename"
+        "-l",
+        "--list",
+        action="store_true",
+        help="list available cases (default is first)",
     )
     p.add_argument(
-        '-n', '--noop',
-        action='store_true',
-        help='dry run'
-    )
-    p.add_argument(
-        '-l', '--list',
-        action='store_true',
-        help='list available cases (default is first)'
-    )
-    p.add_argument(
-        '-c', '--case',
-        default=cases[0], metavar='case', choices=cases,
-        help='case to use for rename'
+        "-c",
+        "--case",
+        default=cases[0],
+        metavar="case",
+        choices=cases,
+        help="case to use for rename",
     )
     return p.parse_args()
 
@@ -53,5 +49,5 @@ def main():
             os.rename(fn, nf)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

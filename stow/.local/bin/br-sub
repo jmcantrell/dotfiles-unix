@@ -14,26 +14,10 @@ def sub_format(fn, p, r):
 
 def parse_args():
     p = ArgumentParser(description=__doc__)
-    p.add_argument(
-        'files',
-        nargs='*', metavar='file',
-        help='file to rename'
-    )
-    p.add_argument(
-        '-s', '--search',
-        default='', required=True,
-        help='text to replace'
-    )
-    p.add_argument(
-        '-r', '--replace',
-        default='', required=True,
-        help='replacement'
-    )
-    p.add_argument(
-        '-n', '--noop',
-        action='store_true',
-        help='dry run'
-    )
+    p.add_argument("files", nargs="*", metavar="file", help="file to rename")
+    p.add_argument("-s", "--search", default="", required=True, help="text to replace")
+    p.add_argument("-r", "--replace", default="", required=True, help="replacement")
+    p.add_argument("-n", "--noop", action="store_true", help="dry run")
     return p.parse_args()
 
 
@@ -50,5 +34,5 @@ def main():
                         os.rename(fn, nf)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

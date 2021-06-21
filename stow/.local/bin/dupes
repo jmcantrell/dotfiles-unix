@@ -18,7 +18,7 @@ def dupes(*dirs):
 
 def md5sum(fn):
     md5 = hashlib.md5()
-    f = open(fn, 'rb')
+    f = open(fn, "rb")
     while True:
         data = f.read(128)
         if data:
@@ -30,7 +30,7 @@ def md5sum(fn):
 
 def parse_args():
     p = ArgumentParser(description=__doc__)
-    p.add_argument('dirs', metavar='dir', nargs='+', help='directory to search')
+    p.add_argument("dirs", metavar="dir", nargs="+", help="directory to search")
     return p.parse_args()
 
 
@@ -39,8 +39,8 @@ def main():
     hashes = dupes(args.dirs)
     for k, v in hashes.items():
         if len(v) > 1:
-            print(', '.join(v))
+            print(", ".join(v))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

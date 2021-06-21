@@ -10,95 +10,101 @@ config_dir=${XDG_CONFIG_HOME:-$HOME/.config}/snip
 snippets=$config_dir/snippets
 
 die() {
-	echo "$*" >&2
-	exit 1
+    echo "$*" >&2
+    exit 1
 }
 
 get_snippet_file() {
-	local query=$1
+    local query=$1
 
-	[[ $query ]] || die "no snippet name provided"
+    [[ $query ]] || die "no snippet name provided"
 
-	for file in "$snippets"/*; do
-		name=$(basename "$file")
-		if [[ "$name" == "$query" ]]; then
-			echo "$file"
-			return
-		fi
-	done
+    for file in "$snippets"/*; do
+        name=$(basename "$file")
+        if [[ "$name" == "$query" ]]; then
+            echo "$file"
+            return
+        fi
+    done
 
-	die "snippet '$name' not found"
+    die "snippet '$name' not found"
 }
 
 list_snippets() {
-	if [[ -d $snippets ]]; then
-		find "$snippets" -type f | while read -r file; do
-			basename "$file"
-		done
-	fi
+    if [[ -d $snippets ]]; then
+        find "$snippets" -type f | while read -r file; do
+            basename "$file"
+        done
+    fi
 }
 
 print_snippet() {
-	local name=${1:?missing snippet name}
-	local file=$snippets/$name
+    local name=${1:?missing snippet name}
+    local file=$snippets/$name
 
-	[[ -f $file ]] || die "snippet '$name' not found"
+    [[ -f $file ]] || die "snippet '$name' not found"
 
-	cat "$(get_snippet_file "$1")"
+    cat "$(get_snippet_file "$1")"
 }
 
 edit_snippet() {
-	local name=${1:?missing snippet name}
-	local file=$snippets/$name
+    local name=${1:?missing snippet name}
+    local file=$snippets/$name
 
-	mkdir -p "$snippets"
+    mkdir -p "$snippets"
 
-	exec "${VISUAL[@]}" "$file"
+    exec "${VISUAL[@]}" "$file"
 }
 
 copy_snippet() {
-	local name=${1:?missing snippet name}
-	local file=$snippets/$name
+    local name=${1:?missing snippet name}
+    local file=$snippets/$name
 
-	[[ -f $file ]] || die "snippet '$name' not found"
+    [[ -f $file ]] || die "snippet '$name' not found"
 
-	cbi <"$file"
+    cbi <"$file"
 
-	notify-send "snippet text for '$name' copied to clipboard"
+    notify-send "snippet text for '$name' copied to clipboard"
 }
 
 save_snippet() {
-	local name=${1:?missing snippet name}
-	local file=$snippets/$name
+    local name=${1:?missing snippet name}
+    local file=$snippets/$name
 
-	mkdir -p "$snippets"
+    mkdir -p "$snippets"
 
-	cbo >"$file"
+    cbo >"$file"
 
-	notify-send "snippet text for '$name' saved from clipboard"
+    notify-send "snippet text for '$name' saved from clipboard"
 }
 
 type_snippet() {
-	local name=${1:?missing snippet name}
-	local file=$snippets/$name
+    local name=${1:?missing snippet name}
+    local file=$snippets/$name
 
-	[[ -f $file ]] || die "snippet '$name' not found"
+    [[ -f $file ]] || die "snippet '$name' not found"
 
-	keystroke <"$file"
+    keystroke <"$file"
 }
 
-(( $# == 0 )) && set -- -h
+(($# == 0)) && set -- -h
 
 unset OPTIND
 while getopts ":hlp:e:c:s:t:" option; do
-	case $option in
-		l) list_snippets ;;
-		p) print_snippet "$OPTARG" ;;
-		e) edit_snippet "$OPTARG" ;;
-		c) copy_snippet "$OPTARG" ;;
-		s) save_snippet "$OPTARG" ;;
-		t) type_snippet "$OPTARG" ;;
-		h) echo "$usage" >&2; exit 0 ;;
-		*) echo "$usage" >&2; exit 1 ;;
-	esac
+    case $option in
+    l) list_snippets ;;
+    p) print_snippet "$OPTARG" ;;
+    e) edit_snippet "$OPTARG" ;;
+    c) copy_snippet "$OPTARG" ;;
+    s) save_snippet "$OPTARG" ;;
+    t) type_snippet "$OPTARG" ;;
+    h)
+        echo "$usage" >&2
+        exit 0
+        ;;
+    *)
+        echo "$usage" >&2
+        exit 1
+        ;;
+    esac
 done && shift $((OPTIND - 1))

@@ -9,38 +9,18 @@ from argparse import ArgumentParser
 def seq_format(fn, fmt, **items):
     d = os.path.dirname(fn)
     ext = os.path.splitext(fn)[1]
-    fmt = fmt.replace('{n}', '{n:0{width}d}')
+    fmt = fmt.replace("{n}", "{n:0{width}d}")
     n = (fmt + ext).format(**items)
     return os.path.join(d, n)
 
 
 def parse_args():
     p = ArgumentParser(description=__doc__)
-    p.add_argument(
-        'files',
-        nargs='*', metavar='file',
-        help='file to rename'
-    )
-    p.add_argument(
-        '-s', '--start',
-        type=int, default=1,
-        help='start of sequence'
-    )
-    p.add_argument(
-        '-f', '--format',
-        default='{n}',
-        help='filename format'
-    )
-    p.add_argument(
-        '-w', '--width',
-        type=int, default=0,
-        help='width of count'
-    )
-    p.add_argument(
-        '-n', '--noop',
-        action='store_true',
-        help='dry run'
-    )
+    p.add_argument("files", nargs="*", metavar="file", help="file to rename")
+    p.add_argument("-s", "--start", type=int, default=1, help="start of sequence")
+    p.add_argument("-f", "--format", default="{n}", help="filename format")
+    p.add_argument("-w", "--width", type=int, default=0, help="width of count")
+    p.add_argument("-n", "--noop", action="store_true", help="dry run")
     return p.parse_args()
 
 
@@ -52,19 +32,16 @@ def main():
         args.width = mw
     for i, fn in enumerate(args.files):
         if os.path.exists(fn):
-            nf = seq_format(
-                fn, args.format,
-                n=i+args.start, width=args.width
-            )
+            nf = seq_format(fn, args.format, n=i + args.start, width=args.width)
             if fn != nf:
                 files.append((fn, nf))
                 print(nf)
     if not args.noop:
         for fn, nf in files:
-            os.rename(fn, fn + '.tmp')
+            os.rename(fn, fn + ".tmp")
         for fn, nf in files:
-            os.rename(fn + '.tmp', nf)
+            os.rename(fn + ".tmp", nf)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -6,7 +6,7 @@
 capname=${1:?missing capname}
 color=${2:?missing color number}
 
-shift 2  # rest should be colored
+shift 2 # rest should be colored
 
 cap=$(tput "$capname" "$color")
 reset=$(tput sgr0)

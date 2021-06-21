@@ -8,12 +8,12 @@ from argparse import ArgumentParser
 
 def decode(version):
     """Convert a version string into a tuple."""
-    return list(int(i) for i in version.split('.'))
+    return list(int(i) for i in version.split("."))
 
 
 def encode(version):
     """Convert a version tuple to a string."""
-    return '.'.join([str(i) for i in version])
+    return ".".join([str(i) for i in version])
 
 
 def bump(version, digit, n=1):
@@ -31,36 +31,12 @@ def bump(version, digit, n=1):
 
 def parse_args():
     p = ArgumentParser(description=__doc__)
-    p.add_argument(
-        'versions',
-        nargs='+', metavar='version',
-        help='version string'
-    )
-    p.add_argument(
-        '-M', '--major',
-        action='store_true',
-        help='add to major version'
-    )
-    p.add_argument(
-        '-m', '--minor',
-        action='store_true',
-        help='add to minor version'
-    )
-    p.add_argument(
-        '-b', '--build',
-        action='store_true',
-        help='add to build version'
-    )
-    p.add_argument(
-        '-s', '--sort',
-        action='store_true',
-        help='sort versions'
-    )
-    p.add_argument(
-        '-r', '--reverse',
-        action='store_true',
-        help='reverse order'
-    )
+    p.add_argument("versions", nargs="+", metavar="version", help="version string")
+    p.add_argument("-M", "--major", action="store_true", help="add to major version")
+    p.add_argument("-m", "--minor", action="store_true", help="add to minor version")
+    p.add_argument("-b", "--build", action="store_true", help="add to build version")
+    p.add_argument("-s", "--sort", action="store_true", help="sort versions")
+    p.add_argument("-r", "--reverse", action="store_true", help="reverse order")
     return p.parse_args()
 
 
@@ -88,5 +64,5 @@ def main():
     print(os.linesep.join(versions))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

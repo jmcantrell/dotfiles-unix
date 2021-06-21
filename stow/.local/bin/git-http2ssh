@@ -10,8 +10,10 @@ url=$(git config remote.origin.url)
 echo "$url" | grep -E -q '^https?://' || exit 1
 
 name=${url##*/}
-user=${url%/*}; user=${user##*/}
-host=${url#http*://}; host=${host%%/*}
+user=${url%/*}
+user=${user##*/}
+host=${url#http*://}
+host=${host%%/*}
 
 # set ssh url
 git config remote.origin.url "git@$host:$user/$name"

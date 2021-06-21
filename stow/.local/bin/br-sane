@@ -7,25 +7,22 @@ from argparse import ArgumentParser
 
 
 def strip_non_word(value, replace=None, allowed=None):
-    pool = string.ascii_letters + string.digits + u'-_ ' + (allowed or '')
-    return u''.join([
-        s for s in value
-        if (s and s in pool) or replace or u' '
-    ])
+    pool = string.ascii_letters + string.digits + u"-_ " + (allowed or "")
+    return u"".join([s for s in value if (s and s in pool) or replace or u" "])
 
 
 def normalize(value):
-    return unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
+    return unicodedata.normalize("NFKD", value).encode("ascii", "ignore")
 
 
 def normalize_symbols(value):
-    xlate = {'&': 'and'}
+    xlate = {"&": "and"}
     for symbol, replace in xlate.items():
         value = value.replace(symbol, replace)
     return value
 
 
-def squeeze(value, s=' '):
+def squeeze(value, s=" "):
     value_new = value
     ss = s * 2
     while True:
@@ -36,14 +33,14 @@ def squeeze(value, s=' '):
 
 
 def sanitize(value, allowed=None):
-    value = value.replace('"', '')
+    value = value.replace('"', "")
     value = value.replace("'", "")
-    value = value.replace('.', ' ')
+    value = value.replace(".", " ")
     value = normalize(value)
     value = normalize_symbols(value)
     value = strip_non_word(value, allowed=allowed)
-    value = squeeze(value, '_')
-    return value.lower().replace(' ', '_')
+    value = squeeze(value, "_")
+    return value.lower().replace(" ", "_")
 
 
 def sane(fn):
@@ -55,16 +52,8 @@ def sane(fn):
 
 def parse_args():
     p = ArgumentParser(description=__doc__)
-    p.add_argument(
-        'files',
-        nargs='*', metavar='file',
-        help='file to rename'
-    )
-    p.add_argument(
-        '-n', '--noop',
-        action='store_true',
-        help='dry run'
-    )
+    p.add_argument("files", nargs="*", metavar="file", help="file to rename")
+    p.add_argument("-n", "--noop", action="store_true", help="dry run")
     return p.parse_args()
 
 
@@ -82,5 +71,5 @@ def main():
                     os.rename(fn, nf)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

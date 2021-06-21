@@ -84,7 +84,7 @@ log() {
 
 temp() {
     local temp=$(mktemp -t "$me.XXXXXXXXXX")
-	trap "rm -f $(printf "%q" "$temp")" INT TERM EXIT
+    trap "rm -f $(printf "%q" "$temp")" INT TERM EXIT
     echo "$temp"
 }
 
@@ -95,7 +95,8 @@ input() {
     local reply
     read -r -p "Enter $value${default:+ [$default]}: " reply
     [[ $reply ]] || reply=$default
-    echo "$reply"; [[ $reply ]]
+    echo "$reply"
+    [[ $reply ]]
 }
 
 get() {
@@ -117,8 +118,8 @@ head_value() {
     local url=${1:?missing url}
     local header=${2:?missing header}
     $curl --silent --head "$url" |
-        grep -i "^$header:" | tail -n1 |   # ensure only one
-        cut -d' ' -f2- | cut -d';' -f1  # cut out value
+        grep -i "^$header:" | tail -n1 | # ensure only one
+        cut -d' ' -f2- | cut -d';' -f1   # cut out value
 }
 
 content_type() {
@@ -180,13 +181,13 @@ audio_extension() {
 
     local ext
     case ${filetype##audio/} in
-        speex) ext=spx ;;
-        ogg)   ext=ogg ;;
-        mpeg)  ext=mp3 ;;
-        *)
-            log "Unrecognized file type $filetype"
-            return 1
-            ;;
+    speex) ext=spx ;;
+    ogg) ext=ogg ;;
+    mpeg) ext=mp3 ;;
+    *)
+        log "Unrecognized file type $filetype"
+        return 1
+        ;;
     esac
     echo "$ext"
 }
@@ -274,26 +275,26 @@ update_url() {
 
     local guid title
     xpath "$xml" "//item/guid" |
-    while read -r guid; do
-        title=$(xpath "$xml" "//item[guid='$guid']/title")
-        if [[ ! $title ]]; then
-            log "Item $guid has no title"
-            title=$guid  # better than nothing
-        fi
-        xpath "$xml" "//item[guid='$guid']//enclosure/@url" |
-        while read -r url; do
-            # no enclosures for item
-            [[ $url ]] || continue
-            if ! is_url "$url"; then
-                log "Invalid enclosure url $url"
-                continue
+        while read -r guid; do
+            title=$(xpath "$xml" "//item[guid='$guid']/title")
+            if [[ ! $title ]]; then
+                log "Item $guid has no title"
+                title=$guid # better than nothing
             fi
-            if ! download "$url" "$name" "$title"; then
-                log "Unable to download $url"
-                return 1
-            fi
+            xpath "$xml" "//item[guid='$guid']//enclosure/@url" |
+                while read -r url; do
+                    # no enclosures for item
+                    [[ $url ]] || continue
+                    if ! is_url "$url"; then
+                        log "Invalid enclosure url $url"
+                        continue
+                    fi
+                    if ! download "$url" "$name" "$title"; then
+                        log "Unable to download $url"
+                        return 1
+                    fi
+                done
         done
-    done
 
     return 0
 }
@@ -305,9 +306,9 @@ import_urls() {
 
     local file url name
     grep -v '^ *#' "$urls" |
-    while read -r url name; do
-        import_url "$url" "$name" || return 1
-    done
+        while read -r url name; do
+            import_url "$url" "$name" || return 1
+        done
 }
 
 import_url() {
@@ -344,11 +345,11 @@ import_opml() {
 
     local url name
     xpath "$opml" "//outline/@xmlUrl" |
-    while read -r url; do
-        is_url "$url" || continue
-        name=$(xpath "$opml" "//outline[@xmlUrl='$url']/@text")
-        import_url "$url" "$name" || log "Unable to import $url"
-    done
+        while read -r url; do
+            is_url "$url" || continue
+            name=$(xpath "$opml" "//outline[@xmlUrl='$url']/@text")
+            import_url "$url" "$name" || log "Unable to import $url"
+        done
 }
 
 podcasts=${PODCASTS:-$PWD}
@@ -359,37 +360,43 @@ unset query
 unset OPTIND
 while getopts ":hd:p:q:" option; do
     case $option in
-        q) query=$OPTARG ;;
-        d) podcasts=$OPTARG ;;
-        p) playlists=$OPTARG ;;
-        h) echo "$usage" >&2; exit 0 ;;
-        *) echo "$usage" >&2; exit 1 ;;
+    q) query=$OPTARG ;;
+    d) podcasts=$OPTARG ;;
+    p) playlists=$OPTARG ;;
+    h)
+        echo "$usage" >&2
+        exit 0
+        ;;
+    *)
+        echo "$usage" >&2
+        exit 1
+        ;;
     esac
 done && shift $((OPTIND - 1))
 
-if (( $# > 0 )); then
+if (($# > 0)); then
     for arg in "$@"; do
         if [[ -f $arg ]]; then
             filetype=$(file --mime-type -bL "$arg")
             case $filetype in
-                text/*ml) import=import_opml ;;
-                text/plain) import=import_urls ;;
-                *) log "Unusable type $filetype for file $arg" ;;
+            text/*ml) import=import_opml ;;
+            text/plain) import=import_urls ;;
+            *) log "Unusable type $filetype for file $arg" ;;
             esac
         else
             case "$arg" in
-                http*) import=import_url ;;
-                *) log "Unusuable argument $arg" ;;
+            http*) import=import_url ;;
+            *) log "Unusuable argument $arg" ;;
             esac
         fi
         $import "$arg" || log "Unable to import $arg"
     done
 else
     grep -v '^ *#' "$urls" |
-    while read -r url name; do
-        if [[ $query ]]; then
-            grep -q "$query" <<<"$url $name" || continue
-        fi
-        update_url "$url" "$name" || log "Unable to update $url"
-    done
+        while read -r url name; do
+            if [[ $query ]]; then
+                grep -q "$query" <<<"$url $name" || continue
+            fi
+            update_url "$url" "$name" || log "Unable to update $url"
+        done
 fi

@@ -6,9 +6,10 @@ set -e
 # If no files are given, it behaves exactly like mkdir -p.
 # usage: mkmv dir [file...]
 
-dir=${1:?no directory given}; shift
+dir=${1:?no directory given}
+shift
 
 mkdir -p "$dir"
 
 # if files were given, then move them to $dir
-(( $# > 0 )) && [[ -d $dir ]] && mv -nv "$@" "$dir"
+(($# > 0)) && [[ -d $dir ]] && mv -nv "$@" "$dir"

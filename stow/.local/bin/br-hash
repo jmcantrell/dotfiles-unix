@@ -5,14 +5,14 @@
 import os, hashlib
 from argparse import ArgumentParser
 
-hashes = ['md5', 'sha1', 'sha224', 'sha256', 'sha384', 'sha512']
+hashes = ["md5", "sha1", "sha224", "sha256", "sha384", "sha512"]
 
 
 def format_hash(fn, h):
     d = os.path.dirname(fn)
     ext = os.path.splitext(fn)[1]
     m = getattr(hashlib, h)()
-    f = open(fn, 'rb')
+    f = open(fn, "rb")
     while True:
         data = f.read(8192)
         if not data:
@@ -24,22 +24,22 @@ def format_hash(fn, h):
 
 def parse_args():
     p = ArgumentParser(description=__doc__)
+    p.add_argument("files", nargs="*", metavar="file", help="file to rename")
     p.add_argument(
-        'files',
-        nargs='*', metavar='file',
-        help="file to rename"
+        "-a",
+        "--alg",
+        default=hashes[0],
+        metavar="hash",
+        choices=hashes,
+        help="use hash when renaming",
     )
     p.add_argument(
-        '-a', '--alg',
-        default=hashes[0], metavar='hash', choices=hashes,
-        help='use hash when renaming'
+        "-l",
+        "--list",
+        action="store_true",
+        help="list available algorithms (default is first)",
     )
-    p.add_argument(
-        '-l', '--list',
-        action='store_true',
-        help='list available algorithms (default is first)'
-    )
-    p.add_argument('-n', '--noop', action='store_true', help='dry run')
+    p.add_argument("-n", "--noop", action="store_true", help="dry run")
     return p.parse_args()
 
 
@@ -60,5 +60,5 @@ def main():
                     os.rename(fn, nf)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

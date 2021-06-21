@@ -6,7 +6,7 @@
 set -e
 
 name=${1:?missing system name}
-base=$2  # name_yyyy-mm-dd_HH-MM-SS
+base=$2 # name_yyyy-mm-dd_HH-MM-SS
 
 images=$HOME/.qemu
 image=$images/$name.cow
@@ -28,9 +28,9 @@ fstype() {
 
 snapshot_names() {
     find "$snapshots" -name "${name}_*" |
-    while read -r snapshot; do
-        basename "$snapshot"
-    done
+        while read -r snapshot; do
+            basename "$snapshot"
+        done
 }
 
 mkdir -p "$images"

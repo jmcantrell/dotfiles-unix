@@ -9,24 +9,25 @@ Usage: $me [-Mmbnh] [-v version]"
 input() {
     local reply
     local value=${1:-value}
-    local default=$2  # press enter to accept
+    local default=$2 # press enter to accept
     local prompt="Enter $value"
     test "$default" && prompt+=" [$default]"
     read -rp "$prompt: " reply
     test "$reply" || reply=$default
-    echo "$reply"; test "$reply"
+    echo "$reply"
+    test "$reply"
 }
 
 unset OPTIND
 while getopts ":hifvqMmbnv:" option; do
     case $option in
-        M) major=-M ;;
-        m) minor=-m ;;
-        b) build=-b ;;
-        n) noop=1 ;;
-        v) version_new=$OPTARG ;;
-        h) echo "$usage" >&2 && exit 0 ;;
-        *) echo "$usage" >&2 && exit 1 ;;
+    M) major=-M ;;
+    m) minor=-m ;;
+    b) build=-b ;;
+    n) noop=1 ;;
+    v) version_new=$OPTARG ;;
+    h) echo "$usage" >&2 && exit 0 ;;
+    *) echo "$usage" >&2 && exit 1 ;;
     esac
 done && shift $((OPTIND - 1))
 

@@ -14,16 +14,8 @@ def find_files(directory):
 
 def parse_args():
     p = ArgumentParser(description=__doc__)
-    p.add_argument(
-        'dirs',
-        metavar='dir', nargs='+',
-        help='directory to search'
-    )
-    p.add_argument(
-        '-n', '--num',
-        default=1, type=int,
-        help='number of files to draw'
-    )
+    p.add_argument("dirs", metavar="dir", nargs="+", help="directory to search")
+    p.add_argument("-n", "--num", default=1, type=int, help="number of files to draw")
     return p.parse_args()
 
 
@@ -36,5 +28,5 @@ def main():
         print(random.choice(pool))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

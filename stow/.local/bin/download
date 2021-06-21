@@ -69,14 +69,20 @@ start_session() {
 unset OPTIND concurrent
 while getopts ":hH:j:" option; do
     case $option in
-        j) concurrent=$OPTARG ;;
-        h) echo "$usage" >&2; exit 0 ;;
-        *) echo "$usage" >&2; exit 1 ;;
+    j) concurrent=$OPTARG ;;
+    h)
+        echo "$usage" >&2
+        exit 0
+        ;;
+    *)
+        echo "$usage" >&2
+        exit 1
+        ;;
     esac
 done && shift $((OPTIND - 1))
 
 if pgrep aria2c &>/dev/null; then
-    (( $# > 0 )) && add_uris "$@"
+    (($# > 0)) && add_uris "$@"
 else
     start_session "$@"
 fi

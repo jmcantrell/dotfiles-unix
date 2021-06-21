@@ -10,17 +10,17 @@
 seconds=${1:-0}
 
 minute=60
-hour=$(( minute * 60 ))
-day=$(( hour * 24 ))
+hour=$((minute * 60))
+day=$((hour * 24))
 
-days=$(( seconds / day ))
-seconds=$(( seconds - (days * day) ))
+days=$((seconds / day))
+seconds=$((seconds - (days * day)))
 
-hours=$(( seconds / hour ))
-seconds=$(( seconds - (hours * hour) ))
+hours=$((seconds / hour))
+seconds=$((seconds - (hours * hour)))
 
-minutes=$(( seconds / minute ))
-seconds=$(( seconds - (minutes * minute) ))
+minutes=$((seconds / minute))
+seconds=$((seconds - (minutes * minute)))
 
 unset summary
 

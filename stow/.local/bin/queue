@@ -17,14 +17,23 @@ Options:
 action="list"
 unset OPTIND queue item
 while getopts ":hf:a:lpc" option; do
-	case $option in
-        f) queue=$OPTARG ;;
-        a) action="add"; item=$OPTARG ;;
-        p) action="pop" ;;
-        l) action="list" ;;
-        c) action="clear" ;;
-        h) echo "$usage" >&2; exit 0 ;;
-        *) echo "$usage" >&2; exit 1 ;;
+    case $option in
+    f) queue=$OPTARG ;;
+    a)
+        action="add"
+        item=$OPTARG
+        ;;
+    p) action="pop" ;;
+    l) action="list" ;;
+    c) action="clear" ;;
+    h)
+        echo "$usage" >&2
+        exit 0
+        ;;
+    *)
+        echo "$usage" >&2
+        exit 1
+        ;;
     esac
 done && shift $((OPTIND - 1))
 
@@ -81,8 +90,8 @@ queue_clear() {
 }
 
 case $ACTION in
-    list) queue_list ;;
-    add) queue_add ;;
-    pop) queue_pop ;;
-    clear) queue_clear ;;
+list) queue_list ;;
+add) queue_add ;;
+pop) queue_pop ;;
+clear) queue_clear ;;
 esac

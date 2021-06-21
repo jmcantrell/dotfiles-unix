@@ -5,7 +5,8 @@
 
 set -e
 
-dir=${1:?no directory given}; shift
+dir=${1:?no directory given}
+shift
 
 [[ -d $dir ]] || exit 1
 cd "$dir" || exit 1

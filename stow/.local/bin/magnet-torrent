@@ -5,7 +5,8 @@
 magnet=${1:?missing magnet link}
 downloads=${2:-$HOME/Downloads}
 
-id=${magnet#*xt=urn:btih:}; id=${id%%&*}
+id=${magnet#*xt=urn:btih:}
+id=${id%%&*}
 torrent=$downloads/meta-$id.torrent
 
 echo "creating torrent for: $id" >&2

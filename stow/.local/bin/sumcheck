@@ -8,8 +8,8 @@ set -e
 for sumfile in "$@"; do
     alg=${sumfile##*.}
     case $alg in
-        md5|sha*)
-            "${alg}sum" -c "$sumfile"
-            ;;
+    md5 | sha*)
+        "${alg}sum" -c "$sumfile"
+        ;;
     esac
 done

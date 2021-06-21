@@ -26,7 +26,7 @@ def incr_filename(fn):
     root, ext = os.path.splitext(fn)
     while os.path.exists(fn):
         incr += 1
-        fn = ''.join([root, '_{}'.format(incr), ext])
+        fn = "".join([root, "_{}".format(incr), ext])
     return fn
 
 
@@ -42,51 +42,37 @@ def exif_format(fn, fmt):
         # key in format that doesn't exist
         pass
     # parse date info for granular format
-    if 'DateTime' in data:
-        s = data['DateTime'].split()
-        ymd = s[0].split(':')
-        hms = s[1].split(':')
+    if "DateTime" in data:
+        s = data["DateTime"].split()
+        ymd = s[0].split(":")
+        hms = s[1].split(":")
         try:
             dt = {
-                '%Y': ymd[0],
-                '%m': ymd[1],
-                '%d': ymd[2],
-                '%H': hms[0],
-                '%M': hms[1],
-                '%S': hms[2],
+                "%Y": ymd[0],
+                "%m": ymd[1],
+                "%d": ymd[2],
+                "%H": hms[0],
+                "%M": hms[1],
+                "%S": hms[2],
             }
         except IndexError:
             raise Exception("Exif DateTime malformed: {}".format(fn))
         for k, v in dt.items():
             if k in n:
                 n = n.replace(k, v)
-    if '%' in n:
+    if "%" in n:
         raise Exception("Image is missing exif data: {}".format(fn))
     return os.path.join(d, n) + ext
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("files", nargs="*", metavar="file", help="file to rename")
     parser.add_argument(
-        'files',
-        nargs='*', metavar='file',
-        help='file to rename'
+        "-f", "--format", default="%Y-%m-%d_%H-%M-%S", help="format to use for renaming"
     )
-    parser.add_argument(
-        '-f', '--format',
-        default='%Y-%m-%d_%H-%M-%S',
-        help='format to use for renaming'
-    )
-    parser.add_argument(
-        '-l', '--list',
-        action='store_true',
-        help='list exif tags'
-    )
-    parser.add_argument(
-        '-n', '--noop',
-        action='store_true',
-        help='dry run'
-    )
+    parser.add_argument("-l", "--list", action="store_true", help="list exif tags")
+    parser.add_argument("-n", "--noop", action="store_true", help="dry run")
     return parser.parse_args()
 
 
@@ -95,6 +81,7 @@ def main():
     if args.list:
         if args.files:
             from pprint import pprint
+
             for fn in args.files:
                 pprint(exif(fn))
         else:
@@ -110,5 +97,5 @@ def main():
         print(nf)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

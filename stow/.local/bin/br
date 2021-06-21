@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 me=${0##*/}
 usage="Rename files using your preferred editor.
 Usage: $me [-h] [file...]"
@@ -18,8 +20,8 @@ while getopts ":h" option; do
     esac
 done && shift $((OPTIND - 1))
 
-temp_dir=$(mktemp -t "${me}.XXXXXXXXXX")
-trap "rm -f $(printf "%q" "$temp_dir")" INT TERM EXIT
+temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
+trap "rm -rf $(printf "%q" "$temp_dir")" INT TERM EXIT
 
 src=$temp_dir/src
 dst=$temp_dir/dst
@@ -28,7 +30,7 @@ for fn in "$@"; do
     [[ -e "$fn" ]] && echo "$fn"
 done >"$src"
 
-cat "$src" >"$dst"
+cp "$src" "$dst"
 
 if [[ ! $EDITOR ]]; then
     EDITOR=vim

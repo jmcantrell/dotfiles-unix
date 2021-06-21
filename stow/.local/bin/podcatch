@@ -274,27 +274,25 @@ update_url() {
     local xml=$(get_feed_xml "$url" "$name") || return 1
 
     local guid title
-    xpath "$xml" "//item/guid" |
-        while read -r guid; do
-            title=$(xpath "$xml" "//item[guid='$guid']/title")
-            if [[ ! $title ]]; then
-                log "Item $guid has no title"
-                title=$guid # better than nothing
+    while read -r guid; do
+        title=$(xpath "$xml" "//item[guid='$guid']/title")
+        if [[ ! $title ]]; then
+            log "Item $guid has no title"
+            title=$guid # better than nothing
+        fi
+        while read -r url; do
+            # no enclosures for item
+            [[ $url ]] || continue
+            if ! is_url "$url"; then
+                log "Invalid enclosure url $url"
+                continue
             fi
-            xpath "$xml" "//item[guid='$guid']//enclosure/@url" |
-                while read -r url; do
-                    # no enclosures for item
-                    [[ $url ]] || continue
-                    if ! is_url "$url"; then
-                        log "Invalid enclosure url $url"
-                        continue
-                    fi
-                    if ! download "$url" "$name" "$title"; then
-                        log "Unable to download $url"
-                        return 1
-                    fi
-                done
-        done
+            if ! download "$url" "$name" "$title"; then
+                log "Unable to download $url"
+                return 1
+            fi
+        done < <(xpath "$xml" "//item[guid='$guid']//enclosure/@url")
+    done < <(xpath "$xml" "//item/guid")
 
     return 0
 }
@@ -305,10 +303,9 @@ import_urls() {
     log "Importing urls file $urls"
 
     local file url name
-    grep -v '^ *#' "$urls" |
-        while read -r url name; do
-            import_url "$url" "$name" || return 1
-        done
+    while read -r url name; do
+        import_url "$url" "$name" || return 1
+    done < <(grep -v '^ *#' "$urls")
 }
 
 import_url() {

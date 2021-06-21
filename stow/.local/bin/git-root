@@ -7,8 +7,8 @@ set -e
 dir=${1:-$PWD}
 
 # check each parent for the git directory
-while test -d "$dir" && ! test -d "$dir/.git"; do
+while [[ -d $dir && ! -d $dir/.git ]]; do
     dir+=/..
 done
 
-test -d "$dir" && echo "$dir"
+[[ -d $dir ]] && echo "$dir"

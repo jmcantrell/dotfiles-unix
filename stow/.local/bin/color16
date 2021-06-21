@@ -10,7 +10,7 @@ source colors
 sample=${1:-0}
 width=${#sample}
 minwidth=2
-test "$width" -lt "$minwidth" && width=$minwidth
+((width < minwidth)) && width=$minwidth
 
 # header
 printf " %*s " $minwidth " "

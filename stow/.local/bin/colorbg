@@ -2,4 +2,4 @@
 
 # Shortcut to setting foreground color of given text.
 
-color setab "$@"
+exec color setab "$@"

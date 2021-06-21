@@ -2,4 +2,4 @@
 
 # Repair permissions on a gpg home directory.
 
-chmod -R go-rwx "${1:-${GNUPGHOME:-$HOME/.gnupg}}"
+exec chmod -R go-rwx "${1:-${GNUPGHOME:-$HOME/.gnupg}}"

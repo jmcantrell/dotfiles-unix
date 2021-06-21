@@ -4,4 +4,4 @@
 
 branch=${1:?branch name}
 
-git branch -D "$branch" && git push origin ":$branch"
+exec git branch -D "$branch" && git push origin ":$branch"

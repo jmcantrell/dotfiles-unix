@@ -16,4 +16,4 @@ host=${url#http*://}
 host=${host%%/*}
 
 # set ssh url
-git config remote.origin.url "git@$host:$user/$name"
+exec git config remote.origin.url "git@$host:$user/$name"

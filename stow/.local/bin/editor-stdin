@@ -9,4 +9,4 @@ if ((${#paths[@]} == 0)); then
     exit 1
 fi
 
-editor "${paths[@]}"
+exec editor "${paths[@]}"

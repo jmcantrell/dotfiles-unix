@@ -11,4 +11,4 @@ shift
 [[ -d $dir ]] || exit 1
 cd "$dir" || exit 1
 pwd >&2
-"$@"
+exec "$@"

@@ -2,4 +2,4 @@
 
 # Rename files to lower case.
 
-rncase --case lower "$@"
+exec rncase --case lower "$@"

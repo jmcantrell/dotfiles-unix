@@ -2,4 +2,4 @@
 
 # Rename files to an md5 hash of its contents.
 
-rnhash -a md5 "$@"
+exec rnhash -a md5 "$@"

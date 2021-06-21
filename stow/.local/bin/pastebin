@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 
-file=${1:-/dev/stdin}
-
-curl --data-binary @"$file" https://paste.rs
+exec curl --data-binary @"${1:-/dev/stdin}" https://paste.rs

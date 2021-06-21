@@ -55,11 +55,23 @@ fi
 
 unset FLOCKER
 
+require() {
+    for name in "$@"; do
+        if [[ ! ${!name} ]]; then
+            echo "$name is not set" >&2
+            exit 1
+        fi
+    done
+}
+
 queue_list() {
+    require QUEUE
     grep -v -E "$@" '^\s*(#|$)' "$QUEUE"
 }
 
 queue_add() {
+    require ITEM QUEUE
+
     if [[ ! $ITEM ]]; then
         echo "ERROR: no item provided" >&2
         exit 1
@@ -69,6 +81,8 @@ queue_add() {
 }
 
 queue_pop() {
+    require QUEUE
+
     # Get the first line in the queue that isn't blank or commented out.
     # The line number is included so that it can be referenced directly with sed.
     next=$(queue_list -m1 -n)
@@ -86,12 +100,10 @@ queue_pop() {
 }
 
 queue_clear() {
+    require QUEUE
     sed -E -i "/^\s*[^#]/s/^\s*/# /" "$QUEUE"
 }
 
-case $ACTION in
-list) queue_list ;;
-add) queue_add ;;
-pop) queue_pop ;;
-clear) queue_clear ;;
-esac
+require ACTION
+
+queue_$ACTION

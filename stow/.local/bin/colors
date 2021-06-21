@@ -9,7 +9,7 @@ set -e
 
 reset=$(tput sgr0)
 
-declare -ag fg bg
+declare -a fg bg
 for n in {0..15}; do
     fg+=("$(tput setaf "$n")")
     bg+=("$(tput setab "$n")")

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Create a new virtualbox instance.
-# usage examples:
+# Usage examples:
 # vboxnew "Arch Linux"
 # vboxnew "Arch Linux" archlinux.iso
 # OSTYPE=ArchLinux_64 vboxnew "Arch Linux"

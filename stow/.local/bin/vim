@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # Since the version of vim is not always consistent,
-# this tries to use the latest iteration of vim,
+# this tries to use the most modern kind of vim,
 # falling back to more ubiquitous versions.
 
 for editor in nvim vim vi; do
     for prefix in /usr/local/bin /usr/bin /bin; do
         bin=$prefix/$editor
-        [[ -x "$bin" ]] && exec "$bin" "$@"
+        [[ -x $bin ]] && exec "$bin" "$@"
     done
 done
 

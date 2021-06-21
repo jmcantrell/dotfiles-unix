@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Generate a client key for a weechat irc server.
+# Generate a SASL client key for a weechat irc server.
 
 set -e
 

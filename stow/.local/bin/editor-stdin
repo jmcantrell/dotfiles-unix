@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Edit any files passed over stdin.
+
 set -e
 
 readarray -t paths

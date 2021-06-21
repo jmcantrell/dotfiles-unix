@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Output the public key for a weechat irc server.
+# Output the SASL public key for a weechat irc server.
 
 set -e
 

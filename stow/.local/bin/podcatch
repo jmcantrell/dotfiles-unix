@@ -259,6 +259,7 @@ add_to_m3u() {
     fi
 
     [[ -f $m3u ]] || echo "#EXTM3U" >"$m3u"
+
     if ! grep -q "$entry" "$m3u"; then
         log "Adding $title to $m3u"
         echo -e "#EXTINF:0,$name: $title\n$entry" >>"$m3u"

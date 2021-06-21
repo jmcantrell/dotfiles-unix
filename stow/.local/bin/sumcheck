@@ -3,6 +3,8 @@
 # Verify files for the given checksum files.
 # Usage: sumcheck [file...]
 
+set -e
+
 for sumfile in "$@"; do
     alg=${sumfile##*.}
     case $alg in

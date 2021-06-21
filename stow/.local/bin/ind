@@ -3,6 +3,8 @@
 # Execute a command in a given directory.
 # usage: ind directory command [arg...]
 
+set -e
+
 dir=${1:?no directory given}; shift
 
 [[ -d $dir ]] || exit 1

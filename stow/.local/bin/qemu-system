@@ -3,6 +3,8 @@
 # Create and run a virtual machine.
 # Usage: qemu-system <name> [iso image file]
 
+set -e
+
 name=${1:?missing system name}
 iso=$2
 

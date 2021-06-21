@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 readarray -t paths
 
 if (( ${#paths[@]} == 0 )); then

@@ -7,6 +7,8 @@
 # mkssl csr keyfile [csrfile]
 # mkssl crt keyfile [csrfile] [crtfile]
 
+set -e
+
 mkkey() {
     openssl genrsa -out "$1" "$2" && echo "$1"
 }

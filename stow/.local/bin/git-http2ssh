@@ -2,6 +2,8 @@
 
 # Convert a git repository origin from http to ssh.
 
+set -e
+
 url=$(git config remote.origin.url)
 
 # ensure starting with http url

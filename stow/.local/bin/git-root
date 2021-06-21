@@ -2,6 +2,8 @@
 
 # Show the root directory for this git repository.
 
+set -e
+
 dir=${1:-$PWD}
 
 # check each parent for the git directory

@@ -3,6 +3,8 @@
 # Repair permissions on an ssh directory.
 # Usage: fixssh [dir]
 
+set -e
+
 dir=${1:-$HOME/.ssh}
 
 chmod go-w "$(dirname "$dir")"

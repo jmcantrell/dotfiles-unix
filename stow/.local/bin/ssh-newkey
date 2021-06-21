@@ -4,6 +4,8 @@
 # Displays the resulting public key and copies it to the clipboard.
 # Usage: ssh-newkey [name]
 
+set -e
+
 key=$HOME/.ssh/${1:-id_rsa}
 comment="$(whoami)@$(hostname) $(date -I)"
 

@@ -2,6 +2,8 @@
 
 # Export all gnupg data to a directory.
 
+set -e
+
 dir=${1:-$PWD}
 
 mkdir -p "$dir"

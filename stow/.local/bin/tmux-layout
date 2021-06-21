@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+set -e
+
 window=${1:?no window given}
 count=${2:-1}
 layout=${3:-main-vertical}

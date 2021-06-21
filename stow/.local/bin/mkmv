@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 # Make a directory and move the given files into it.
 # If no files are given, it behaves exactly like mkdir -p.
 # usage: mkmv dir [file...]

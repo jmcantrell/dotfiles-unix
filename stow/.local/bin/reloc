@@ -4,6 +4,8 @@
 # then symlink them back to their original location.
 # Usage: reloc directory [path...]
 
+set -e
+
 if (($# < 2)); then
     echo "ERROR: there must be at least one file and a directory" >&2
     exit 1

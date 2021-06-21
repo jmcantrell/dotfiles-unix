@@ -2,6 +2,8 @@
 
 # Import gnupg data from a directory.
 
+set -e
+
 dir=${1:-$PWD}
 
 gpg --import-ownertrust "$dir/ownertrust.txt"

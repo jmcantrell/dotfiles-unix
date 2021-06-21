@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 me=${0##*/}
 usage="Bump version of a python package.
 Usage: $me [-Mmbnh] [-v version]"

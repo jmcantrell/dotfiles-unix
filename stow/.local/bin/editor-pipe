@@ -3,6 +3,8 @@
 # Edit pipe output in EDITOR before continuing.
 # Usage: command1 | edit-pipe | command2
 
+set -e
+
 data=$(mktemp)
 trap "rm -f $(printf "%q" "$data")" INT TERM EXIT
 

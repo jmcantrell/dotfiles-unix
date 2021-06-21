@@ -2,6 +2,8 @@
 
 # Generate a client key for a weechat irc server.
 
+set -e
+
 name=${1:?missing server name}
 
 weechat=${XDG_CONFIG_DIR:-$HOME/.config}/weechat

@@ -6,6 +6,8 @@
 # vboxnew "Arch Linux" archlinux.iso
 # OSTYPE=ArchLinux_64 vboxnew "Arch Linux"
 
+set -e
+
 name=${1:?missing machine name}
 isofile=$2
 

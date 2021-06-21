@@ -2,6 +2,8 @@
 
 # Output the public key for a weechat irc server.
 
+set -e
+
 name=${1:?missing server name}
 
 weechat=${XDG_CONFIG_HOME:-$HOME/.config}/weechat

@@ -89,7 +89,10 @@ def main():
 
     output = open(args.output, "w") if args.output else sys.stdout
 
-    print(os.linesep.join(lines), file=output)
+    for line in lines:
+        print(line, file=output)
+
+    output.close()
 
 
 if __name__ == "__main__":

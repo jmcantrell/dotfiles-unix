@@ -1,0 +1,21 @@
+alias y="yank"
+alias ya="yank --add"
+alias yl="yank --list"
+alias yx="yank --exec"
+alias yc="yank --clear"
+
+ycp() {
+    yank --exec cp -av {} "${1:-$PWD}"
+}
+
+ymv() {
+    yank --exec mv -v {} "${1:-$PWD}"
+    yank --clear
+}
+
+yrm() {
+    yank --exec rm -irfv {}
+    yank --clear
+}
+
+# vi:ft=sh

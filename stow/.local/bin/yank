@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+set -e
+
+me=${0##*/}
+usage="Yank file paths in order to operate on them in bulk.
+Usage: $me -h|--help                 # show this help message
+       $me -l|--list                 # list paths
+       $me [-a|--add] path...        # set (or append with -a) paths
+       $me -x|--exec command arg...  # execute command against paths (see \`man xargs\`)"
+
+cache=${XDG_CACHE_HOME:-$HOME/.cache}/yank
+mkdir -p "$cache"
+
+paths=$cache/paths
+
+do_list() {
+    [[ -f $paths ]] && cat "$paths"
+}
+
+do_set() {
+    do_clear
+    do_add "$@"
+}
+
+do_add() {
+    realpath "$@" >>"$paths"
+}
+
+do_clear() {
+    rm -f "$paths"
+}
+
+do_exec() {
+    xargs -r -I{} "$@" <"$paths"
+}
+
+action="set"
+
+while true; do
+    [[ $1 == -* ]] || break
+
+    pos=$1
+    shift
+
+    [[ $pos ]] || break
+
+    case "$pos" in
+    -l | --list)
+        action="list"
+        ;;
+    -a | --add)
+        action="add"
+        ;;
+    -c | --clear)
+        action="clear"
+        ;;
+    -x | --exec)
+        do_exec "$@"
+        exit
+        ;;
+    -h | --help)
+        echo "$usage" >&2
+        exit 0
+        ;;
+    -*)
+        echo "$me: invalid option '$pos'" >&2
+        echo "$usage" >&2
+        exit 1
+        ;;
+    esac
+done
+
+do_"$action" "$@"

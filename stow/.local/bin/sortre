@@ -1,0 +1,96 @@
+#!/usr/bin/env python3
+
+"""Sort lines using a regular expression."""
+
+import os, sys, re
+from argparse import ArgumentParser
+
+
+def sortre(lines, pattern, numeric=False, reverse=False):
+    items = []
+
+    no_key = 0 if numeric else ""
+
+    for line in lines:
+        match = pattern.search(line)
+
+        if not match:
+            items.append((no_key, line))
+            continue
+
+        group = 1 if match.groups() else 0
+
+        key = match.group(group)
+
+        if numeric:
+            key = int(key)
+
+        items.append((key, line))
+
+    items.sort(reverse=reverse)
+
+    return [item[1] for item in items]
+
+
+def parse_args():
+    p = ArgumentParser(description=__doc__)
+    p.add_argument("files", nargs="*", metavar="file", help="file to sort")
+    p.add_argument(
+        "-p",
+        "--pattern",
+        required=True,
+        metavar="regex",
+        help="regular expression to select sort key",
+    )
+    p.add_argument(
+        "-i",
+        "--ignore-case",
+        action="store_true",
+        help="ignore case when matching lines",
+    )
+    p.add_argument(
+        "-n",
+        "--numeric",
+        action="store_true",
+        help="compare according to string numerical value",
+    )
+    p.add_argument(
+        "-r",
+        "--reverse",
+        action="store_true",
+        help="reverse the result of comparisons",
+    )
+    p.add_argument(
+        "-o",
+        "--output",
+        metavar="file",
+        help="write result to file instead of standard output",
+    )
+    return p.parse_args()
+
+
+def main():
+    args = parse_args()
+
+    flags = 0
+    if args.ignore_case:
+        flags |= re.IGNORECASE
+
+    pattern = re.compile(args.pattern, flags=flags)
+
+    if args.files:
+        lines = [line for file in args.files for line in open(file)]
+    else:
+        lines = list(sys.stdin)
+
+    lines = [line.strip() for line in lines]
+
+    lines = sortre(lines, pattern, numeric=args.numeric, reverse=args.reverse)
+
+    output = open(args.output, "w") if args.output else sys.stdout
+
+    print(os.linesep.join(lines), file=output)
+
+
+if __name__ == "__main__":
+    main()

@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-ostype=Ubuntu_64 exec mkvbox "$@"

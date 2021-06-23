@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
+# Run the preferred web browser.
+
 exec "${BROWSER[@]}" "$@"

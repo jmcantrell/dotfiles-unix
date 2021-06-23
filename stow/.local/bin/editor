@@ -1,3 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-exec "${EDITOR[@]}" "$@"
+# Run the preferred text editor.
+
+exec "$EDITOR" "$@"

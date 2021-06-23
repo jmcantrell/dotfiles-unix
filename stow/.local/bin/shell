@@ -1,3 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
-exec "${SHELL[@]}" "$@"
+# Run the preferred shell.
+
+exec "$SHELL" "$@"

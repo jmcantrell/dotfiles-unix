@@ -144,7 +144,7 @@ alias gsC='git stash clear'
 alias gfix='git mergetool'
 
 # abandon all changes
-alias gnvm='git reset .; git checkout .; git checkout master'
+alias gnvm='git reset .; git checkout .; git checkout HEAD'
 
 # remove staged changes
 alias gr='git reset'

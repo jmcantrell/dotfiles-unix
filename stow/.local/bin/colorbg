@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-# Shortcut to setting foreground color of given text.
-
-exec color setab "$@"

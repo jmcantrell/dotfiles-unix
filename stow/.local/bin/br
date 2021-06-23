@@ -3,29 +3,33 @@
 set -e
 
 me=${0##*/}
-usage="Rename files using your preferred editor.
-Usage: $me [-h] [FILE...]"
 
-usage() {
-    echo "$usage" >&2
-    exit "${1:-0}"
-}
+usage="Rename files using your preferred editor.
+Usage: $me -h       # show this help message
+       $me FILE...  # rename FILE(s) in EDITOR
+"
 
 die() {
     echo "$me: $*" >&2
-    exit "${1:-1}"
+    exit 1
 }
 
 unset OPTIND
-while getopts ":hi" option; do
+while getopts ":hnf" option; do
     case $option in
-    i) interactive=1 ;;
-    h) usage ;;
-    *) usage 1 ;;
+    n) noop=1 ;;
+    f) force=1 ;;
+
+    h)
+        echo "$usage" >&2
+        exit 0
+        ;;
+
+    *) die "invalid option '$option'" ;;
     esac
 done && shift $((OPTIND - 1))
 
-(($# == 0)) && usage 1
+(($# == 0)) && die "no files to rename"
 
 temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
 trap "rm -rf $(printf "%q" "$temp_dir")" INT TERM EXIT
@@ -48,14 +52,25 @@ readarray -t dst_lines <"$dst_list"
 
 ((${#src_lines[@]} == ${#dst_lines[@]})) || die "lines were added or removed"
 
+declare -a options
+
+if [[ $force ]]; then
+    options+=(-f)
+else
+    options+=(-i)
+fi
+
 for ((i = 0; i <= ${#dst_lines[@]}; i += 1)); do
     src=${src_lines[$i]}
     dst=${dst_lines[$i]}
 
-    if [[ "$src" != "$dst" ]]; then
+    [[ "$src" == "$dst" ]] && continue
+
+    if [[ ! $noop ]]; then
         # The file may have been moved.
         mkdir -p "$(dirname "$dst")"
-        mv ${interactive:--f} ${interactive:+-i} "$src" "$dst"
-        echo "$dst"
+        mv -T "${options[@]}" "$src" "$dst"
     fi
+
+    echo "$dst"
 done

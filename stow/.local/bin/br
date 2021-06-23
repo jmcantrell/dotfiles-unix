@@ -4,60 +4,58 @@ set -e
 
 me=${0##*/}
 usage="Rename files using your preferred editor.
-Usage: $me [-h] [file...]"
+Usage: $me [-h] [FILE...]"
+
+usage() {
+    echo "$usage" >&2
+    exit "${1:-0}"
+}
+
+die() {
+    echo "$me: $*" >&2
+    exit "${1:-1}"
+}
 
 unset OPTIND
-while getopts ":h" option; do
+while getopts ":hi" option; do
     case $option in
-    h)
-        echo "$usage" >&2
-        exit 0
-        ;;
-    *)
-        echo "$usage" >&2
-        exit 1
-        ;;
+    i) interactive=1 ;;
+    h) usage ;;
+    *) usage 1 ;;
     esac
 done && shift $((OPTIND - 1))
+
+(($# == 0)) && usage 1
 
 temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
 trap "rm -rf $(printf "%q" "$temp_dir")" INT TERM EXIT
 
-src=$temp_dir/src
-dst=$temp_dir/dst
+src_list=$temp_dir/src
+dst_list=$temp_dir/dst
 
 for fn in "$@"; do
     [[ -e "$fn" ]] && echo "$fn"
-done >"$src"
+done >"$src_list"
 
-cp "$src" "$dst"
+cp "$src_list" "$dst_list"
 
-if [[ ! $EDITOR ]]; then
-    EDITOR=vim
-fi
+[[ $EDITOR ]] || EDITOR="vim"
 
-if ! "${EDITOR[@]}" "$dst"; then
-    echo "$me: edit failed"
-    exit 1
-fi
+"${EDITOR[@]}" "$dst_list" || die "edit failed"
 
-readarray -t src_lines <"$src"
-readarray -t dst_lines <"$dst"
+readarray -t src_lines <"$src_list"
+readarray -t dst_lines <"$dst_list"
 
-if ((${#src_lines[@]} != ${#dst_lines[@]})); then
-    echo "ERROR: unable to rename; lines were added or removed" >&2
-    exit 1
-fi
+((${#src_lines[@]} == ${#dst_lines[@]})) || die "lines were added or removed"
 
 for ((i = 0; i <= ${#dst_lines[@]}; i += 1)); do
-    src_fn=${src_lines[$i]}
-    dst_fn=${dst_lines[$i]}
+    src=${src_lines[$i]}
+    dst=${dst_lines[$i]}
 
-    # The file may have been moved.
-    dst_dir=$(dirname "$dst_fn")
-    [[ -d $dst_dir ]] || mkdir -p "$dst_dir"
-
-    if [[ "$src_fn" != "$dst_fn" ]]; then
-        mv -fv "$src_fn" "$dst_fn"
+    if [[ "$src" != "$dst" ]]; then
+        # The file may have been moved.
+        mkdir -p "$(dirname "$dst")"
+        mv ${interactive:--f} ${interactive:+-i} "$src" "$dst"
+        echo "$dst"
     fi
 done

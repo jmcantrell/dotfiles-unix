@@ -3,7 +3,7 @@
 set -e
 
 src=${1:?first argument must be the item to post}
-action=$2
+action=$2  # url, file, or shorten
 
 if [[ ! $action ]]; then
     if [[ $src == http://* || $src == https://* ]]; then

@@ -2,8 +2,7 @@
 
 # Show top disk usage offenders.
 
-set -e
-
-cd "${1:-$PWD}" &&
-    du -sb .* ./* | sort -nr | head |
-    awk -F'\t' '{print $2}' | xargs du -sh
+find "$@" -mindepth 1 -maxdepth 1 -exec du -sb {} \; | # prepend byte size
+    sort --numeric-sort --reverse |                    # sort descending
+    awk -F'\t' '{print $2}' |                          # remove byte size
+    xargs --no-run-if-empty -I{} du -s --si {}         # make human-readable

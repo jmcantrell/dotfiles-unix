@@ -1,15 +1,1 @@
-#!/usr/bin/env bash
-
-# Since the version of vim is not always consistent,
-# this tries to use the most modern kind of vim,
-# falling back to more ubiquitous versions.
-
-for editor in nvim vim vi; do
-    for prefix in /usr/local/bin /usr/bin /bin; do
-        bin=$prefix/$editor
-        [[ -x $bin ]] && exec "$bin" "$@"
-    done
-done
-
-echo "No version of vim is available" >&2
-exit 1
+vi

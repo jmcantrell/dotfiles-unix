@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Show the root git directory.
+# Show the nearest git directory.
 
 set -e
 
@@ -10,7 +10,7 @@ dir=${1:-$PWD}
 [[ -d $dir ]] || dir=$(dirname "$dir")
 
 # check each parent for the git directory
-while [[ -d $dir && ! -d $dir/.git ]]; do
+while [[ -d $dir && ! -e $dir/.git ]]; do
     dir+=/..
 done
 

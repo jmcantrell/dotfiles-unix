@@ -150,9 +150,14 @@ alias gnvm='git reset .; git checkout .; git checkout master'
 alias gr='git reset'
 alias grh='gr --hard'
 
-# change directory to the repo root
-cdg() {
+# change directory to the top-level git directory
+cdG() {
     cd "$(git root "$@")" || return 0
+}
+
+# change directory to the nearest git directory
+cdg() {
+    cd "$(git subroot "$@")" || return 0
 }
 
 # vi:ft=sh

@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-# Rename files to lower case.
-
-exec rncase --case lower "$@"

@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-# Rename files to an md5 hash of its contents.
-
-exec rnhash -a md5 "$@"

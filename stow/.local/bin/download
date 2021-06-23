@@ -3,25 +3,16 @@
 set -e
 
 me=${0##*/}
+
 usage="Manage file downloads.
-Usage: $me [options] [URI...]
-
-Options:
-    -h         Display help.
-    -H HOOK    Run hook named HOOK
-
-Examples:
-    Download file (or add to existing session):
-        $me https://domain.net/path/to/file
-
-    Resume download session (if canceled):
-        $me
+Usage: $me -h      # show this help message
+       $me URI...  # add URI(s) to session
+       $me         # resume session
 "
 
-target=$1
 token=$USER@$HOSTNAME
 
-if which xdg-user-dir &>/dev/null; then
+if has xdg-user-dir; then
     dest=$(xdg-user-dir DOWNLOAD)
 else
     dest=$HOME/Downloads
@@ -29,6 +20,11 @@ fi
 
 data_dir=${XDG_DATA_HOME:-$HOME/.local/share}/aria2
 session=$data_dir/session
+
+die() {
+    echo "$me: $*" >&2
+    exit 1
+}
 
 add_uris() {
     local target=${1:?missing download target}
@@ -70,14 +66,13 @@ unset OPTIND concurrent
 while getopts ":hH:j:" option; do
     case $option in
     j) concurrent=$OPTARG ;;
+
     h)
         echo "$usage" >&2
         exit 0
         ;;
-    *)
-        echo "$usage" >&2
-        exit 1
-        ;;
+
+    *) die "invalid option '$option'" ;;
     esac
 done && shift $((OPTIND - 1))
 

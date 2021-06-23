@@ -4,4 +4,4 @@
 # Usage: scriptsh [options] [file]
 # See `man script` for options.
 
-PS1='$ ' script -q -c 'sh -l' "$@"
+PS1='\$ ' script -q -c 'sh -l' "$@"

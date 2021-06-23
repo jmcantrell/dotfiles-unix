@@ -3,16 +3,21 @@
 set -e
 
 me=${0##*/}
+
 usage="Yank file paths in order to operate on them in bulk.
 Usage: $me -h|--help                 # show this help message
        $me -l|--list                 # list paths
        $me [-a|--add] path...        # set (or append with -a) paths
-       $me -x|--exec command arg...  # execute command against paths (see \`man xargs\`)"
+       $me -x|--exec command arg...  # execute command against paths (see \`man xargs\`)
+"
 
 cache=${XDG_CACHE_HOME:-$HOME/.cache}/yank
-mkdir -p "$cache"
-
 paths=$cache/paths
+
+die() {
+    echo "$me: $*" >&2
+    exit 1
+}
 
 do_list() {
     [[ -f $paths ]] && cat "$paths"
@@ -24,6 +29,7 @@ do_set() {
 }
 
 do_add() {
+    mkdir -p "$(dirname "$paths")"
     realpath "$@" >>"$paths"
 }
 
@@ -43,31 +49,23 @@ while true; do
     pos=$1
     shift
 
-    [[ $pos ]] || break
-
     case "$pos" in
-    -l | --list)
-        action="list"
-        ;;
-    -a | --add)
-        action="add"
-        ;;
-    -c | --clear)
-        action="clear"
-        ;;
+    -l | --list) action="list" ;;
+    -a | --add) action="add" ;;
+    -c | --clear) action="clear" ;;
+
+    # If present, emaining arguments should go to exec
     -x | --exec)
         do_exec "$@"
         exit
         ;;
+
     -h | --help)
         echo "$usage" >&2
-        exit 0
+        exit
         ;;
-    -*)
-        echo "$me: invalid option '$pos'" >&2
-        echo "$usage" >&2
-        exit 1
-        ;;
+
+    -*) die "invalid option '$pos'" ;;
     esac
 done
 

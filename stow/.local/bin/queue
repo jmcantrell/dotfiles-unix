@@ -3,16 +3,20 @@
 set -e
 
 me=${0##*/}
-usage="Safely manage a queue of items.
-Usage: $me [options]
 
-Options:
-    -h             Display help.
-    -f FILENAME    Use FILENAME as queue file.
-    -a ITEM        Add ITEM to queue.
-    -l             List items in the queue (this is the default).
-    -p             Pop the next item from the queue and echo it.
-    -c             Clear the queue."
+usage="Safely manage a queue of items.
+Usage: $me -h       # show this help message
+       $me -f FILE  # use FILE as queue file
+       $me -a ITEM  # add ITEM to queue
+       $me -l       # list items in queue (this is the default)
+       $me -p       # pop the next item and print it
+       $me -c       # clear the queue
+"
+
+die() {
+    echo "$me: $*" >&2
+    exit 1
+}
 
 action="list"
 unset OPTIND queue item
@@ -26,14 +30,13 @@ while getopts ":hf:a:lpc" option; do
     p) action="pop" ;;
     l) action="list" ;;
     c) action="clear" ;;
+
     h)
         echo "$usage" >&2
         exit 0
         ;;
-    *)
-        echo "$usage" >&2
-        exit 1
-        ;;
+
+    *) die "invalid option '$option'" ;;
     esac
 done && shift $((OPTIND - 1))
 
@@ -41,10 +44,7 @@ done && shift $((OPTIND - 1))
 # If it doesn't, wait until it does.
 
 if [[ "$FLOCKER" != "$0" ]]; then
-    if [[ ! $queue ]]; then
-        echo "ERROR: no queue file provided" >&2
-        exit 1
-    fi
+    [[ $queue ]] || die "no queue file provided"
 
     export FLOCKER=$0
     export QUEUE=$queue
@@ -57,10 +57,7 @@ unset FLOCKER
 
 require() {
     for name in "$@"; do
-        if [[ ! ${!name} ]]; then
-            echo "$name is not set" >&2
-            exit 1
-        fi
+        [[ ${!name} ]] || die "$name is not set"
     done
 }
 
@@ -71,12 +68,6 @@ queue_list() {
 
 queue_add() {
     require ITEM QUEUE
-
-    if [[ ! $ITEM ]]; then
-        echo "ERROR: no item provided" >&2
-        exit 1
-    fi
-
     echo "$ITEM" >>"$QUEUE"
 }
 
@@ -105,5 +96,4 @@ queue_clear() {
 }
 
 require ACTION
-
 queue_$ACTION

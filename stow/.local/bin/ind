@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
 # Execute a command in a given directory.
-# usage: ind directory command [arg...]
+# Usage: ind DIRECTORY COMMAND [ARGUMENT...]
 
 set -e
 
 dir=${1:?no directory given}
 shift
 
-[[ -d $dir ]] || exit 1
-cd "$dir" || exit 1
+cd "$dir"
 pwd >&2
 exec "$@"

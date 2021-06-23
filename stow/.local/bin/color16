@@ -1,19 +1,24 @@
 #!/usr/bin/env bash
 
-# Show a 16x16 grid of combinations of fg/bg colors.
-# Usage: color16 [text]
+# Show a 16x16 grid of foreground/background color combinations.
 
 set -e
 
-source colors
-
 sample=${1:-0}
 width=${#sample}
-minwidth=2
-((width < minwidth)) && width=$minwidth
+min_width=2
+((width < min_width)) && width=$min_width
+
+reset=$(tput sgr0)
+
+declare -a fg bg
+for n in {0..15}; do
+    fg+=("$(tput setaf "$n")")
+    bg+=("$(tput setab "$n")")
+done
 
 # header
-printf " %*s " $minwidth " "
+printf " %*s " $min_width " "
 for bgn in {0..15}; do
     printf " %*s " "$width" "$bgn"
 done
@@ -21,7 +26,7 @@ echo
 
 # rows = fg, columns = bg
 for fgn in {0..15}; do
-    printf " %*s" "$minwidth" "$fgn"
+    printf " %*s" "$min_width" "$fgn"
     for bgn in {0..15}; do
         printf " %s %-*s" "${fg[$fgn]}${bg[$bgn]}" $width "$sample"
     done

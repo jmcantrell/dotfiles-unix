@@ -3,14 +3,22 @@
 set -e
 
 me=${0##*/}
+
 usage="Interact with text snippets.
-Usage: $me [-h] [-l] [-p|e|c|s|t name]"
+Usage: $me -h       # show this help message
+       $me -l       # list snippets
+       $me -p NAME  # print snippet to stdout
+       $me -e NAME  # edit snippet in preferred editor
+       $me -c NAME  # copy snippet to clipboard
+       $me -s NAME  # save clipboard to snippet
+       $me -t NAME  # type snippet in active window
+"
 
 config_dir=${XDG_CONFIG_HOME:-$HOME/.config}/snip
 snippets=$config_dir/snippets
 
 die() {
-    echo "$*" >&2
+    echo "$me: $*" >&2
     exit 1
 }
 
@@ -32,9 +40,7 @@ get_snippet_file() {
 
 list_snippets() {
     if [[ -d $snippets ]]; then
-        find "$snippets" -type f | while read -r file; do
-            basename "$file"
-        done
+        find "$snippets" -type f -exec basename {} \;
     fi
 }
 
@@ -53,7 +59,7 @@ edit_snippet() {
 
     mkdir -p "$snippets"
 
-    exec "${VISUAL[@]}" "$file"
+    exec visual "$file"
 }
 
 copy_snippet() {
@@ -98,13 +104,12 @@ while getopts ":hlp:e:c:s:t:" option; do
     c) copy_snippet "$OPTARG" ;;
     s) save_snippet "$OPTARG" ;;
     t) type_snippet "$OPTARG" ;;
+
     h)
         echo "$usage" >&2
         exit 0
         ;;
-    *)
-        echo "$usage" >&2
-        exit 1
-        ;;
+
+    *) die "invalid option '$option'" ;;
     esac
 done && shift $((OPTIND - 1))

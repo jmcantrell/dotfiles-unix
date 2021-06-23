@@ -4,4 +4,4 @@
 # Usage: scriptzsh [options] [file]
 # See `man script` for options.
 
-PS1='$ ' script -q -c 'zsh -ldf' "$@"
+PS1='%# ' script -q -c 'zsh -ldf' "$@"

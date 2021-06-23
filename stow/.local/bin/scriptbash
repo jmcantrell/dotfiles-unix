@@ -4,4 +4,4 @@
 # Usage: scriptbash [options] [file]
 # See `man script` for options.
 
-PS1='$ ' script -q -c 'bash --login --noprofile --norc' "$@"
+PS1='\$ ' script -q -c 'bash --login --noprofile --norc' "$@"

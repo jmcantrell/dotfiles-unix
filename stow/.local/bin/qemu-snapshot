@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # Create a snapshot of a disk image.
-# Usage: qemu-snapshot <name> [base image name]
+# Usage: qemu-snapshot NAME [BASE]
 
 set -e
 
 name=${1:?missing system name}
-base=$2 # name_yyyy-mm-dd_HH-MM-SS
+base=$2
 
 images=$HOME/.qemu
 image=$images/$name.cow
@@ -17,20 +17,21 @@ format=qcow2
 fstype() {
     local fstype
     local here=${1:-$PWD}
-    # starting at $here, look for the closes mount point,
-    # and if found, return the filesystem type
+
+    # Starting at $here, look for the closest mount point,
+    # and if found, return the filesystem type.
     while [[ ! $fstype ]]; do
         fstype=$(mount | grep " $here " | cut -d' ' -f5)
         here=$(dirname "$here")
     done
+
     echo "$fstype"
 }
 
 snapshot_names() {
-    find "$snapshots" -name "${name}_*" |
-        while read -r snapshot; do
-            basename "$snapshot"
-        done
+    while read -r snapshot; do
+        basename "$snapshot"
+    done < <(find "$snapshots" -name "${name}_*")
 }
 
 mkdir -p "$images"
@@ -66,8 +67,7 @@ fi
 
 mkdir -p "$snapshots"
 
-ts=$(date +%Y-%m-%d_%H-%M-%S)
-snapshot=$snapshots/${name}_${ts}.cow
+snapshot=$snapshots/${name}_$(date +%s).cow
 
 if [[ $base ]]; then
     qemu-img create -f "$format" \

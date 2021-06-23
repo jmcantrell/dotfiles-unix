@@ -2,7 +2,7 @@
 
 """Sort lines using a regular expression."""
 
-import os, sys, re
+import sys, re
 from argparse import ArgumentParser
 
 
@@ -34,13 +34,16 @@ def sortre(lines, pattern, numeric=False, reverse=False):
 
 def parse_args():
     p = ArgumentParser(description=__doc__)
+
     p.add_argument(
         "pattern",
         nargs=1,
         metavar="regex",
         help="regular expression to select sort key",
     )
+
     p.add_argument("files", nargs="*", metavar="file", help="file to sort")
+
     p.add_argument(
         "-i",
         "--ignore-case",
@@ -65,6 +68,7 @@ def parse_args():
         metavar="file",
         help="write result to file instead of standard output",
     )
+
     return p.parse_args()
 
 

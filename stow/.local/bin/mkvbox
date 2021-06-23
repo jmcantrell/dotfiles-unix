@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 
 # Create a new virtualbox instance.
-# Usage examples:
-# vboxnew "Arch Linux"
-# vboxnew "Arch Linux" archlinux.iso
-# OSTYPE=ArchLinux_64 vboxnew "Arch Linux"
+# Usage: mkvbox "Linux"
+#        mkvbox "Linux" linux.iso
+#        OSTYPE=ArchLinux_64 mkvbox "Arch Linux" archlinux.iso
 
 set -e
 
@@ -67,8 +66,8 @@ VBoxManage storageattach "$name" \
 
 VBoxManage sharedfolder add "$name" \
     --automount --name init \
-    --hostpath "$HOME/.init" \
-    --auto-mount-point /home/user/.init
+    --hostpath "$HOME/.dotfiles" \
+    --auto-mount-point /home/user/.dotfiles
 
 # take an initial snapshot
 VBoxManage snapshot "$name" take live

@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
+# Lookup a definition on dict.org.
+
 exec curl -s dict.org/define:"${1:?missing word}":english | pager

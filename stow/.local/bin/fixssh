@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Repair permissions on an ssh directory.
-# Usage: fixssh [dir]
+# Usage: fixssh [DIRECTORY]
 
 set -e
 

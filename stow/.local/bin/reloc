@@ -2,12 +2,12 @@
 
 # Move a bunch of files to a directory,
 # then symlink them back to their original location.
-# Usage: reloc directory [path...]
+# Usage: reloc DIRECTORY [PATH...]
 
 set -e
 
 if (($# < 2)); then
-    echo "ERROR: there must be at least one file and a directory" >&2
+    echo "${0##*/}: arguments must be a directory and one or more files" >&2
     exit 1
 fi
 

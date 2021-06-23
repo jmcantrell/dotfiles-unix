@@ -34,14 +34,13 @@ def sortre(lines, pattern, numeric=False, reverse=False):
 
 def parse_args():
     p = ArgumentParser(description=__doc__)
-    p.add_argument("files", nargs="*", metavar="file", help="file to sort")
     p.add_argument(
-        "-p",
-        "--pattern",
-        required=True,
+        "pattern",
+        nargs=1,
         metavar="regex",
         help="regular expression to select sort key",
     )
+    p.add_argument("files", nargs="*", metavar="file", help="file to sort")
     p.add_argument(
         "-i",
         "--ignore-case",
@@ -76,7 +75,7 @@ def main():
     if args.ignore_case:
         flags |= re.IGNORECASE
 
-    pattern = re.compile(args.pattern, flags=flags)
+    pattern = re.compile(args.pattern[0], flags=flags)
 
     if args.files:
         lines = [line for file in args.files for line in open(file)]

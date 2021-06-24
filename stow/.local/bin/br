@@ -69,7 +69,8 @@ for ((i = 0; i <= ${#dst_lines[@]}; i += 1)); do
     if [[ ! $noop ]]; then
         # The file may have been moved.
         mkdir -p "$(dirname "$dst")"
-        mv -T "${options[@]}" "$src" "$dst"
+        mv -T "${options[@]}" "$src" "$src.$$"
+        mv -T "${options[@]}" "$src.$$" "$dst"
     fi
 
     echo "$dst"

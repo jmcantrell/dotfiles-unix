@@ -2,5 +2,6 @@
 
 set -e
 
-git pull
+git checkout master
+git pull origin master
 git submodule update --init --remote

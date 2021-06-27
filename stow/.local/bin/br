@@ -3,27 +3,30 @@
 set -e
 
 me=${0##*/}
-
 usage="Rename files using your preferred editor.
-Usage: $me -h       # show this help message
-       $me FILE...  # rename FILE(s) in EDITOR
+
+Usage: $me [-h] [-n] FILE...
+
+Options:
+    -h    show this help message
+    -n    show the renamed files without actually renaming them
 "
+
+usage() {
+    echo "$usage" >&2
+    exit 0
+}
 
 die() {
     echo "$me: $*" >&2
     exit 1
 }
 
-unset OPTIND
-while getopts ":hnf" option; do
+while getopts ":hn" option; do
     case $option in
-    n) noop=1 ;;
-    f) force=1 ;;
+    h) usage ;;
 
-    h)
-        echo "$usage" >&2
-        exit 0
-        ;;
+    n) noop=1 ;;
 
     *) die "invalid option '$option'" ;;
     esac
@@ -32,32 +35,21 @@ done && shift $((OPTIND - 1))
 (($# == 0)) && die "no files to rename"
 
 temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
-trap "rm -rf $(printf "%q" "$temp_dir")" INT TERM EXIT
+trap 'rm -rf "$temp_dir"' INT TERM EXIT
 
 src_list=$temp_dir/src
 dst_list=$temp_dir/dst
 
-for fn in "$@"; do
-    [[ -e "$fn" ]] && echo "$fn"
-done >"$src_list"
-
+stest -e "$@" >"$src_list"
 cp "$src_list" "$dst_list"
 
-[[ $EDITOR ]] || EDITOR="vim"
-
-"${EDITOR[@]}" "$dst_list" || die "edit failed"
+visual "$dst_list"
 
 readarray -t src_lines <"$src_list"
 readarray -t dst_lines <"$dst_list"
 
-((${#src_lines[@]} == ${#dst_lines[@]})) || die "lines were added or removed"
-
-declare -a options
-
-if [[ $force ]]; then
-    options+=(-f)
-else
-    options+=(-i)
+if ((${#src_lines[@]} != ${#dst_lines[@]})); then
+    die "lines were added or removed"
 fi
 
 for ((i = 0; i <= ${#dst_lines[@]}; i += 1)); do
@@ -67,10 +59,8 @@ for ((i = 0; i <= ${#dst_lines[@]}; i += 1)); do
     [[ "$src" == "$dst" ]] && continue
 
     if [[ ! $noop ]]; then
-        # The file may have been moved.
         mkdir -p "$(dirname "$dst")"
-        mv -T "${options[@]}" "$src" "$src.$$"
-        mv -T "${options[@]}" "$src.$$" "$dst"
+        mv -i -T "$src" "$dst"
     fi
 
     echo "$dst"

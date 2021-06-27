@@ -1,6 +1,6 @@
 alias ls='ls -CF --si --color=auto'
-alias ll='ls -l'   # long listing
-alias la='ls -a'   # listing with hidden
-alias lla='ll -a'  # long listing with hidden
+alias ll='ls -l'  # long listing
+alias la='ls -a'  # listing with hidden
+alias lla='ll -a' # long listing with hidden
 
 # vi:ft=sh

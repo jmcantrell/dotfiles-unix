@@ -1,7 +1,6 @@
-# list files with directory structure
 alias lt='tree --noreport --dirsfirst -F'
-alias ltl='lt -pugD --si'  # long listing
-alias lta='lt -a'          # listing with hidden
-alias ltla='ltl -a'        # long listing with hidden
+alias ltl='lt -pugD --si' # long listing
+alias lta='lt -a'         # listing with hidden
+alias ltla='ltl -a'       # long listing with hidden
 
 # vi:ft=sh

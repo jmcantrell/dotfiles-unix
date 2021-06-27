@@ -1,21 +1,21 @@
 alias y="yank"
-alias ya="yank --add"
-alias yl="yank --list"
-alias yx="yank --exec"
-alias yc="yank --clear"
+alias ya="yank -a"
+alias yl="yank -l"
+alias yx="yank -x"
+alias yc="yank -c"
 
 ycp() {
-    yank --exec cp -av {} "${1:-$PWD}"
+    yank -l | xargs -r -I{} cp -av {} "${1:-$PWD}"
 }
 
 ymv() {
-    yank --exec mv -v {} "${1:-$PWD}"
-    yank --clear
+    yank -l | xargs -r -I{} mv -v {} "${1:-$PWD}"
+    yank -c
 }
 
 yrm() {
-    yank --exec rm -irfv {}
-    yank --clear
+    yank -l | xargs -r -I{} rm -irfv {}
+    yank -c
 }
 
 # vi:ft=sh

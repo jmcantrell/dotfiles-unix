@@ -1,4 +1,4 @@
-# main commands file at: /usr/share/doc/ranger/config/commands.py
+# main commands: /usr/share/doc/ranger/config/commands.py
 
 from atool import pack, unpack
 from trash import trash, trashlist, trashrestore, trashempty

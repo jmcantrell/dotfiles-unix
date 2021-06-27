@@ -2,4 +2,5 @@
 
 # Get the extension of a given file.
 
-basename "${1:?missing file path}" | awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }'
+basename "${1:?missing file path}" |
+    awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }'

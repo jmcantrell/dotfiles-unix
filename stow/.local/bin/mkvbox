@@ -69,5 +69,4 @@ VBoxManage sharedfolder add "$name" \
     --hostpath "$HOME/.dotfiles" \
     --auto-mount-point /home/user/.dotfiles
 
-# take an initial snapshot
 VBoxManage snapshot "$name" take live

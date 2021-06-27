@@ -1,12 +1,10 @@
-import os, sys
+import os
 from datetime import datetime, timedelta
-from configparser import ConfigParser
 
 from trashcli.fs import FileSystemReader
 from trashcli.list import DeletionDateExtractor
 from trashcli.list_mount_points import os_mount_points
 from trashcli.trash import TrashDir, TopTrashDirRules, TrashDirsScanner
-from trashcli.trash import parse_deletion_date, parse_path, unknown_date
 
 from command import UserCommand
 
@@ -29,7 +27,7 @@ def get_trashinfos(older_than=None):
             for trashinfo in trash_dir.list_trashinfo(path):
                 try:
                     contents = file_reader.contents_of(trashinfo)
-                except IOError as e:
+                except IOError:
                     print(f"unable to read trashinfo file: {trashinfo}")
                 else:
                     if older_than:

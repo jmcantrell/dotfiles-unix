@@ -2,8 +2,8 @@ from ranger.api.commands import Command
 
 
 class UserCommand(Command):
-    command = None
-    flags = None
+    command = ""
+    flags = ""
 
     def run(self, command=None, **kwargs):
         command = command or self.command

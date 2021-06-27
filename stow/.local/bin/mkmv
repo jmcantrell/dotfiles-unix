@@ -10,6 +10,4 @@ dir=${1:?no directory given}
 shift
 
 mkdir -p "$dir"
-
-# if files were given, then move them to $dir
-(($# > 0)) && [[ -d $dir ]] && mv -nv "$@" "$dir"
+(($# > 0)) && mv -nv "$@" "$dir"

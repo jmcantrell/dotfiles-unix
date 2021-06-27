@@ -1,3 +1,0 @@
-alias podcatch='podcatch -d ~/Media/Podcasts -p ~/Media/Playlists'
-
-# vi:ft=sh

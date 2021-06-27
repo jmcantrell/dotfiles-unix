@@ -9,7 +9,7 @@ export MANPATH=$prefix/share/man:$MANPATH
 
 export TMPDIR=$prefix/tmp
 
-export EDITOR=vi
+export EDITOR=vim
 export SUDO_EDITOR=$EDITOR
 export PAGER=less
 export BROWSER=lynx

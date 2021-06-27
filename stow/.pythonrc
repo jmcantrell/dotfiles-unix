@@ -1,12 +1,13 @@
-#!/usr/bin/env python
-
-# modules available by default in interactive sessions
+# Modules available by default in interactive sessions:
 import sys, os
-
-# enable tab completion at input prompts
-import readline
-readline.parse_and_bind('tab: complete')
-
-# display values with pprint by default
 from pprint import pprint
+
+# Enable tab completion at input prompts.
+import readline
+
+readline.parse_and_bind("tab: complete")
+
+# Display values with pprint by default.
 sys.displayhook = pprint
+
+# vi:ft=python

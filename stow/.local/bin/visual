@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-# Run the preferred gui text editor, falling back to console.
-
-if [[ $DISPLAY && $VISUAL ]]; then
-    exec "${VISUAL[@]}" "$@"
-else
-    exec editor "$@"
-fi

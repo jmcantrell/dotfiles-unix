@@ -3,37 +3,40 @@
 set -e
 
 me=${0##*/}
-
 usage="Safely manage a queue of items.
-Usage: $me -h       # show this help message
-       $me -f FILE  # use FILE as queue file
-       $me -a ITEM  # add ITEM to queue
-       $me -l       # list items in queue (this is the default)
-       $me -p       # pop the next item and print it
-       $me -c       # clear the queue
+
+Usage: $me [-h] [-lpc] -f FILE [-a ITEM]
+
+Options:
+    -h         show this help message
+    -f FILE    use FILE as queue storage (required)
+    -a ITEM    add ITEM to queue
+    -l         list items in queue (this is the default)
+    -p         pop the next item and print it
+    -c         clear the queue
 "
+
+usage() {
+    echo "$usage" >&2
+    exit 0
+}
 
 die() {
     echo "$me: $*" >&2
     exit 1
 }
 
-action="list"
-unset OPTIND queue item
-while getopts ":hf:a:lpc" option; do
+while getopts ":hf:plca:" option; do
     case $option in
+    h) usage ;;
+
     f) queue=$OPTARG ;;
-    a)
-        action="add"
-        item=$OPTARG
-        ;;
     p) action="pop" ;;
     l) action="list" ;;
     c) action="clear" ;;
-
-    h)
-        echo "$usage" >&2
-        exit 0
+    a)
+        action="add"
+        item=$OPTARG
         ;;
 
     *) die "invalid option '$option'" ;;
@@ -48,7 +51,7 @@ if [[ "$FLOCKER" != "$0" ]]; then
 
     export FLOCKER=$0
     export QUEUE=$queue
-    export ACTION=$action
+    export ACTION=${action:-list}
     export ITEM=$item
     exec flock "$queue" "$0" "$@"
 fi

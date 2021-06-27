@@ -1,4 +1,4 @@
-if has goenv; then
+if which goenv >/dev/null; then
     eval "$(goenv init -)"
     export PATH=$GOROOT/bin:$PATH
     export PATH=$PATH:$GOPATH/bin

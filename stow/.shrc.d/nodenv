@@ -1,4 +1,4 @@
-has nodenv && eval "$(nodenv init -)"
+which nodenv >/dev/null && eval "$(nodenv init -)"
 
 # vi:ft=sh
 

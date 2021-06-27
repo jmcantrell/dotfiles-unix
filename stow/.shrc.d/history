@@ -1,6 +1,6 @@
 # last page of history
 h() {
-    fc -l -$(( LINES - 2 ))
+    fc -l -$((LINES - 2))
 }
 
 # entire command history

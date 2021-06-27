@@ -1,50 +1,21 @@
 alias v=editor
-alias gv=gvim
+alias gv=visual
 alias sv=sudoedit
 alias vin=editor-stdin
 
-# edit a program in $PATH
+# Edit a program in $PATH.
 vw() {
     /usr/bin/which "$@" 2>/dev/null | editor-stdin
 }
 
-# generate code tags recursively
-alias vtags='ctags -R'
-
-# edit a tag from ctags file
-alias vt='editor -t'
-
-# generate help tags for plugins
-vht() {
-    for dir in ~/.config/nvim/doc ~/.config/nvim/pack/default/start/*/doc; do
-        echo "generating help tags for $dir" >&2
-        editor -c "helptags $dir" -c q >/dev/null 2>&1
-    done
-}
-
-# edit the stdout of a command
+# Ddit the stdout of a command.
 vx() {
     "$@" | editor -
 }
 
-# edit the std{out,err} of a command
+# Edit the std{out,err} of a command.
 vX() {
     "$@" 2>&1 | editor -
-}
-
-# exec command
-vc() {
-    editor -c "$@"
-}
-
-# exec command then quit
-vcq() {
-    editor -c "$@" -c q
-}
-
-# access vim help directly
-vh() {
-    editor -c "help $*" -c only
 }
 
 # vi:ft=sh

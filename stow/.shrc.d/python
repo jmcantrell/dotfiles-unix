@@ -1,13 +1,13 @@
 alias pyll='pip freeze --local --all'
 alias pyls='pyll | cut -d= -f1'
 
-# show the module paths visible to python
+# Show the module paths visible to python.
 alias pypath='python -c "import sys, pprint; pprint.pprint(sys.path)"'
 
-# serve the current directory over http
+# Serve the current directory over http.
 alias pyhttpd='python -m http.server'
 
-# listen and display email being relayed through localhost
+# Listen and display email being relayed through localhost.
 alias pysmtpd='sudo python -m smtpd -n -c DebuggingServer localhost:25'
 
 # vi:ft=sh

@@ -2,6 +2,9 @@ import:
   - ~/.config/alacritty/local.yml
   - ~/.config/alacritty/colors.yml
 
+selection:
+  save_to_clipboard: true
+
 scrolling:
   history: 100000
 

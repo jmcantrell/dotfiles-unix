@@ -1,11 +1,12 @@
-if has plocate; then
-    alias locate='plocate -i'
-elif has mlocate; then
-    alias locate='mlocate -i'
-else
-    alias locate='locate -i'
-fi
+for locate in plocate mlocate locate; do
+    if which "$locate" >/dev/null; then
+        export LOCATE=$locate
+    fi
+done
 
-alias updatedb='sudo updatedb'
+if [[ $LOCATE ]]; then
+    alias locate='$LOCATE -i'
+    alias updatedb='sudo updatedb'
+fi
 
 # vi:ft=sh

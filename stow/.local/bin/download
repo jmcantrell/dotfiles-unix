@@ -3,23 +3,31 @@
 set -e
 
 me=${0##*/}
-
 usage="Manage file downloads.
-Usage: $me -h      # show this help message
-       $me URI...  # add URI(s) to session
-       $me         # resume session
+
+Usage: $me [-h] URI...
+
+Options:
+    -h     show this help message
+
+Arguments:
+    URI    uri of file to download
 "
 
 token=$USER@$HOSTNAME
 
-if has xdg-user-dir; then
+if which xdg-user-dir >/dev/null; then
     dest=$(xdg-user-dir DOWNLOAD)
 else
     dest=$HOME/Downloads
 fi
 
-data_dir=${XDG_DATA_HOME:-$HOME/.local/share}/aria2
-session=$data_dir/session
+session=${XDG_DATA_HOME:-$HOME/.local/share}/aria2/session
+
+usage() {
+    echo "$usage" >&2
+    exit 0
+}
 
 die() {
     echo "$me: $*" >&2
@@ -36,8 +44,7 @@ add_uris() {
 }
 
 start_session() {
-    mkdir -p "$data_dir"
-    cd "$data_dir"
+    mkdir -p "$(dirname "$session")"
 
     local options=(
         --dir="$dest"
@@ -62,16 +69,10 @@ start_session() {
     exec aria2c "${options[@]}" "$@"
 }
 
-unset OPTIND concurrent
 while getopts ":hH:j:" option; do
     case $option in
+    h) usage ;;
     j) concurrent=$OPTARG ;;
-
-    h)
-        echo "$usage" >&2
-        exit 0
-        ;;
-
     *) die "invalid option '$option'" ;;
     esac
 done && shift $((OPTIND - 1))

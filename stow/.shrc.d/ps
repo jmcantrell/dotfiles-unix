@@ -1,5 +1,4 @@
 alias pgrep='pgrep -flai'
-
 alias ps='ps -a'
 alias pu='ps -u $USER -o pid,%cpu,%mem,size,tty,stat,command'
 alias pa='ps -eo pid,%cpu,%mem,size,tty,stat,user,command'

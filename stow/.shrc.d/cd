@@ -1,15 +1,15 @@
-# push/pop from directory stack
+# Push/pop from directory stack.
 alias pu='pushd'
 alias po='popd'
 
-# list directory stack
+# List directory stack.
 alias dl='dirs -v -l'
 
-# always create parent directories
+# Always create parent directories.
 alias mkdir='mkdir -p'
 alias md='mkdir'
 
-# quickly traverse directory ancestry
+# Quickly traverse directory ancestry.
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
@@ -17,9 +17,10 @@ alias ......='cd ../../../../..'
 alias .......='cd ../../../../../..'
 alias ........='cd ../../../../../../..'
 
-# create a directory and cd after
+# Create a directory and cd after.
 mkcd() {
-    mkdir -p "$1"; cd "$1" || return 1
+    mkdir -p "$1"
+    cd "$1" || return 1
 }
 
 # vi:ft=sh

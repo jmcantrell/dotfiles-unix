@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
-# extra scripts in ~/.shrc.d
 for shrc in ~/.shrc.d/*; do
-    test -f "$shrc" && . "$shrc"
+    if test -f "$shrc"; then
+        . "$shrc" || echo "unable to load: $shrc" >&2
+    fi
 done

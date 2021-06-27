@@ -39,8 +39,8 @@ alias gdsli='gdsl "..@{u}"'
 # commit staged changes
 alias gc='git commit -v'
 alias gci='gc --interactive'
-alias gca='gc --all'     # auto stage modified/deleted
-alias gcA='gca --amend'  # append to last commit
+alias gca='gc --all'    # auto stage modified/deleted
+alias gcA='gca --amend' # append to last commit
 
 # list branches (local, and with remotes)
 alias gb='git branch'
@@ -68,7 +68,7 @@ alias grmi='git status --porcelain | egrep -v "^\s*D\b" | cut -c4- | xargs git r
 # checkout branches
 alias gco='git checkout'
 alias gcom='gco master'
-alias gcob='gco -b'  # create new branch
+alias gcob='gco -b' # create new branch
 
 # list commits (short, long, and full)
 alias gl='git log --decorate'
@@ -99,10 +99,10 @@ alias glfo='glf "@{u}.."'
 
 # list files
 alias gls='git ls-files'
-alias glsd='gd --name-only'  # changed since last commit
-alias glsdm='glsd master'    # changed since master
-alias glsdo='glsd "@{u}.."'  # changed since push
-alias glsdi='glsd "..@{u}"'  # changed since pull
+alias glsd='gd --name-only' # changed since last commit
+alias glsdm='glsd master'   # changed since master
+alias glsdo='glsd "@{u}.."' # changed since push
+alias glsdi='glsd "..@{u}"' # changed since pull
 
 # rebase branch
 alias grb='git rebase'

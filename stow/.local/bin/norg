@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
+# Reverse gron transformation.
+
 exec gron --ungron "$@"

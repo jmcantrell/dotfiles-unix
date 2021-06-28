@@ -1,3 +1,5 @@
-which pyenv >/dev/null && eval "$(pyenv init -)"
+if which pyenv &>/dev/null; then
+    eval "$(pyenv init -)"
+fi
 
 # vi:ft=sh

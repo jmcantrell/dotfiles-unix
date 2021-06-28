@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Since the kind of locate available is not always consistent, this tries to use
+# the most modern one, falling back to more ubiquitous versions.
+
+set -e
+
+bins=(plocate mlocate locate)
+
+link=${XDG_CACHE_HOME:-$HOME/.cache}/locate
+
+if [[ ! -x $link ]]; then
+    for bin in "${bins[@]}"; do
+        if which "$bin" &>/dev/null; then
+            ln -s "$bin" "$link"
+            break
+        fi
+    done
+fi
+
+if [[ ! -x $link ]]; then
+    echo "No version of locate is available" >&2
+    exit 1
+fi
+
+bin=$(readlink "$link")
+
+exec "$bin" "$@"

@@ -1,16 +1,7 @@
 alias d='docker'
 alias dc='docker-compose'
-
-drun() {
-    docker run -it --rm "$@"
-}
-
-dcup() {
-    docker-compose up --detach --build "$@"
-}
-
-dcdown() {
-    docker-compose down --remove-orphans "$@"
-}
+alias drun='docker run -it --rm'
+alias dcup='docker-compose up --detach --build'
+alias dcdown='docker-compose down --remove-orphans'
 
 # vi:ft=sh

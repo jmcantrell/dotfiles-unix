@@ -1,11 +1,3 @@
-# last page of history
-h() {
-    fc -l -$((LINES - 2))
-}
-
-# entire command history
-ha() {
-    fc -l 0 | $PAGER
-}
+alias h='history'
 
 # vi:ft=sh

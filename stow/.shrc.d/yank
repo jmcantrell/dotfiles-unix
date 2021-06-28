@@ -1,8 +1,8 @@
-alias y="yank"
-alias ya="yank -a"
-alias yl="yank -l"
-alias yx="yank -x"
-alias yc="yank -c"
+alias y='yank'
+alias ya='yank -a'
+alias yl='yank -l'
+alias yx='yank -x'
+alias yc='yank -c'
 
 ycp() {
     yank -l | xargs -r -I{} cp -av {} "${1:-$PWD}"

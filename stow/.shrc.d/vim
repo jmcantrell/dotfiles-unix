@@ -1,14 +1,14 @@
-alias v=editor
-alias gv=visual
-alias sv=sudoedit
-alias vin=editor-stdin
+alias v='editor'
+alias gv='visual'
+alias sv='sudoedit'
+alias vin='editor-stdin'
 
 # Edit a program in $PATH.
 vw() {
     /usr/bin/which "$@" 2>/dev/null | editor-stdin
 }
 
-# Ddit the stdout of a command.
+# Edit the stdout of a command.
 vx() {
     "$@" | editor -
 }

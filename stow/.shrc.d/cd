@@ -7,7 +7,6 @@ alias dl='dirs -v -l'
 
 # Always create parent directories.
 alias mkdir='mkdir -p'
-alias md='mkdir'
 
 # Quickly traverse directory ancestry.
 alias ...='cd ../..'

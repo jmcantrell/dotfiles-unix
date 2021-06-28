@@ -1,6 +1,7 @@
 export NODENV_ROOT=$HOME/.nodenv
 export NODE_VERSIONS=$NODENV_ROOT/versions
 export NODE_VERSION_PREFIX=
-export PATH=$NODENV_ROOT/bin:$PATH
+
+prepend_path "$NODENV_ROOT/bin"
 
 # vi:ft=sh

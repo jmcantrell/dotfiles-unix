@@ -5,14 +5,16 @@
 
 set -e
 
+bins=(nvim vim vi)
+prefixes=(/usr/local/bin /usr/bin /bin)
+
 link=${XDG_CACHE_HOME:-$HOME/.cache}/vi
 
 if [[ ! -x $link ]]; then
-    for editor in nvim vim vi; do
-        for prefix in /usr/local/bin /usr/bin /bin; do
-            bin=$prefix/$editor
-            if [[ -x $bin ]]; then
-                ln -s "$bin" "$link"
+    for bin in "${bins[@]}"; do
+        for prefix in "${prefixes[@]}"; do
+            if [[ -x $prefix/$bin ]]; then
+                ln -s "$prefix/$bin" "$link"
                 break 2
             fi
         done

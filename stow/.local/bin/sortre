@@ -38,11 +38,11 @@ def parse_args():
     p.add_argument(
         "pattern",
         nargs=1,
-        metavar="regex",
+        metavar="REGEX",
         help="regular expression to select sort key",
     )
 
-    p.add_argument("files", nargs="*", metavar="file", help="file to sort")
+    p.add_argument("files", nargs="*", metavar="FILE", help="file to sort")
 
     p.add_argument(
         "-i",
@@ -65,7 +65,7 @@ def parse_args():
     p.add_argument(
         "-o",
         "--output",
-        metavar="file",
+        metavar="FILE",
         help="write result to file instead of standard output",
     )
 

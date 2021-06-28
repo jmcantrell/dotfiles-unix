@@ -1,5 +1,0 @@
-export GOENV_ROOT=$HOME/.goenv
-export GOENV_GOPATH_PREFIX=$HOME/.go
-export PATH=$GOENV_ROOT/bin:$PATH
-
-# vi:ft=sh

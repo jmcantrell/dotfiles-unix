@@ -1,2 +1,2 @@
-disable=SC1090
-disable=SC1091
+disable=SC1090 # sourcing variable paths
+disable=SC1091 # sourcing partial variable paths

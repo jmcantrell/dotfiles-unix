@@ -5,7 +5,7 @@ alias vin='editor-stdin'
 
 # Edit a program in $PATH.
 vw() {
-    /usr/bin/which "$@" 2>/dev/null | editor-stdin
+    command which "$@" 2>/dev/null | editor-stdin
 }
 
 # Edit the stdout of a command.

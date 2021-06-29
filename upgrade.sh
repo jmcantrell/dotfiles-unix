@@ -2,4 +2,4 @@
 
 set -e
 
-git submodule update --remote
+git submodule update --recursive --remote

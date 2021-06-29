@@ -2,4 +2,4 @@
 
 set -e
 
-git submodule update --init
+git checkout master

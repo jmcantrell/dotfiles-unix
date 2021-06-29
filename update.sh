@@ -2,6 +2,5 @@
 
 set -e
 
-git checkout master
 git pull origin master
-git submodule update --remote
+git submodule update --recursive --init

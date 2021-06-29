@@ -1,0 +1,29 @@
+# Show directories.
+alias lsd='ls -d *(/)'
+alias lad='lsd .*(/)'
+
+# Show empty directories.
+alias lse='ls -d *(/^F)'
+alias lae='lse .*(/^F)'
+
+# Show world-accessible files.
+alias lsw='ls -d *(R,W,X.^/)'
+
+# Show executables.
+alias lsx='ls *(*)'
+
+# Show setgid/setuid/sticky flag.
+alias lss='ls *(s,S,t)'
+
+# Show symlinks.
+alias lsl='ls *(@)'
+
+# Show broken symlinks.
+alias lsL='ls *(-@)'
+
+# Show new/old/big files.
+alias lsn='ls -lt *(.om[1,10])'
+alias lso='ls -lrt *(.om[1,10])'
+alias lsb='ls -lS *(.OL[1,10])'
+
+# vi:ft=zsh

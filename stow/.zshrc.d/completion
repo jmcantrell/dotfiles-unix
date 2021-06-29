@@ -1,0 +1,45 @@
+setopt \
+    auto_name_dirs \
+    complete_in_word \
+    always_to_end \
+    list_packed
+
+zmodload zsh/complist
+
+zstyle ':completion:*' completer \
+    _oldlist _expand _complete _correct _match _prefix _approximate
+
+zstyle ':completion:*' accept-exact '*(N)'
+zstyle ':completion:*' accept-exact-dirs yes
+zstyle ':completion:*' file-sort name
+zstyle ':completion:*' use-cache yes
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' menu select
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' squeeze-slashes yes
+zstyle ':completion:*' insert-tab pending
+zstyle ':completion:*' matcher-list 'm:{a-z-}={A-Z_}'
+
+zstyle ':completion:*:options' description yes
+zstyle ':completion:*:options' auto-description 'specify: %d'
+
+zstyle ':completion:*:paths' list-suffixes yes
+zstyle ':completion:*:paths' expand suffix
+
+zstyle ':completion:*:messages'     format "%B%U%d%u%b"
+zstyle ':completion:*:corrections'  format "%B%U%d%u%b"
+zstyle ':completion:*:descriptions' format "%B%U%d%u%b"
+zstyle ':completion:*:warnings'     format "%B%U%d%u%b"
+
+zstyle ':completion:*:default' list-prompt   "%Bmatch %F{3}%m%f line %F{3}%l%f %K{5} %p %k%b"
+zstyle ':completion:*:default' select-prompt "%Bmatch %F{3}%m%f line %F{3}%l%f %K{5} %p %k%b"
+
+zstyle ':completion:*:manuals'   separate-sections yes
+zstyle ':completion:*:manuals.*' insert-sections   yes
+
+zstyle ':completion:*:*:kill:*'    force-list always
+zstyle ':completion:*:*:kill:*'    command 'ps -o pid,command'
+zstyle ':completion:*:*:killall:*' command 'ps -o command'
+
+# vi:ft=zsh

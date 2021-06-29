@@ -1,0 +1,7 @@
+# change dir without cd
+setopt auto_cd
+
+# add visited dir to stack
+setopt auto_pushd  # cd -[0-9]
+
+# vi:ft=zsh

@@ -1,0 +1,17 @@
+HISTFILE=~/.zhistory
+HISTSIZE=15000
+SAVEHIST=10000
+
+setopt \
+    no_hist_beep \
+    share_history \
+    inc_append_history \
+    hist_ignore_dups \
+    hist_ignore_all_dups \
+    hist_find_no_dups \
+    hist_expire_dups_first \
+    hist_ignore_space \
+    hist_no_functions \
+    hist_reduce_blanks
+
+# vi:ft=zsh

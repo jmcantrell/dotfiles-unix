@@ -1,0 +1,4 @@
+alias help=run-help
+unalias run-help; autoload run-help
+
+# vi:ft=zsh

@@ -1,0 +1,4 @@
+# update LINES and COLUMNS after each command
+shopt -s checkwinsize
+
+# vi:ft=sh

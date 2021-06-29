@@ -1,0 +1,5 @@
+# Break argument list into sensible size chunks.
+# Usage: zargs **/*~ -- rm
+autoload -U zargs
+
+# vi:ft=zsh

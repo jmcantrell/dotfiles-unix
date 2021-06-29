@@ -1,0 +1,7 @@
+# display pid when suspending a process
+setopt long_list_jobs
+
+# report the status of jobs immediately
+setopt notify
+
+# vi:ft=zsh

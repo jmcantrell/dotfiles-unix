@@ -1,0 +1,13 @@
+_tmux_clients() {
+    _values 'clients' $(tmux list-clients 2>/dev/null | cut -d: -f1)
+}
+
+compdef _tmux_clients td
+
+_tmux_sessions() {
+    _values 'sessions' $(tmux list-sessions 2>/dev/null | cut -d: -f1)
+}
+
+compdef _tmux_sessions tk ta tlc tlw tlp
+
+# vi:ft=zsh

@@ -1,0 +1,5 @@
+compdef vx=exec
+compdef vX=exec
+compdef vw=whence
+
+# vi:ft=zsh

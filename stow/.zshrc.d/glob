@@ -1,0 +1,13 @@
+# expanc character classes
+setopt brace_ccl
+
+# delete pattern if no matches, but report error if all matches were null
+setopt csh_null_glob
+
+# if filenames are numeric, sort numerically
+setopt numeric_glob_sort
+
+# prompt for `rm *`
+setopt no_rm_star_silent
+
+# vi:ft=zsh

@@ -1,0 +1,43 @@
+setopt prompt_subst
+
+# Show full working directory on top.
+PS1=$'%U%F{7}%d%f%u\n'
+
+# If on ssh connection, show the host before the prompt.
+PS1+='${SSH_CLIENT:+%m }%# '
+
+# Show the last exit code, if non-zero.
+RPS1='%(?..%F{2}%? %f)'
+
+# Indicate if any tooling environments are active.
+env_info() {
+    unset env_info
+    local env_names
+    [[ -n $DIRENV_DIR ]] && env_names+='env '
+    [[ -d node_modules ]] && env_names+='node '
+    [[ -n $VIRTUAL_ENV ]] && env_names+='python '
+    [[ -n $env_names ]] && env_info="%F{3}$env_names%f"
+}
+precmd_functions+=env_info
+RPS1+='$env_info'
+
+# Show version control status.
+autoload -U vcs_info
+formats="%c%u%F{5}%b%f"
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:*' check-for-changes true
+zstyle ':vcs_info:*' stagedstr "%F{2}+%f"
+zstyle ':vcs_info:*' unstagedstr "%F{1}!%f"
+zstyle ':vcs_info:*' formats "$formats "
+zstyle ':vcs_info:*' actionformats "%a:$formats "
+precmd_functions+=vcs_info
+RPS1+='${vcs_info_msg_0_}'
+
+# Current time (24 hour).
+RPS1+='%F{8}%*%f'
+
+# Make it bold.
+PS1=%B${PS1}%b
+RPS1=%B${RPS1}%b
+
+# vi:ft=zsh

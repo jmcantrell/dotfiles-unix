@@ -1,3 +1,9 @@
 [submodule "ls_colors"]
 	path = stow/.ls_colors
 	url = https://github.com/trapd00r/LS_COLORS.git
+[submodule "zsh-completions"]
+	path = stow/.local/share/zsh/scripts/completions
+	url = https://github.com/zsh-users/zsh-completions.git
+[submodule "zsh-syntax-highlighting"]
+	path = stow/.local/share/zsh/scripts/syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting.git

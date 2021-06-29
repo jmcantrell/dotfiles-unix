@@ -1,0 +1,9 @@
+autoload -U zmv
+
+# Bulk move/copy/link.
+# Usage: mmv *.txt *.mkd
+alias mmv='noglob zmv -iv -W'
+alias mcp='noglob zmv -iv -C'
+alias mln='noglob zmv -iv -L'
+
+# vi:ft=zsh

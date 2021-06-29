@@ -232,7 +232,7 @@ color noctu
 " colorscheme overrides
 color custom
 
-set title titlestring=%{v:progname}:%<%F
+set title titlestring=%{v:progname}\ %<%F
 
 " buffer number, file path and status
 set statusline=%#StatusLineBufferNr#%(\ %n\ %)%*

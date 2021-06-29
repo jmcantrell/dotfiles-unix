@@ -2,7 +2,7 @@ setopt no_beep
 setopt interactive_comments
 
 set_title() {
-	print -Pn '\e]2;zsh:${PWD/$HOME/~} \a'
+	print -Pn '\e]2;zsh ${PWD/$HOME/~} \a'
 }
 
 precmd_functions+=set_title

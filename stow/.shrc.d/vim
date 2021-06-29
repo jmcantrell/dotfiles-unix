@@ -1,6 +1,6 @@
 alias v='editor'
 alias gv='visual'
-alias sv='sudoedit'
+alias sv='sudo -e'
 alias vin='editor-stdin'
 
 # Edit a program in $PATH.

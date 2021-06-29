@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -e
+
+vim -c UpdateRemotePlugins -c q &>/dev/null

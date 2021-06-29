@@ -36,18 +36,3 @@ neovim
 rufo
 solargraph
 EOF
-
-eval "$("$dir"/bin/rbenv init -)"
-
-latest=$(
-    rbenv install -l 2>/dev/null |
-        grep -E '^\s*[0-9.]+$' |
-        tail -n1 |
-        sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//'
-)
-
-if ! rbenv versions --bare | grep -q "^${latest}$"; then
-    rbenv install "$latest"
-fi
-
-rbenv global "$latest"

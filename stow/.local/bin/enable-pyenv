@@ -33,30 +33,10 @@ done
 cat >"$dir"/default-packages <<-EOF
 bandit
 black
-bpython
 flake8
-i3ipc
 jedi-language-server
 mypy
-neovim
-pillow
 pip
-poetry
 pudb
-wheel
+pynvim
 EOF
-
-eval "$("$dir"/bin/pyenv init -)"
-
-latest=$(
-    pyenv install -l 2>/dev/null |
-        grep -E '^\s*[0-9.]+$' |
-        tail -n1 |
-        sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//'
-)
-
-if ! pyenv versions --bare | grep -q "^${latest}$"; then
-    pyenv install "$latest"
-fi
-
-pyenv global "$latest"

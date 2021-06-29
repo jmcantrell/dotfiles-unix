@@ -22,3 +22,9 @@ Stow the files to your home directory:
 ```
 $ ./stow.sh
 ```
+
+Remove the stowed files from your home directory:
+
+```
+$ ./unstow.sh
+```

@@ -1,7 +1,14 @@
-#!/usr/bin/env sh
+load_sh() {
+    for file in "$@"; do
+        if test -f "$file"; then
+            . "$file" || echo "unable to load: $file" >&2
+        fi
+    done
+    unset file
+}
 
-for shrc in ~/.shrc.d/*; do
-    if test -f "$shrc"; then
-        . "$shrc" || echo "unable to load: $shrc" >&2
-    fi
-done
+load_sh ~/.shrc.d/*
+
+unset -f load_sh
+
+# vi:ft=sh

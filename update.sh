@@ -5,7 +5,7 @@ set -e
 export PATH=$PWD/bin:$PATH
 
 git pull origin master
-git submodule update --recursive --init
+git submodule update --init
 
 generate-vim-helptags
 update-vim-rplugins

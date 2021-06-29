@@ -69,6 +69,7 @@ start_session() {
     exec aria2c "${options[@]}" "$@"
 }
 
+unset OPTIND OPTARG
 while getopts ":hH:j:" option; do
     case $option in
     h) usage ;;

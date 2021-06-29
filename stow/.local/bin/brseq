@@ -34,6 +34,7 @@ die() {
 
 declare -a seq_options
 
+unset OPTIND OPTARG
 while getopts ":hf:s:i:W:wn" option; do
     case $option in
     h) usage ;;

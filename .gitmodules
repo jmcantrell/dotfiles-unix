@@ -199,3 +199,6 @@
 [submodule "vim-cursorword"]
 	path = stow/.config/nvim/pack/default/start/cursorword
 	url = https://github.com/itchyny/vim-cursorword.git
+[submodule "vim-just"]
+	path = stow/.config/nvim/pack/default/start/just
+	url = https://github.com/NoahTheDuke/vim-just.git

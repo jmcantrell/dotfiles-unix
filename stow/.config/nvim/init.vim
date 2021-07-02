@@ -162,9 +162,6 @@ cmap <c-g>e <c-r>=expand('%:e')<cr>
 " select all
 nnoremap <leader>a ggVG
 
-" correct previous misspelling
-nnoremap <leader>s [s1z=<c-o>
-
 " move to end of yanked/pasted text
 nnoremap p p`]
 vnoremap y y`]

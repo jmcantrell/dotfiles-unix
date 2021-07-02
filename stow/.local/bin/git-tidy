@@ -1,8 +1,8 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Run a bunch of maintenance tasks on a git repository.
 
-set -e
+set -euo pipefail
 
 git fsck --full
 git reflog expire --expire=now --all

@@ -1,16 +1,18 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 src=${1:?first argument must be the item to post}
-action=$2  # url, file, or shorten
+shift
 
-if [[ ! $action ]]; then
+if (($# == 0)); then
     if [[ $src == http://* || $src == https://* ]]; then
         action="url"
     else
         action="file"
     fi
+else
+    action=$1
 fi
 
 exec curl -F "$action=$src" https://0x0.st

@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 me=${0##*/}
 usage="Safely manage a queue of items.
 
-Usage: $me [-h] [-lpc] -f FILE [-a ITEM]
+Usage: $me [-h] [-lpc] [-a ITEM] FILE
 
 Options:
     -h         show this help message
-    -f FILE    use FILE as queue storage (required)
     -a ITEM    add ITEM to queue
     -l         list items in queue (this is the default)
     -p         pop the next item and print it
     -c         clear the queue
+
+Arguments:
+    FILE       use FILE as queue storage
 "
 
 usage() {
@@ -27,11 +29,10 @@ die() {
 }
 
 unset OPTIND OPTARG
-while getopts ":hf:plca:" option; do
+while getopts ":hplca:" option; do
     case $option in
     h) usage ;;
 
-    f) queue=$OPTARG ;;
     p) action="pop" ;;
     l) action="list" ;;
     c) action="clear" ;;
@@ -44,16 +45,18 @@ while getopts ":hf:plca:" option; do
     esac
 done && shift $((OPTIND - 1))
 
+queue=${1:?missing queue file}
+
 # Ensure this invocation has exclusive access to the queue file.
 # If it doesn't, wait until it does.
 
-if [[ "$FLOCKER" != "$0" ]]; then
+if [[ "${FLOCKER:-}" != "$0" ]]; then
     [[ $queue ]] || die "no queue file provided"
 
     export FLOCKER=$0
     export QUEUE=$queue
     export ACTION=${action:-list}
-    export ITEM=$item
+    export ITEM=${item:-}
     exec flock "$queue" "$0" "$@"
 fi
 
@@ -66,18 +69,14 @@ require() {
 }
 
 queue_list() {
-    require QUEUE
     grep -v -E "$@" '^\s*(#|$)' "$QUEUE"
 }
 
 queue_add() {
-    require ITEM QUEUE
     echo "$ITEM" >>"$QUEUE"
 }
 
 queue_pop() {
-    require QUEUE
-
     # Get the first line in the queue that isn't blank or commented out.
     # The line number is included so that it can be referenced directly with sed.
     next=$(queue_list -m1 -n)
@@ -95,9 +94,7 @@ queue_pop() {
 }
 
 queue_clear() {
-    require QUEUE
     sed -E -i "/^\s*[^#]/s/^\s*/# /" "$QUEUE"
 }
 
-require ACTION
 queue_$ACTION

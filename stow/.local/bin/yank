@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 me=${0##*/}
-
 usage="Yank file paths in order to operate on them in bulk.
 
 Usage: $me [-h] [-lac] PATH...
@@ -49,7 +48,7 @@ do_clear() {
 
 action="set"
 
-while true; do
+while (($# > 0)); do
     [[ $1 == -* ]] || break
 
     pos=$1

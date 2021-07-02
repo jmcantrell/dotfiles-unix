@@ -2,7 +2,7 @@
 
 # Show a 16x16 grid of foreground/background color combinations.
 
-set -e
+set -euo pipefail
 
 sample=${1:-0}
 width=${#sample}

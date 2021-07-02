@@ -6,6 +6,8 @@
 #        secspan 93784   # 1d 2h 3m 4s
 #        secspan 604800  # 7d
 
+set -euo pipefail
+
 seconds=${1:-0}
 
 minute=60

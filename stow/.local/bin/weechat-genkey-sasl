@@ -2,7 +2,7 @@
 
 # Generate a SASL client key for a weechat IRC server.
 
-set -e
+set -euo pipefail
 
 name=${1:?missing server name}
 

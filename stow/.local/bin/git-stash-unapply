@@ -1,5 +1,7 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Unapply the given (or last stash).
 
-exec git stash show -p "$@" | git apply -R
+set -euo pipefail
+
+git stash show -p "$@" | git apply -R

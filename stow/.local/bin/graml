@@ -1,5 +1,7 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Use gron with yaml files.
+
+set -euo pipefail
 
 exec yq . "$@" | gron | sed 's/^json\./yaml./'

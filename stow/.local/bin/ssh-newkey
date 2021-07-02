@@ -4,7 +4,7 @@
 # Displays the resulting public key and copies it to the clipboard.
 # Usage: ssh-newkey [name]
 
-set -e
+set -euo pipefail
 
 key=$HOME/.ssh/${1:-id_rsa}
 comment="$USER@$HOSTNAME $(date -I)"

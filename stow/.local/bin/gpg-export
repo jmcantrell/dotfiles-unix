@@ -2,7 +2,7 @@
 
 # Export all gnupg data to a directory.
 
-set -e
+set -euo pipefail
 
 dir=${1:-$PWD}
 

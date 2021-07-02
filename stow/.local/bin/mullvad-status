@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 json=$(curl https://am.i.mullvad.net/json 2>/dev/null) || {
     echo "Status: unknown" >&2
     exit 1
@@ -14,7 +16,8 @@ get() {
 }
 
 entry() {
-    local name=$1; shift
+    local name=$1
+    shift
     echo -e "$name:\t$*"
 }
 

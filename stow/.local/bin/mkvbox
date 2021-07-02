@@ -1,14 +1,13 @@
 #!/usr/bin/env bash
 
 # Create a new virtualbox instance.
-# Usage: mkvbox "Linux"
-#        mkvbox "Linux" linux.iso
+# Usage: mkvbox "Linux" linux.iso
 #        OSTYPE=ArchLinux_64 mkvbox "Arch Linux" archlinux.iso
 
-set -e
+set -euo pipefail
 
 name=${1:?missing machine name}
-isofile=$2
+isofile=${2:?missing iso file}
 
 ostype=${ostype:-Linux_64}
 memory=${memory:-4096}

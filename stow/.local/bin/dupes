@@ -1,6 +1,8 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Find and output groups of duplicate files.
+
+set -euo pipefail
 
 find "$@" -type f | sort |              # sort initial files
     xargs -r -I{} md5sum {} |           # prepend the checksum

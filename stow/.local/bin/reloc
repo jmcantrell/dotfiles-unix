@@ -4,7 +4,7 @@
 # then symlink them back to their original location.
 # Usage: reloc DIRECTORY [PATH...]
 
-set -e
+set -euo pipefail
 
 if (($# < 2)); then
     echo "${0##*/}: arguments must be a directory and one or more files" >&2

@@ -1,6 +1,8 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Delete a branch locally and at the origin.
+
+set -euo pipefail
 
 branch=${1:?branch name}
 

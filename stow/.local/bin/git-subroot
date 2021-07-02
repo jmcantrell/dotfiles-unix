@@ -2,14 +2,12 @@
 
 # Show the nearest git directory.
 
-set -e
+set -euo pipefail
 
 dir=${1:-$PWD}
 
-# In case the command target is a file.
 [[ -d $dir ]] || dir=$(dirname "$dir")
 
-# check each parent for the git directory
 while [[ -d $dir && ! -e $dir/.git ]]; do
     dir+=/..
 done

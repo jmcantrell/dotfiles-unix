@@ -1,6 +1,8 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Show top disk usage offenders.
+
+set -euo pipefail
 
 find "$@" -mindepth 1 -maxdepth 1 -exec du -sb {} \; | # prepend byte size
     sort --numeric-sort --reverse |                    # sort descending

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 vim -c UpdateRemotePlugins -c q &>/dev/null

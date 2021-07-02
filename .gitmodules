@@ -193,9 +193,6 @@
 [submodule "vim-clever-f"]
 	path = stow/.config/nvim/pack/default/start/clever-f
 	url = https://github.com/rhysd/clever-f.vim.git
-[submodule "vim-gemtext"]
-	path = stow/.config/nvim/pack/default/start/gemtext
-	url = https://github.com/kconner/vim-syntax-gemtext.git
 [submodule "vim-cursorword"]
 	path = stow/.config/nvim/pack/default/start/cursorword
 	url = https://github.com/itchyny/vim-cursorword.git

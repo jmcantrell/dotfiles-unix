@@ -44,4 +44,4 @@ SetXtermTitle = yes
 SetScreenTitle = yes
 
 #PlaylistFullPaths = yes
-OnSongChange = "notify-send 'now playing:' '%t by %a'"
+OnSongChange = "notify-send -i media-playback-start 'Now Playing' '%t by %a'"

@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
+# Paste lines to a shareable URL.
+
 exec curl --data-binary @"${1:-/dev/stdin}" https://paste.rs

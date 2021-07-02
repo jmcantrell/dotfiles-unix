@@ -1,6 +1,6 @@
 export PYENV_ROOT=$HOME/.pyenv
 
-prepend_path "$PYENV_ROOT/bin"
-prepend_path "$PYENV_ROOT/shims"
+prepend_path "$PYENV_ROOT"/bin
+prepend_path "$PYENV_ROOT"/shims
 
 # vi:ft=sh

@@ -20,13 +20,13 @@ zstyle ':vcs_info:*' formats "$formats "
 zstyle ':vcs_info:*' actionformats "%a:$formats "
 precmd_functions+=vcs_info
 
-# The current working directory.
+# the current working directory
 PS1='%U%F{7}%d%f%u'
 
 # Indicate if any tooling environments are active.
 PS1+='${env_info:+ $env_info}'
 
-# Version control status.
+# version control status
 PS1+='${vcs_info_msg_0_:+ $vcs_info_msg_0_}'
 
 PS1+=$'\n'
@@ -34,16 +34,16 @@ PS1+=$'\n'
 # Only show the hostname if over ssh.
 PS1+='${SSH_CLIENT:+%m }'
 
-# An indicator of user privilege.
+# user privilege indicator
 PS1+='%# '
 
-# The last exit code, if non-zero.
+# the last exit code, if non-zero
 RPS1='%(?..%F{2}%? %f)'
 
-# Current time (24 hour).
+# current time (24 hour)
 RPS1+='%F{8}%*%f'
 
-# Make it bold.
+# bold
 PS1=%B${PS1}%b
 RPS1=%B${RPS1}%b
 

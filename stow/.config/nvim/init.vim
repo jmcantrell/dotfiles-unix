@@ -1,241 +1,238 @@
-" break compatibility with vi
+" Break compatibility with vi.
 set nocompatible
 
-" separate register contents with newlines
+" Separate register contents with newlines.
 set cpoptions+=>
 
-" enable mouse always
+" Enable mouse always.
 set mouse=a
 
-" allow modified buffers to be hidden
+" Allow modified buffers to be hidden.
 set hidden
 
-" highlight current line
+" Highlight current line.
 set cursorline
 
-" don't flash on errors
+" Don't flash on errors.
 set noerrorbells
 
-" sensible tab settings
+" Use sensible tab settings.
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4
 
-" try to keep indention consistent
+" Try to keep indention consistent.
 set smarttab copyindent autoindent shiftround
 
-" case sensitive if search contains upper case
+" Make case sensitive only if search contains upper case.
 set ignorecase smartcase infercase
 
-" backspace freely in insert mode
+" Backspace freely in insert mode.
 set backspace=indent,eol,start
 
-" new windows start below current one
+" Split new windows below the current one.
 set splitbelow
 
-" new windows start to the right of current one
+" Split new windows to the right of the current one.
 set splitright
 
-" disable intro message and hit-enter prompts
+" Disable intro message and hit-enter prompts.
 set shortmess=IOoWtc
 
-" show invisible characters
+" Show invisible characters.
 set listchars=tab:›·,nbsp:·,trail:·,precedes:‹,extends:›
 
-" line wrapping on word boundaries
+" Break lines on word boundaries.
 set nowrap linebreak
 
-" line numbers in the left column
+" Show line numbers and conserve space.
 set number numberwidth=1
 
-" highlight matches while typing
+" Highlight matches while typing.
 set hlsearch incsearch viminfo+=h
 
-" keep n lines visible above/below current line
+" Keep n lines visible above/below current line.
 set scrolloff=5
 
-" allow undo history to span sessions
+" Allow undo history to span sessions.
 set undofile
 
-" remember last n commands
+" Remember last n commands.
 set history=1000
 
-" remember state in ~/.viminfo
+" Remember state in ~/.viminfo.
 set viminfo+='1000  " marks for n files
 set viminfo+=<1000  " no more than n lines per register
 set viminfo+=s1000  " registers no larger than n kb
 
-" keys for <leader> and <localleader>
+" Set keys for <leader> and <localleader>.
 let mapleader = "\<space>"
 let maplocalleader = "\<cr>"
 
-" yank to end of line
+" Yank to end of line.
 noremap Y y$
 
-" goto beginning/end of line
+" Go to beginning/end of line.
 noremap  H ^
 noremap  L $
 vnoremap L g_
 
-" familiar from sh
-cnoremap <c-b> <home>
-cnoremap <c-e> <end>
-
-" open command window
+" Open command window.
 nnoremap <leader>; q:
 
-" reopen command window after executing
+" Reopen command window after executing.
 autocmd CmdwinEnter * map <buffer> <tab> <cr>q:
 
-" only show concealed symbol if cchar is defined
+" Only show concealed symbol if cchar is defined.
 set conceallevel=2
 
-" when a line is too long, it's replaced by a string of @
-set display=lastline  " why hide the whole line?? @@@@@@@
+" Without this, when a line is too long, it's replaced by a string of @.
+set display=lastline
 
-" abbreviate statusline indicators
+" Abbreviate statusline indicators.
 set shortmess+=a
 
-" show pending command under statusline
+" Show pending command under statusline.
 set showcmd laststatus=2
 
-" redraw screen and remove search highlights
+" Redraw screen and remove search highlights.
 nnoremap <silent> <c-l> :noh<cr><c-l>
 
-" write with sudo
+" Write file with sudo.
 command! -bar W :w !sudo tee % >/dev/null<cr>
 
-" edit a file in the same directory as current file
+" Edit a file in the same directory as current file.
 nmap <leader>e :e <c-r>=expand('%:h').'/'<cr>
 
-" quickly change filetype (with tab completion)
-nmap <leader>f :setfiletype<space>
-
-" switch buffer
+" Switch buffer.
 nmap <leader>b :b<space>
 
-" open help
+" Open help.
 nmap <leader>h :h<space>
 
-" switch to last buffer
+" Switch to last buffer.
 nmap <leader><leader> :b#<cr>
 
-" show buffer number with other details
+" Show buffer number with other details.
 nnoremap <c-g> 2<c-g>
 
-" delete buffer
+" Delete buffer.
 nmap DD :bd<cr>
 
-" write changes and delete buffer
-" similar to ZZ for the current window
+" Write changes and delete buffer.
+" Similar to ZZ for the current window.
 nmap XX :w<bar>bd<cr>
 
-" write changes to all buffers and quit
+" Write changes to all buffers and quit.
 nmap ZA :wqa<cr>
 
-" maximize window fully (horizontal/vertical)
+" Maximize window fully (horizontal/vertical).
 nmap <c-w>m <c-w>_<c-w><bar>
 
-" switch to previous window
+" Switch to the previous window.
 nmap <c-w><c-w> :winc p<cr>
 
-" create new vertical window
+" Create a new vertical window.
 nmap <c-w>N :vnew<cr>
 
-" close window even if there are unsaved changes
+" Close window even if there are unsaved changes.
 nmap <c-w>C :close!<cr>
 
-" quit window even if there are unsaved changes
+" Quit window even if there are unsaved changes.
 nmap <c-w>Q :quit!<cr>
 
-" resize windows
+" Resize windows.
 noremap <c-up>     <c-w>+
 noremap <c-down>   <c-w>-
 noremap <c-left>  3<c-w><
 noremap <c-right> 3<c-w>>
 
-" insert paths at command line
+" Insert paths at command line.
 cmap <c-g>p <c-r>=expand('%:p')<cr>
 cmap <c-g>h <c-r>=expand('%:h').'/'<cr>
 cmap <c-g>t <c-r>=expand('%:t')<cr>
 cmap <c-g>r <c-r>=expand('%:r')<cr>
 cmap <c-g>e <c-r>=expand('%:e')<cr>
 
-" select all
+" Select the entire buffer.
 nnoremap <leader>a ggVG
 
-" move to end of yanked/pasted text
+" Move cursor to the end of yanked/pasted text.
 nnoremap p p`]
 vnoremap y y`]
 vnoremap p p`]
 
-" select last inserted text
+" Select the last inserted text.
 nnoremap <expr> gi '`[' . strpart(getregtype(), 0, 1) . '`]'
 
-" vimdiff merging (r=remote,b=base,l=local)
+" Easier merging with vimdiff.
 nmap gr :diffget RE<cr>
 nmap gb :diffget BA<cr>
 nmap gl :diffget LO<cr>
 
-" paste from clipboard
+" Paste from clipboard.
 nnoremap gp "+p
 nnoremap gP "+P
 vnoremap gp "+p
 
-" copy line(s) to clipboard
+" Copy line(s) to clipboard.
 vnoremap gy  "+y
 nnoremap gyy "+yy
 
-" copy filepath to clipboard
+" Copy the file path to the clipboard.
 nmap gyf :call setreg('+', expand('%:p'), 'v')<cr>
 
-" copy filepath with line to clipboard
+" Copy the file path (with line number) to the clipboard.
 nmap gyl :call setreg('+', expand('%:p').':'.line('.'), 'v')<cr>
 
-" keyword, filename completion
-inoremap <c-f> <c-x><c-f>
-
-" code (aka omni) completion
-inoremap <c-b> <c-x><c-o>
-
-" user must manually select completion
+" Use a menu for insert completion.
+" Show the menu even if there's only one option.
+" Don't select anything automatically.
+" Don't insert anything automatically.
 set completeopt=menu,menuone,noselect,noinsert
 
-" command line completion
-set wildmenu wic wim=longest:full,list:full
+" Use a menu for command line completion (ignoring case).
+" Complete till the longest common string.
+" If there is only one option, complete it.
+set wildmenu wildignorecase wildmode=longest:full,list:full
 
-" enable auto formatting for commented text
+" Enable auto formatting for commented text.
 set textwidth=80 formatoptions+=corn
 
-" reformat paragraphs according to textwidth
+" Reformat paragraphs according to textwidth.
 set formatoptions+=q
 
-" disable auto formatting for normal text
+" Disable auto formatting for normal text.
 set formatoptions-=t
 
-" auto format paragraph or selection
+" Format paragraph or selection.
 nnoremap Q gqap
 vnoremap Q gq
 
+" Enable file type plugins.
 filetype plugin indent on
 
-" detect filetype if name changes
+" Detect file type if name changes.
 autocmd BufFilePost * filetype detect
 
-" syntax highlighting
+" Enable syntax highlighting.
 syntax on
 
-" colorscheme that inherits terminal colors
+" Use a color scheme that inherits terminal colors.
 color noctu
 
-" colorscheme overrides
+" Use color scheme tweaks.
 color custom
 
+" Set the window title.
 set title titlestring=%{v:progname}\ %<%F
+
+" Format the status line:
 
 " buffer number, file path and status
 set statusline=%#StatusLineBufferNr#%(\ %n\ %)%*
 set statusline+=\ %f%(\ %#StatusLineFlag#%m%r%w%*%)
 
-set statusline+=%=  " left / right side separator
+" left / right side separator
+set statusline+=%=
 
 " start truncation here
 set statusline+=%<

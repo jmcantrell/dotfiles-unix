@@ -3,4 +3,4 @@
 # Convert given images into an animated gif.
 # Usage: mkgif IMAGES... GIF
 
-convert -verbose -delay 15 -loop 0 -resize 500 "$@"
+exec convert -verbose -delay 15 -loop 0 -resize 500 "$@"

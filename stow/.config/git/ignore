@@ -15,7 +15,7 @@
 # patch files
 *.diff
 
-# junk
+# apple metadata
 .DS_Store
 
 # todo files

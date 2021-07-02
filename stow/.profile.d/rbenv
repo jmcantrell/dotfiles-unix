@@ -1,5 +1,5 @@
 export RBENV_ROOT=$HOME/.rbenv
 
-prepend_path "$RBENV_ROOT/bin"
+prepend_path "$RBENV_ROOT"/bin
 
 # vi:ft=sh

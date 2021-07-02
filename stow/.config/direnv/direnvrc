@@ -4,7 +4,7 @@ layout_poetry() {
         exit 2
     fi
 
-    # create venv if it doesn't exist
+    # Create venv if it doesn't exist.
     poetry run true
 
     export VIRTUAL_ENV=$(poetry env info --path)

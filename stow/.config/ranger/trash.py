@@ -77,7 +77,6 @@ class trash(UserCommand):
                 ("n", "N", "y", "Y"),
             )
         else:
-            # no need for a confirmation
             self.run()
 
 

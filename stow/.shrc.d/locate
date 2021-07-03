@@ -1,3 +1,4 @@
 alias locate='locate -i'
+alias updatedb='sudo updatedb'
 
 # vi:ft=sh

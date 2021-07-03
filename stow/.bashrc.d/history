@@ -2,7 +2,7 @@
 HISTCONTROL=ignoreboth
 
 # History is a union of all sessions.
-shopt -s append_history
+shopt -s histappend
 
 HISTSIZE=15000
 HISTFILESIZE=10000

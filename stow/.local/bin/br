@@ -39,7 +39,10 @@ trap 'rm -rf "$temp_dir"' INT TERM EXIT
 src_list=$temp_dir/src
 dst_list=$temp_dir/dst
 
-stest -e "$@" >"$src_list"
+for file in "$@"; do
+    [[ -e $file ]] && echo "$file"
+done >"$src_list"
+
 cp "$src_list" "$dst_list"
 
 visual "$dst_list"

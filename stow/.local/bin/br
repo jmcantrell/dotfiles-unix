@@ -54,13 +54,13 @@ if ((${#src_lines[@]} != ${#dst_lines[@]})); then
     die "lines were added or removed"
 fi
 
-for ((i = 0; i <= ${#dst_lines[@]}; i += 1)); do
+for ((i = 0; i < ${#dst_lines[@]}; i += 1)); do
     src=${src_lines[$i]}
     dst=${dst_lines[$i]}
 
     [[ "$src" == "$dst" ]] && continue
 
-    if [[ ! $noop ]]; then
+    if [[ ! -v noop ]]; then
         mkdir -p "$(dirname "$dst")"
         mv -i -T "$src" "$dst"
     fi

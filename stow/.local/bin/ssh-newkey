@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # Create an ssh key with sensible defaults.
-# Displays the resulting public key and copies it to the clipboard.
-# Usage: ssh-newkey [name]
+# Display the resulting public key and copy it to the clipboard.
+# Usage: ssh-newkey [NAME]
 
 set -euo pipefail
 
@@ -11,5 +11,11 @@ comment="$USER@$HOSTNAME $(date -I)"
 
 ssh-keygen -t rsa -b 4096 -f "$key" -C "$comment"
 
-cbi <"$key.pub"
-cat "$key.pub"
+pubkey=$key.pub
+
+cat "$pubkey"
+
+case $OSTYPE in
+linux*) xsel -ib <"$pubkey" ;;
+darwin*) pbcopy <"$pubkey" ;;
+esac

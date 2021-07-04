@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-branch=${1:?branch name}
+branch=${1:?missing branch name}
 
 git branch -D "$branch"
 git push origin ":$branch"

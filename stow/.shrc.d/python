@@ -1,4 +1,7 @@
+# List installed packages.
 alias pyll='pip freeze --local --all'
+
+# List installed package names.
 alias pyls='pyll | cut -d= -f1'
 
 # Show the module paths visible to python.

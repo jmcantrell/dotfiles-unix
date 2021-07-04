@@ -1,0 +1,5 @@
+if test -f ~/.dircolors; then
+    eval "$(dircolors -b ~/.dircolors)"
+fi
+
+# vi:ft=sh

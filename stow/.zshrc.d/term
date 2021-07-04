@@ -1,10 +1,13 @@
+# Don't beep on errors.
 setopt no_beep
+
+# Allow comments in interactive shells.
 setopt interactive_comments
 
+# Set the terminal title.
 set_title() {
 	print -Pn '\e]2;zsh ${PWD/$HOME/~} \a'
 }
-
 precmd_functions+=set_title
 preexec_functions+=set_title
 

@@ -1,71 +1,73 @@
 setopt vi
 
-# ctrl-i is the tab key
-bindkey '^i' complete-word     # complete as much as possible
+# Use <tab> for completion.
+# Complete as much as possible before showing a menu.
+bindkey '^i' complete-word
+
+# Navigate the completion menu in reverse.
 bindkey '^o' reverse-menu-complete
 
-# history search forward/backward
-bindkey '^f' history-incremental-search-forward
-bindkey '^b' history-incremental-search-backward
-
-# default history search
+# Search most recent history.
 bindkey '^r' history-incremental-search-backward
 
+# Navigate to the next/previous history entry.
 bindkey '^n' down-history
 bindkey '^p' up-history
 
 # Edit the command line in $EDITOR.
 autoload -U edit-command-line
 zle -N edit-command-line
-bindkey "^e" edit-command-line
-bindkey -M vicmd "^e" edit-command-line
+bindkey '^e' edit-command-line
+bindkey -M vicmd v edit-command-line
 
 # Save input until next command.
 bindkey '^z' push-input
 
+# Insert the last word from the previous line.
+bindkey '^[.' insert-last-word
+
+# Insert the previous word (continue pressing for more).
 autoload -U copy-earlier-word
 zle -N copy-earlier-word
-bindkey '^a' copy-earlier-word
+bindkey '^[m' copy-earlier-word
 
+# Remove line contents to the kill buffer.
+bindkey '^k' kill-line          # cursor to end
+bindkey '^u' backward-kill-line # cursor to start
+bindkey '^x' kill-word          # next word
+bindkey '^w' backward-kill-word # previous word
+
+# Insert the contents of the kill buffer.
 bindkey '^y' yank
-bindkey '^k' kill-line
-bindkey '^u' backward-kill-line
 
-# Use more intuitive word boundaries for kill-word.
-WORDCHARS=${WORDCHARS:s#/#}
-WORDCHARS=${WORDCHARS:s/./}
-WORDCHARS=${WORDCHARS:s/-/}
-WORDCHARS=${WORDCHARS:s/_/}
-
-bindkey '^x' kill-word
-bindkey '^w' backward-kill-word
-
+# In addition to the obvious, perform history expansion.
 bindkey ' ' magic-space
-bindkey -M vicmd 'u' undo
-bindkey -M vicmd '/' history-incremental-search-backward
-bindkey -M vicmd '?' history-incremental-search-forward
 
-bindkey $terminfo[khome] beginning-of-line
-bindkey $terminfo[kend]  end-of-line
-
-bindkey -M vicmd 'H' beginning-of-line
-bindkey -M vicmd 'L' end-of-line
-
-bindkey $terminfo[kich1] overwrite-mode
-bindkey $terminfo[kdch1] delete-char
-
-# history search (cursor placed at end of line)
+# Use up/down to search history with the current command line.
+# Places the cursor at the end of the line similar to bash.
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey $terminfo[kcuu1] history-beginning-search-backward-end
 bindkey $terminfo[kcud1] history-beginning-search-forward-end
 
+# Use left/right to navigate forward/back on the command line.
 bindkey $terminfo[kcub1] backward-char
 bindkey $terminfo[kcuf1] forward-char
 
+# Use page up/down to move to the start/end of history.
 bindkey $terminfo[kpp] beginning-of-buffer-or-history
 bindkey $terminfo[knp] end-of-buffer-or-history
+
+# Use home/end to move to the start/end of the command line.
+bindkey $terminfo[khome] beginning-of-line
+bindkey $terminfo[kend]  end-of-line
+
+# Use insert to toggle overwrite mode.
+bindkey $terminfo[kich1] overwrite-mode
+
+# Use delete to remove the character under the cursor.
+bindkey $terminfo[kdch1] delete-char
 
 # Finally, make sure the terminal is in application mode, when zle is active.
 # Only then are the values from $terminfo valid.

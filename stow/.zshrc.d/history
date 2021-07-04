@@ -1,17 +1,28 @@
-HISTFILE=~/.zhistory
-HISTSIZE=15000
-SAVEHIST=10000
+# Don't beep if trying to access a non-existent history entry.
+setopt no_hist_beep
 
-setopt \
-    no_hist_beep \
-    share_history \
-    inc_append_history \
-    hist_ignore_dups \
-    hist_ignore_all_dups \
-    hist_find_no_dups \
-    hist_expire_dups_first \
-    hist_ignore_space \
-    hist_no_functions \
-    hist_reduce_blanks
+# Add to the history file as commands are entered.
+setopt inc_append_history
+
+# Only add unique history entries.
+setopt hist_ignore_dups
+
+# Move duplicate history entries to the end.
+setopt hist_ignore_all_dups
+
+# When searching, don't display duplicate history entries.
+setopt hist_find_no_dups
+
+# Lose duplicate history entries before unique ones when trimming.
+setopt hist_expire_dups_first
+
+# Don't remember commands that start with a space.
+setopt hist_ignore_space
+
+# Don't remember function definitions.
+setopt hist_no_functions
+
+# Remove superfuous blanks from history entries.
+setopt hist_reduce_blanks
 
 # vi:ft=zsh

@@ -1,6 +1,8 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Repair permissions on a gpg home directory.
 # Usage: fixgpg [DIRECTORY]
+
+set -euo pipefail
 
 exec chmod -R go-rwx "${1:-${GNUPGHOME:-$HOME/.gnupg}}"

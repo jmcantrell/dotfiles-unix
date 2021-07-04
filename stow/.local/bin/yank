@@ -5,12 +5,12 @@ set -euo pipefail
 me=${0##*/}
 usage="Yank file paths in order to operate on them in bulk.
 
-Usage: $me [-h] [-lac] PATH...
+Usage: $me [-h] [-alc] PATH...
 
 Options:
     -h    show this help message
-    -l    list paths
     -a    append paths
+    -l    list paths
     -c    clear paths
 
 The default action is to set the paths.
@@ -28,8 +28,9 @@ die() {
     exit 1
 }
 
-do_list() {
-    [[ -f $paths ]] && cat "$paths"
+do_add() {
+    mkdir -p "$(dirname "$paths")"
+    realpath "$@" >>"$paths"
 }
 
 do_set() {
@@ -37,9 +38,8 @@ do_set() {
     do_add "$@"
 }
 
-do_add() {
-    mkdir -p "$(dirname "$paths")"
-    realpath "$@" >>"$paths"
+do_list() {
+    [[ -f $paths ]] && cat "$paths"
 }
 
 do_clear() {
@@ -48,21 +48,15 @@ do_clear() {
 
 action="set"
 
-while (($# > 0)); do
-    [[ $1 == -* ]] || break
-
-    pos=$1
-    shift
-
-    case "$pos" in
-    -l) action="list" ;;
-    -a) action="add" ;;
-    -c) action="clear" ;;
-
-    -h) usage ;;
-
-    -*) die "invalid option '$pos'" ;;
+unset OPTIND OPTARG
+while getopts ":halc" option; do
+    case $option in
+    h) usage ;;
+    a) action=add ;;
+    l) action=list ;;
+    c) action=clear ;;
+    *) die "invalid option '$option'" ;;
     esac
-done
+done && shift $((OPTIND - 1))
 
 do_"$action" "$@"

@@ -1,18 +1,25 @@
 #!/usr/bin/env bash
 
+# Post files/links to a shareable URL.
+# Usage: postbin ITEM [ACTION]
+
+# The valid choices for ACTION are "url", "file", and "shorten".
+# If ACTION is "url" or "file", ITEM will be posted.
+# If ACTION is "shorten", then don't post ITEM, only shorten it.
+# If ACTION is not given and ITEM looks like a url, it will default to "url".
+# Otherwise, ACTION defaults to "file".
+
 set -euo pipefail
 
-src=${1:?first argument must be the item to post}
-shift
+src=${1:?missing the item to post}
+action=${2:-""}
 
-if (($# == 0)); then
-    if [[ $src == http://* || $src == https://* ]]; then
+if [[ -z $action ]]; then
+    if [[ $src == *://* ]]; then
         action="url"
     else
         action="file"
     fi
-else
-    action=$1
 fi
 
 exec curl -F "$action=$src" https://0x0.st

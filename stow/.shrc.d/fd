@@ -1,7 +1,15 @@
 alias fd='noglob fd'
-alias fdl='fd -l'
-alias fda='fd -H'
-alias fdla='fd -lH'
-alias fdlA='fd -lHI'
+
+# Include details with results (similar to `ls -l`).
+alias fdl='fd --list-details'
+
+# Include hidden files.
+alias fda='fd --hidden'
+
+# Include details and hidden files.
+alias fdla='fd --list-details --hidden'
+
+# Include details, hidden files, and ignored files.
+alias fdlA='fd --list-details --hidden --no-ignore'
 
 # vi:ft=sh

@@ -1,9 +1,0 @@
-file=$HOME/.ls_colors/LS_COLORS
-
-if test -f "$file"; then
-    eval "$(dircolors -b "$file")"
-fi
-
-unset file
-
-# vi:ft=sh

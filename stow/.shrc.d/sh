@@ -1,18 +1,8 @@
 alias c='clear'
-
 alias cp='cp -v'
 alias mv='mv -v'
-
-if which trash &>/dev/null; then
-    alias rm='trash'
-else
-    alias rm='rm -v'
-fi
-
 alias ln='ln -vsf'
-
+alias rm='trash-put'
 alias rehash='hash -r'
-
-alias diff='diff -u'
 
 # vi:ft=sh

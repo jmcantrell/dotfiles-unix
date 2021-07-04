@@ -7,8 +7,14 @@ transmission_done() {
 }
 
 alias tx='transmission-remote'
+
+# Remove finished downloads.
 alias txc='tx -t "$(transmission_done | paste -sd,)" -r'
+
+# List active downloads.
 alias txl='tx -l | grep -vi queued'
+
+# List all downloads.
 alias txla='tx -l'
 
 # vi:ft=sh

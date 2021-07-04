@@ -32,7 +32,6 @@ unset OPTIND OPTARG
 while getopts ":hplca:" option; do
     case $option in
     h) usage ;;
-
     p) action="pop" ;;
     l) action="list" ;;
     c) action="clear" ;;
@@ -40,7 +39,6 @@ while getopts ":hplca:" option; do
         action="add"
         item=$OPTARG
         ;;
-
     *) die "invalid option '$option'" ;;
     esac
 done && shift $((OPTIND - 1))

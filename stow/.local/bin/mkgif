@@ -1,6 +1,8 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Convert given images into an animated gif.
 # Usage: mkgif IMAGES... GIF
+
+set -euo pipefail
 
 exec convert -verbose -delay 15 -loop 0 -resize 500 "$@"

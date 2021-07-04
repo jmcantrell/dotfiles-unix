@@ -23,7 +23,7 @@ precmd_functions+=vcs_info
 # the current working directory
 PS1='%U%F{7}%d%f%u'
 
-# Indicate if any tooling environments are active.
+# development environment(s)
 PS1+='${env_info:+ $env_info}'
 
 # version control status
@@ -31,13 +31,13 @@ PS1+='${vcs_info_msg_0_:+ $vcs_info_msg_0_}'
 
 PS1+=$'\n'
 
-# Only show the hostname if over ssh.
+# hostname (if over ssh)
 PS1+='${SSH_CLIENT:+%m }'
 
 # user privilege indicator
 PS1+='%# '
 
-# the last exit code, if non-zero
+# last exit code (if non-zero)
 RPS1='%(?..%F{2}%? %f)'
 
 # current time (24 hour)

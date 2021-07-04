@@ -1,4 +1,4 @@
-alias ls='ls -CF --si --color=auto'
+alias ls='ls -C --classify --si --color=auto'
 alias ll='ls -l'  # long listing
 alias la='ls -a'  # listing with hidden
 alias lla='ll -a' # long listing with hidden

@@ -1,5 +1,9 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Paste lines to a shareable URL.
+# Usage: pastebin /path/to/file
+#        command-with-stdout | pastebin
+
+set -euo pipefail
 
 exec curl --data-binary @"${1:-/dev/stdin}" https://paste.rs

@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 
-# Move a bunch of files to a directory,
-# then symlink them back to their original location.
+# Move files to a directory, then symlink them back to their original location.
 # Usage: reloc DIRECTORY [PATH...]
 
 set -euo pipefail
 
-if (($# < 2)); then
-    echo "${0##*/}: arguments must be a directory and one or more files" >&2
+dst=${1:?missing destination directory}
+shift
+
+if (($# == 0)); then
+    echo "${0##*/}: missing files to relocate" >&2
     exit 1
 fi
-
-dst=$1
-shift
 
 mkdir -p "$dst"
 mv -v -t "$dst" "$@"

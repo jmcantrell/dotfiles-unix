@@ -1,7 +1,10 @@
 # Aliases after sudo cannot be completed without this.
 alias sudo='sudo '
 
+# Become another user.
 alias be='sudo -i -u'
+
+# Run a command as another user.
 alias by='sudo -u'
 
 # vi:ft=sh

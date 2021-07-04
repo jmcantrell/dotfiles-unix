@@ -1,13 +1,14 @@
 # Show directories.
 alias lsd='ls -d *(/)'
-alias lad='lsd .*(/)'
+alias lad='lsd .*(/)' # include hidden
 
 # Show empty directories.
 alias lse='ls -d *(/^F)'
-alias lae='lse .*(/^F)'
+alias lae='lse .*(/^F)' # include hidden
 
 # Show world-accessible files.
 alias lsw='ls -d *(R,W,X.^/)'
+alias law='lsw .*(R,W,X.^/)' # include hidden
 
 # Show executables.
 alias lsx='ls *(*)'
@@ -17,13 +18,22 @@ alias lss='ls *(s,S,t)'
 
 # Show symlinks.
 alias lsl='ls *(@)'
+alias lal='lsl .*(@)' # include hidden
 
 # Show broken symlinks.
 alias lsL='ls *(-@)'
+alias laL='lsL .*(-@)' # include hidden
 
-# Show new/old/big files.
+# Show newer files.
 alias lsn='ls -lt *(.om[1,10])'
+alias lan='lsn .*(.om[1,10])' # include hidden
+
+# Show older files.
 alias lso='ls -lrt *(.om[1,10])'
+alias lao='lso .*(.om[1,10])' # include hidden
+
+# Show bigger files.
 alias lsb='ls -lS *(.OL[1,10])'
+alias lab='lsb .*(.OL[1,10])' # include hidden
 
 # vi:ft=zsh

@@ -1,7 +1,10 @@
-# change dir without cd
+# Change directory without cd.
 setopt auto_cd
 
-# add visited dir to stack
+# Add visited directory to stack.
 setopt auto_pushd  # cd -[0-9]
+
+# Automatically create named directories.
+setopt auto_name_dirs
 
 # vi:ft=zsh

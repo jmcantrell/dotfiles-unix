@@ -1,5 +1,5 @@
 [submodule "ls_colors"]
-	path = stow/.ls_colors
+	path = stow/.local/share/ls_colors
 	url = https://github.com/trapd00r/LS_COLORS.git
 [submodule "zsh-completions"]
 	path = stow/.local/share/zsh/scripts/completions

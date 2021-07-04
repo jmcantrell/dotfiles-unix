@@ -38,14 +38,12 @@ unset OPTIND OPTARG
 while getopts ":hf:s:i:W:wn" option; do
     case $option in
     h) usage ;;
-
     f) format=$OPTARG ;;
     s) start_num=$OPTARG ;;
     i) increment=$OPTARG ;;
     W) width=$OPTARG ;;
     w) seq_options+=(-w) ;;
     n) noop=1 ;;
-
     *) die "invalid option '$option'" ;;
     esac
 done && shift $((OPTIND - 1))

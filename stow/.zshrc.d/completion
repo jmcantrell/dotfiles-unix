@@ -1,8 +1,11 @@
-setopt \
-    auto_name_dirs \
-    complete_in_word \
-    always_to_end \
-    list_packed
+# Leave the cursor in place if completing in the middle of a word.
+setopt complete_in_word
+
+# Move cursor to the end of the word if a full completion is inserted.
+setopt always_to_end
+
+# Try to save space in completion lists by varying column widths.
+setopt list_packed
 
 zmodload zsh/complist
 

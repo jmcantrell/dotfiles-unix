@@ -1,4 +1,7 @@
+# Remove a known host.
 alias sshrm='ssh-keygen -f ~/.ssh/known_hosts -R'
+
+# Start an SSH session that does not remember the host.
 alias sshtmp='ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
 
 # vi:ft=sh

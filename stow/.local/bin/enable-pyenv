@@ -33,10 +33,11 @@ done
 cat >"$dir"/default-packages <<-EOF
 bandit
 black
-flake8
 jedi-language-server
 mypy
 pip
 pudb
+pycodestyle
+pydocstyle
 pynvim
 EOF

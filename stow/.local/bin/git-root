@@ -8,7 +8,7 @@ dir=${1:-$PWD}
 
 [[ -d $dir ]] || dir=$(dirname "$dir")
 
-while [[ -d $dir && ! -d $dir/.git ]]; do
+while [[ -d $dir && ! -e $dir/.git ]]; do
     dir+=/..
 done
 

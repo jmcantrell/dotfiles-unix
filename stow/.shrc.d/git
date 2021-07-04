@@ -1,163 +1,136 @@
 alias g='git'
+alias gm='g submodule'
 
-# update and publish
-alias gp='git pull'
-alias gP='git push'
+# Run command for each submodule.
+alias gmfor='gm foreach'
 
-# more compact output
-alias gs='git status --short --branch'
+# Fetch changes from upstream.
+alias gf='g fetch'
 
-# publish current or given branch to remote
-alias gPP='git promote'
+# Fetch and merge changes from upstream.
+alias gp='g pull'
 
-# diff unstaged changes
-alias gd='git diff'
+# Push changes to upstream.
+alias gP='g push'
+
+# Show the working tree status.
+alias gs='g status --short --branch'
+
+# Commit staged changes.
+alias gc='g commit -v'
+
+# Show differences that have not been staged.
+alias gd='g diff'
+
+# List changed files.
 alias gdl='gd --stat'
 
-# diff staged changes
+# Show changes that have been staged.
 alias gds='gd --staged'
+
+# List files that have staged changes.
 alias gdsl='gds --stat'
 
-# diff with master
-alias gdm='gd master'
-alias gdsm='gds master'
-alias gdlm='gdl master'
-alias gdslm='gdsl master'
+# List branches.
+alias gb='g branch'
 
-# diff outgoing
-alias gdo='gd "@{u}.."'
-alias gdso='gds "@{u}.."'
-alias gdlo='gdl "@{u}.."'
-alias gdslo='gdsl "@{u}.."'
-
-# diff incoming
-alias gdi='gd "..@{u}"'
-alias gdsi='gds "..@{u}"'
-alias gdli='gdl "..@{u}"'
-alias gdsli='gdsl "..@{u}"'
-
-# commit staged changes
-alias gc='git commit -v'
-alias gci='gc --interactive'
-alias gca='gc --all'    # auto stage modified/deleted
-alias gcA='gca --amend' # append to last commit
-
-# list branches (local, and with remotes)
-alias gb='git branch'
+# List all branches (including remotes).
 alias gba='gb --remotes --all'
 
-# clean repo
-alias gx='gX --dry-run'
-alias gX='git clean -fdx'
+# Move files safely.
+alias gmv='g mv -vk'
 
-# move files
-alias gmv='git mv -vk'
+# Stage paths for removal.
+alias grm='g rm'
 
-# remove files
-alias grm='git rm'
+# Remove path from index.
+alias grms='grm --cached'
 
-# remove path from index
-alias grmu='grm --cached'
+# Checkout branches.
+alias gco='g checkout'
 
-# remove stale branches
-alias grmb='git branch --merged | grep -v "\bmaster\b" | xargs git branch -d'
+# List commits.
+alias gl='g log --decorate --oneline --graph'
+alias gll='gl --numstat --graph' # include files
+alias glf='gll --patch'          # include changes
 
-# remove files ignored since adding
-alias grmi='git status --porcelain | egrep -v "^\s*D\b" | cut -c4- | xargs git rm -f'
+# List incoming commits.
+alias gli='gl "..@{u}"'
+alias glli='gll "..@{u}"' # include files
+alias glfi='glf "..@{u}"' # include changes
 
-# checkout branches
-alias gco='git checkout'
-alias gcom='gco master'
-alias gcob='gco -b' # create new branch
+# List outgoing commits.
+alias glo='gl "@{u}.."'
+alias gllo='gll "@{u}.."' # include files
+alias glfo='glf "@{u}.."' # include changes
 
-# list commits (short, long, and full)
-alias gl='git log --decorate'
-alias gls='gl --oneline'
-alias gll='gl --numstat --graph'
-alias glf='gll --patch'
-
-# list latest commits on branches
+# List latest commits on branches.
 alias glb='gl --branches --not --remotes --simplify-by-decoration --oneline'
 
-# list latest commits on branches (including remotes)
+# List latest commits on branches (including remotes).
 alias glbr='gl --branches --simplify-by-decoration --oneline'
 
-# list commits since master
-alias glm='gl master..'
-alias gllm='gll master..'
-alias glfm='glf master..'
+# List tracked files.
+alias gls='g ls-files'
 
-# list incoming commits
-alias gli='gl "..@{u}"'
-alias glli='gll "..@{u}"'
-alias glfi='glf "..@{u}"'
+# List files changed since last commit.
+alias glsd='gd --name-only'
 
-# list outgoing commits
-alias glo='gl "@{u}.."'
-alias gllo='gll "@{u}.."'
-alias glfo='glf "@{u}.."'
-
-# list files
-alias gls='git ls-files'
-alias glsd='gd --name-only' # changed since last commit
-alias glsdm='glsd master'   # changed since master
-alias glsdo='glsd "@{u}.."' # changed since push
-alias glsdi='glsd "..@{u}"' # changed since pull
-
-# rebase branch
-alias grb='git rebase'
-alias grbm='grb master'
+# Rebase branch.
+alias grb='g rebase'
 alias grba='grb --abort'
 alias grbc='grb --continue'
 alias grbi='grb --interactive'
 
-# grep files
-alias gg='git grep -I --ignore-case'
+# Add changes to the index.
+alias ga='g add'
 
-# find files
-alias gf='git ls-files | grep -i'
+# Add changes interactively.
+alias gai='ga --patch'
 
-# submodules
-alias gm='git submodule'
-alias gma='gm add'
+# Track files, but do not add changes.
+alias gan='ga --intent-to-add'
 
-# add changes to index
-alias ga='git add'
-alias gai='git add --patch'
-alias gan='git add --intent-to-add'
+# Save changes to a stash entry.
+alias gsp='g stash push'
+alias gspa='g stash push --include-untracked'
 
-# unstage changes
-alias gu='git reset HEAD --'
+# List stash entries.
+alias gsl='g stash list'
 
-# stash changes for later
-alias gsl='git stash list'
-alias gsa='git stash apply'
-alias gsu='git stash-unapply'
-alias gsd='git stash show --patch'
-alias gss='git stash save'
-alias gsS='git stash save --include-untracked'
-alias gsP='git stash pop'
-alias gsD='git stash drop'
-alias gsC='git stash clear'
+# Apply a stash entry to working tree.
+alias gsa='g stash apply'
 
-# fix merge conflicts
-alias gfix='git mergetool'
+# Remove changes applied from a stash entry.
+alias gsu='g stash-unapply'
 
-# abandon all changes
-alias gnvm='git reset .; git checkout .; git checkout HEAD'
+# Show differences with a stash entry.
+alias gsd='g stash show --patch'
 
-# remove staged changes
-alias gr='git reset'
+# Create a new branch based on a stash entry.
+alias gsb='g stash branch'
+
+# Remove a stash entry and apply it.
+alias gsP='g stash pop'
+
+# Remove a stash entry.
+alias gsD='g stash drop'
+
+# Remove all stash entries.
+alias gsC='g stash clear'
+
+# Fix merge conflicts.
+alias gfix='g mergetool'
+
+# Remove staged changes.
+alias gr='g reset'
+
+# Remove staged and unstaged changes.
 alias grh='gr --hard'
 
-# change directory to the top-level git directory
-cdG() {
-    cd "$(git root "$@")" || return 0
-}
-
-# change directory to the nearest git directory
+# Change the directory to the nearest git directory.
 cdg() {
-    cd "$(git subroot "$@")" || return 0
+    cd "$(git root "$@")" || return 0
 }
 
 # vi:ft=sh

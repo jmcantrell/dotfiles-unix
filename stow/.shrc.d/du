@@ -1,8 +1,8 @@
-alias du='du -l --si'
-alias dub='du -b'              # bytes
-alias duk='du -k'              # kilobytes
-alias dum='du -m'              # megabytes
-alias dug='du --block-size=1G' # gigabytes
+alias du='du --count-links --si'
+alias dub='du --block-size=1'
+alias duk='du --block-size=1K'
+alias dum='du --block-size=1M'
+alias dug='du --block-size=1G'
 alias dut='tree --si --du'
 
 # vi:ft=sh

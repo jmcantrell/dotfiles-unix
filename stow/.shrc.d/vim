@@ -1,19 +1,23 @@
 alias v='editor'
-alias gv='visual'
-alias sv='sudo -e'
+alias gv='visual &'
+
+# Edit files as root.
+alias V='sudo -e'
+
+# Edit files passed over standard input.
 alias vin='editor-stdin'
 
-# Edit a program in $PATH.
+# Edit program(s) in $PATH.
 vw() {
     command which "$@" 2>/dev/null | editor-stdin
 }
 
-# Edit the stdout of a command.
+# Edit the output of a command.
 vx() {
     "$@" | editor -
 }
 
-# Edit the std{out,err} of a command.
+# Edit all output of a command.
 vX() {
     "$@" 2>&1 | editor -
 }

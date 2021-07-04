@@ -23,7 +23,7 @@ seconds=$((seconds - (hours * hour)))
 minutes=$((seconds / minute))
 seconds=$((seconds - (minutes * minute)))
 
-unset summary
+summary=""
 
 [[ $days -gt 0 ]] && summary+=" ${days}d"
 [[ $hours -gt 0 ]] && summary+=" ${hours}h"

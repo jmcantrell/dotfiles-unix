@@ -19,20 +19,17 @@ set noerrorbells
 " Use sensible tab settings.
 set expandtab tabstop=4 softtabstop=4 shiftwidth=4
 
-" Try to keep indention consistent.
+" Try to keep indentation consistent.
 set smarttab copyindent autoindent shiftround
 
-" Make case sensitive only if search contains upper case.
+" Use case sensitivity only if search contains an upper case character.
 set ignorecase smartcase infercase
 
 " Backspace freely in insert mode.
 set backspace=indent,eol,start
 
-" Split new windows below the current one.
-set splitbelow
-
-" Split new windows to the right of the current one.
-set splitright
+" Split new windows below and to the right of the current one.
+set splitbelow splitright
 
 " Disable intro message and hit-enter prompts.
 set shortmess=IOoWtc
@@ -47,6 +44,7 @@ set nowrap linebreak
 set number numberwidth=1
 
 " Highlight matches while typing.
+" Don't restore highlight on new sessions.
 set hlsearch incsearch viminfo+=h
 
 " Keep n lines visible above/below current line.
@@ -69,11 +67,6 @@ let maplocalleader = "\<cr>"
 
 " Yank to end of line.
 noremap Y y$
-
-" Go to beginning/end of line.
-noremap  H ^
-noremap  L $
-vnoremap L g_
 
 " Open command window.
 nnoremap <leader>; q:
@@ -115,11 +108,12 @@ nmap <leader><leader> :b#<cr>
 nnoremap <c-g> 2<c-g>
 
 " Delete buffer.
-nmap DD :bd<cr>
+nmap <leader>d :bd<cr>
+nmap <leader>D :bd!<cr>
 
 " Write changes and delete buffer.
-" Similar to ZZ for the current window.
-nmap XX :w<bar>bd<cr>
+nmap <leader>w :w<cr>
+nmap <leader>W :w<bar>bd<cr>
 
 " Write changes to all buffers and quit.
 nmap ZA :wqa<cr>
@@ -168,11 +162,6 @@ nmap gr :diffget RE<cr>
 nmap gb :diffget BA<cr>
 nmap gl :diffget LO<cr>
 
-" Paste from clipboard.
-nnoremap gp "+p
-nnoremap gP "+P
-vnoremap gp "+p
-
 " Copy line(s) to clipboard.
 vnoremap gy  "+y
 nnoremap gyy "+yy
@@ -183,10 +172,8 @@ nmap gyf :call setreg('+', expand('%:p'), 'v')<cr>
 " Copy the file path (with line number) to the clipboard.
 nmap gyl :call setreg('+', expand('%:p').':'.line('.'), 'v')<cr>
 
-" Use a menu for insert completion.
-" Show the menu even if there's only one option.
-" Don't select anything automatically.
-" Don't insert anything automatically.
+" Show a menu for insert completion even if there's only one choice.
+" Don't select or insert anything automatically.
 set completeopt=menu,menuone,noselect,noinsert
 
 " Use a menu for command line completion (ignoring case).
@@ -219,7 +206,7 @@ syntax on
 " Use a color scheme that inherits terminal colors.
 color noctu
 
-" Use color scheme tweaks.
+" Apply color scheme tweaks.
 color custom
 
 " Set the window title.
@@ -234,7 +221,7 @@ set statusline+=\ %f%(\ %#StatusLineFlag#%m%r%w%*%)
 " left / right side separator
 set statusline+=%=
 
-" start truncation here
+" tuncation start
 set statusline+=%<
 
 " file type, line, column, percent through file

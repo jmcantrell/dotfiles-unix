@@ -10,4 +10,10 @@ setopt numeric_glob_sort
 # Prompt for `rm *`.
 setopt no_rm_star_silent
 
+# Treat #, ~, and ^ as part of patterns.
+setopt extended_glob
+
+# Allow `**.foo` as a shortened form of `**/*.foo`.
+setopt glob_star_short
+
 # vi:ft=zsh

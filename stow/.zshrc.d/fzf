@@ -1,6 +1,0 @@
-if [[ -d $FZF_SHELL_DIR ]]; then
-    . "$FZF_SHELL_DIR"/completion.zsh
-    . "$FZF_SHELL_DIR"/key-bindings.zsh
-fi
-
-# vi:ft=sh

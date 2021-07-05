@@ -1,3 +1,4 @@
+export PAGER=less
 export GIT_PAGER="$PAGER -FRX"
 
 # vi:ft=sh

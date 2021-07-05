@@ -1,4 +1,8 @@
-if which nodenv &>/dev/null; then
+if [[ -d $HOME/.nodenv ]]; then
+    export NODENV_ROOT=$HOME/.nodenv
+    export NODE_VERSIONS=$NODENV_ROOT/versions
+    export NODE_VERSION_PREFIX=
+    export PATH=$NODENV_ROOT/bin:$PATH
     eval "$(nodenv init -)"
 fi
 

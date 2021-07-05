@@ -1,3 +1,12 @@
+# File that defines what's global in interactive sessions.
+export PYTHONSTARTUP=$HOME/.pythonrc
+
+# Don't alter the prompt when activating virtual environments.
+export VIRTUAL_ENV_DISABLE_PROMPT=1
+
+# Keep mypy cache centralized.
+export MYPY_CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}/mypy
+
 # List installed packages.
 alias pyll='pip freeze --local --all'
 

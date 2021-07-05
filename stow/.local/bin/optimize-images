@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# Try to optimize various types of images with sensible defaults.
+
+set -euo pipefail
+
+for file in "$@"; do
+    case $file in
+    *.png) optipng -out "$file" "$file" ;;
+    *.gif) gifsicle --optimize=3 --output "$file" "$file" ;;
+    *.jpg) jpegtran -optimize -copy none -outfile "$file" "$file" ;;
+    esac
+done

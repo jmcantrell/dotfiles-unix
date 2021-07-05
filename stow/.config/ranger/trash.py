@@ -4,7 +4,13 @@ from datetime import datetime, timedelta
 from trashcli.fs import FileSystemReader
 from trashcli.list import DeletionDateExtractor
 from trashcli.list_mount_points import os_mount_points
-from trashcli.trash import TrashDir, TopTrashDirRules, TrashDirsScanner
+from trashcli.trash import (
+    TrashDir,
+    TopTrashDirRules,
+    TrashDirsScanner,
+    UserInfoProvider,
+    trash_dir_found,
+)
 
 from command import UserCommand
 
@@ -14,14 +20,15 @@ def get_trashinfos(older_than=None):
 
     file_reader = FileSystemReader()
     extractor = DeletionDateExtractor()
+    user_info_provider = UserInfoProvider(os.environ, os.getuid)
     trashdirs_scanner = TrashDirsScanner(
-        os.environ, os.getuid, os_mount_points, TopTrashDirRules(file_reader)
+        user_info_provider, os_mount_points, TopTrashDirRules(file_reader)
     )
 
     trash_dirs = trashdirs_scanner.scan_trash_dirs()
 
     for event, args in trash_dirs:
-        if event == TrashDirsScanner.Found:
+        if event == trash_dir_found:
             path, volume = args
             trash_dir = TrashDir(file_reader)
             for trashinfo in trash_dir.list_trashinfo(path):
@@ -87,6 +94,13 @@ class trashrestore(UserCommand):
     """
 
     command = "trash-restore"
+
+    def execute(self):
+        if not get_trashinfos():
+            self.fm.notify("Trash is empty.")
+            return
+
+        self.run()
 
 
 class trashlist(UserCommand):

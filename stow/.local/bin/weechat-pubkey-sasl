@@ -5,14 +5,7 @@
 set -euo pipefail
 
 name=${1:?missing server name}
-
-weechat=${XDG_CONFIG_HOME:-$HOME/.config}/weechat
-pem=$weechat/$name.pem
-
-if [[ ! -e $pem ]]; then
-    echo "Key $pem does not exist" >&2
-    exit 1
-fi
+pem=${XDG_CONFIG_HOME:-$HOME/.config}/weechat/$name.pem
 
 openssl ec -noout -text -conv_form compressed -in "$pem" |
     grep '^pub:' -A 3 | tail -n 3 | tr -d ' \n:' | xxd -r -p | base64

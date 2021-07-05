@@ -47,14 +47,13 @@ do_clear() {
 }
 
 action="set"
-
 unset OPTIND OPTARG
 while getopts ":halc" option; do
     case $option in
     h) usage ;;
-    a) action=add ;;
-    l) action=list ;;
-    c) action=clear ;;
+    a) action="add" ;;
+    l) action="list" ;;
+    c) action="clear" ;;
     *) die "invalid option '$option'" ;;
     esac
 done && shift $((OPTIND - 1))

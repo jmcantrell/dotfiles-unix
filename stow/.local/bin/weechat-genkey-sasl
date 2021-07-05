@@ -5,19 +5,7 @@
 set -euo pipefail
 
 name=${1:?missing server name}
+pem=${XDG_CONFIG_HOME:-$HOME/.config}/weechat/$name.pem
 
-weechat=${XDG_CONFIG_DIR:-$HOME/.config}/weechat
-pem=$weechat/$name.pem
-
-if [[ -e $pem ]]; then
-    echo "Key $pem already exists" >&2
-    exit 1
-fi
-
-mkdir -p "$weechat"
-
+mkdir -p "$(dirname "$pem")"
 openssl ecparam -genkey -name prime256v1 -out "$pem"
-
-weechat-pubkey "$name" | cbi
-
-echo "Public key for $name copied to clipboard" >&2

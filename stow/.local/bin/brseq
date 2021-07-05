@@ -3,15 +3,16 @@
 set -euo pipefail
 
 # Default options:
-format="%d/%b (%n)%e"
+format="%d/%b (%n of %N)%e"
 start_num=1
 increment=1
-unset width noop
+width=1
+noop=
 
 me=${0##*/}
 usage="Rename files as a sequence of numbers.
 
-Usage: $me [-h] [-n] [-w] [-s NUMBER] [-i NUMBER] [-f FORMAT] FILE...
+Usage: $me [OPTIONS] FILE...
 
 Options:
     -h           show this help message
@@ -19,7 +20,15 @@ Options:
     -n           show the renamed files without actually renaming them
     -s NUMBER    change start number (default: 1)
     -i NUMBER    change increment (default: 1)
+    -W NUMBER    set the width of each number to NUMBER characters with leading zeroes
     -f FORMAT    format file basename before extension (default: '$format')
+
+When specifying FORMAT, it can include some placeholders:
+    %N           the total number of files
+    %n           the number of FILE
+    %d           the directory of FILE
+    %b           the basename of FILE
+    %e           the extension of FILE
 "
 
 usage() {
@@ -55,8 +64,12 @@ done && shift $((OPTIND - 1))
 
 end_num=$((start_num + $# - 1))
 
-while read -r num; do
-    [[ $width ]] && num=$(printf "%0${width}d" "$num")
+format=${format/\%N/$#}
+
+readarray -t nums < <(seq "${seq_options[@]}" "$start_num" "$increment" "$end_num")
+
+for num in "${nums[@]}"; do
+    ((width > 1)) && num=$(printf "%0${width}d" "$num")
 
     src=$1
     shift
@@ -66,12 +79,12 @@ while read -r num; do
     base=$(basename "$src" "$ext")
 
     dst=$format
+    dst=${dst/\%n/$num}
     dst=${dst/\%d/$dir}
     dst=${dst/\%b/$base}
-    dst=${dst/\%n/$num}
     dst=${dst/\%e/$ext}
 
-    [[ $noop ]] || mv -i -T "$src" "$dst"
+    [[ -z $noop ]] && mv -i -T "$src" "$dst"
 
     echo "$dst"
-done < <(seq "${seq_options[@]}" "$start_num" "$increment" "$end_num")
+done

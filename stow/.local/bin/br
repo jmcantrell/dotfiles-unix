@@ -22,6 +22,7 @@ die() {
     exit 1
 }
 
+noop=
 unset OPTIND OPTARG
 while getopts ":hn" option; do
     case $option in
@@ -60,7 +61,7 @@ for ((i = 0; i < ${#dst_lines[@]}; i += 1)); do
 
     [[ "$src" == "$dst" ]] && continue
 
-    if [[ ! -v noop ]]; then
+    if [[ -z $noop ]]; then
         mkdir -p "$(dirname "$dst")"
         mv -i -T "$src" "$dst"
     fi

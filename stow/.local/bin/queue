@@ -55,16 +55,11 @@ if [[ "${FLOCKER:-}" != "$0" ]]; then
     export QUEUE=$queue
     export ACTION=${action:-list}
     export ITEM=${item:-}
+
     exec flock "$queue" "$0" "$@"
 fi
 
 unset FLOCKER
-
-require() {
-    for name in "$@"; do
-        [[ ${!name} ]] || die "$name is not set"
-    done
-}
 
 queue_list() {
     grep -v -E "$@" '^\s*(#|$)' "$QUEUE"

@@ -61,19 +61,6 @@ set viminfo+='1000  " marks for n files
 set viminfo+=<1000  " no more than n lines per register
 set viminfo+=s1000  " registers no larger than n kb
 
-" Set keys for <leader> and <localleader>.
-let mapleader = "\<space>"
-let maplocalleader = "\<cr>"
-
-" Yank to end of line.
-noremap Y y$
-
-" Open command window.
-nnoremap <leader>; q:
-
-" Reopen command window after executing.
-autocmd CmdwinEnter * map <buffer> <tab> <cr>q:
-
 " Only show concealed symbol if cchar is defined.
 set conceallevel=2
 
@@ -86,11 +73,59 @@ set shortmess+=a
 " Show pending command under statusline.
 set showcmd laststatus=2
 
+" Show a menu for insert completion even if there's only one choice.
+" Don't select or insert anything automatically.
+set completeopt=menu,menuone,noselect,noinsert
+
+" Use a menu for command line completion (ignoring case).
+" Complete till the longest common string.
+" If there is only one option, complete it.
+set wildmenu wildignorecase wildmode=longest:full,list:full
+
+" Enable auto formatting for commented text.
+set textwidth=80 formatoptions+=corn
+
+" Reformat paragraphs according to textwidth.
+set formatoptions+=q
+
+" Disable auto formatting for normal text.
+set formatoptions-=t
+
+" Set the window title.
+set title titlestring=%{v:progname}\ %<%F
+
+" Format the status line:
+
+" buffer number, file path and status
+set statusline=%#StatusLineBufferNr#%(\ %n\ %)%*
+set statusline+=\ %f%(\ %#StatusLineFlag#%m%r%w%*%)
+
+" left / right side separator
+set statusline+=%=
+
+" tuncation start
+set statusline+=%<
+
+" file type, line, column, percent through file
+set statusline+=%(\ %{&ft}%)\ :%l\ +%c
+set statusline+=\ %#StatusLinePercentNr#%(\ %P\ %)%*
+
+" Set keys for <leader> and <localleader>.
+let mapleader = "\<space>"
+let maplocalleader = "\<cr>"
+
+" Yank to end of line.
+noremap Y y$
+
+" Open command window.
+nnoremap <leader>; q:
+
+" Format paragraph or selection.
+nnoremap Q gqap
+vnoremap Q gq
+
 " Redraw screen and remove search highlights.
 nnoremap <silent> <c-l> :noh<cr><c-l>
-
-" Write file with sudo.
-command! -bar W :w !sudo tee % >/dev/null<cr>
 
 " Edit a file in the same directory as current file.
 nmap <leader>e :e <c-r>=expand('%:h').'/'<cr>
@@ -172,33 +207,17 @@ nmap gyf :call setreg('+', expand('%:p'), 'v')<cr>
 " Copy the file path (with line number) to the clipboard.
 nmap gyl :call setreg('+', expand('%:p').':'.line('.'), 'v')<cr>
 
-" Show a menu for insert completion even if there's only one choice.
-" Don't select or insert anything automatically.
-set completeopt=menu,menuone,noselect,noinsert
-
-" Use a menu for command line completion (ignoring case).
-" Complete till the longest common string.
-" If there is only one option, complete it.
-set wildmenu wildignorecase wildmode=longest:full,list:full
-
-" Enable auto formatting for commented text.
-set textwidth=80 formatoptions+=corn
-
-" Reformat paragraphs according to textwidth.
-set formatoptions+=q
-
-" Disable auto formatting for normal text.
-set formatoptions-=t
-
-" Format paragraph or selection.
-nnoremap Q gqap
-vnoremap Q gq
-
-" Enable file type plugins.
-filetype plugin indent on
+" Write file with sudo.
+command! -bar W :w !sudo tee % >/dev/null<cr>
 
 " Detect file type if name changes.
 autocmd BufFilePost * filetype detect
+
+" Reopen command window after executing.
+autocmd CmdwinEnter * map <buffer> <tab> <cr>q:
+
+" Enable file type plugins.
+filetype plugin indent on
 
 " Enable syntax highlighting.
 syntax on
@@ -208,22 +227,3 @@ color noctu
 
 " Apply color scheme tweaks.
 color custom
-
-" Set the window title.
-set title titlestring=%{v:progname}\ %<%F
-
-" Format the status line:
-
-" buffer number, file path and status
-set statusline=%#StatusLineBufferNr#%(\ %n\ %)%*
-set statusline+=\ %f%(\ %#StatusLineFlag#%m%r%w%*%)
-
-" left / right side separator
-set statusline+=%=
-
-" tuncation start
-set statusline+=%<
-
-" file type, line, column, percent through file
-set statusline+=%(\ %{&ft}%)\ :%l\ +%c
-set statusline+=\ %#StatusLinePercentNr#%(\ %P\ %)%*

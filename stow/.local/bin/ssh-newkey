@@ -6,10 +6,10 @@
 
 set -euo pipefail
 
-key=$HOME/.ssh/${1:-id_rsa}
-comment="$USER@$HOSTNAME $(date -I)"
+key_type=ed25519
+key=$HOME/.ssh/${1:-id_$key_type}
 
-ssh-keygen -t rsa -b 4096 -f "$key" -C "$comment"
+ssh-keygen -t "$key_type" -f "$key" -C "$USER@$HOSTNAME"
 
 pubkey=$key.pub
 

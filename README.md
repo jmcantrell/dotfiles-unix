@@ -7,7 +7,7 @@ My configuration files and scripts common to all UNIX-like systems.
 Clone this repository:
 
 ```
-$ git clone git@github.com:jmcantrell/dotfiles-unix.git ~/.dotfiles-unix
+$ git clone git@gitlab.com:jmcantrell/dotfiles-unix.git ~/.dotfiles-unix
 $ cd ~/.dotfiles-unix
 ```
 

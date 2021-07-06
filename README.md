@@ -11,7 +11,7 @@ $ git clone git@gitlab.com:jmcantrell/dotfiles-unix.git ~/.dotfiles-unix
 $ cd ~/.dotfiles-unix
 ```
 
-Initialize (or later, update) the submodules:
+Update the repository:
 
 ```
 $ ./update.sh

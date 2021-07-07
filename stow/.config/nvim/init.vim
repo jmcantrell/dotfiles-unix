@@ -197,10 +197,6 @@ nmap gr :diffget RE<cr>
 nmap gb :diffget BA<cr>
 nmap gl :diffget LO<cr>
 
-" Copy line(s) to clipboard.
-vnoremap gy  "+y
-nnoremap gyy "+yy
-
 " Copy the file path to the clipboard.
 nmap gyf :call setreg('+', expand('%:p'), 'v')<cr>
 

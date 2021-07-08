@@ -33,11 +33,15 @@ done
 cat >"$dir"/default-packages <<-EOF
 bandit
 black
+bpython
+flake8
 jedi-language-server
 mypy
 pip
+pipenv
+poetry
 pudb
-pycodestyle
-pydocstyle
 pynvim
+twine
+wheel
 EOF

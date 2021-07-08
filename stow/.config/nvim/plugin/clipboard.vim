@@ -1,12 +1,12 @@
-" nnoremap gp "+p
-" vnoremap gp "+p
+nnoremap gp "+p
+vnoremap gp "+p
 
-" nnoremap gP "+P
-" vnoremap gP "+P
+nnoremap gP "+P
+vnoremap gP "+P
 
-" nnoremap <expr> gy YankClipboard()
-" xnoremap <expr> gy YankClipboard()
-" nnoremap <expr> gyy YankClipboard() .. '_'
+nnoremap <expr> gy YankClipboard()
+xnoremap <expr> gy YankClipboard()
+nnoremap <expr> gyy YankClipboard() .. '_'
 
 function YankClipboard(type = '') abort
     if a:type == ''

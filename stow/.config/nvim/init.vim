@@ -223,3 +223,6 @@ color noctu
 
 " Apply color scheme tweaks.
 color custom
+
+" Enable extended % matching.
+packadd! matchit

@@ -10,10 +10,10 @@ action=${2:-}
 
 if [[ -z $action ]]; then
     if [[ $src == *://* ]]; then
-        action="url"
+        action="url=$src"
     else
-        action="file"
+        action="file=@$src"
     fi
 fi
 
-exec curl -F "$action=$src" https://0x0.st
+exec curl -F "$action" https://0x0.st

@@ -196,3 +196,6 @@
 [submodule "vim-cursorword"]
 	path = stow/.config/nvim/pack/default/start/cursorword
 	url = https://github.com/itchyny/vim-cursorword.git
+[submodule "webapi"]
+	path = stow/.config/nvim/pack/default/start/webapi
+	url = https://github.com/mattn/webapi-vim.git

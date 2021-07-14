@@ -199,6 +199,3 @@
 [submodule "webapi"]
 	path = stow/.config/nvim/pack/default/start/webapi
 	url = https://github.com/mattn/webapi-vim.git
-[submodule "matchup"]
-	path = stow/.config/nvim/pack/default/start/matchup
-	url = https://github.com/andymass/vim-matchup.git

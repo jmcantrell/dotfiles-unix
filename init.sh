@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-git submodule update --init
+git submodule update --init --recursive

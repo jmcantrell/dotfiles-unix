@@ -63,9 +63,4 @@ VBoxManage storageattach "$name" \
     --port 0 --device 0 --type dvddrive \
     --medium "$isofile"
 
-VBoxManage sharedfolder add "$name" \
-    --automount --name init \
-    --hostpath "$HOME/.dotfiles" \
-    --auto-mount-point /home/user/.dotfiles
-
 VBoxManage snapshot "$name" take live

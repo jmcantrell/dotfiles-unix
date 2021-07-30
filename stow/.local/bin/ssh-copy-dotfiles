@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+host=$1
+
 rsync -avz --delete --delete-excluded \
     --cvs-exclude --exclude=.git --exclude=.gitmodules \
-    ~/.dotfiles "$1":~
+    ~/.dotfiles "$host":~
+
+ssh "$host" "cd ~/.dotfiles && ./install.sh && ./config.sh && ./stow.sh"

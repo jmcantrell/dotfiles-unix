@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+nvim -c UpdateRemotePlugins -c q &>/dev/null

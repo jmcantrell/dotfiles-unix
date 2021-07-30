@@ -8,3 +8,5 @@ chmod 700 ~/.local/tmp
 mkdir -p ~/.config/nvim/spell
 
 stow --no-folding -d . -t ~ -R stow
+
+./build.sh

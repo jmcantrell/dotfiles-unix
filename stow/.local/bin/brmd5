@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Rename files to an md5 hash of its contents.
+
+exec brhash --algorithm md5 "$@"

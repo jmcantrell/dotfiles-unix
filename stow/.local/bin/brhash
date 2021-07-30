@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+
+"""Rename files to hashes based on contents."""
+
+import os, hashlib
+from argparse import ArgumentParser
+
+algorithms = sorted(hashlib.algorithms_guaranteed)
+
+
+def hash_content(fn, alg):
+    f = open(fn, "rb")
+    m = getattr(hashlib, alg)()
+
+    while True:
+        data = f.read(8192)
+        if not data:
+            break
+        m.update(data)
+
+    return m.hexdigest()
+
+
+def format_hash(fn, alg):
+    d = os.path.dirname(fn)
+    ext = os.path.splitext(fn)[1]
+    h = hash_content(fn, alg)
+    return os.path.join(d, h + ext)
+
+
+def parse_args():
+    p = ArgumentParser(description=__doc__)
+
+    p.add_argument("files", nargs="*", metavar="file", help="file to rename")
+    p.add_argument(
+        "-a",
+        "--algorithm",
+        default="md5",
+        metavar="hash",
+        choices=algorithms,
+        help="use hash when renaming",
+    )
+    p.add_argument(
+        "-l",
+        "--list",
+        action="store_true",
+        help="list available algorithms (default is first)",
+    )
+    p.add_argument("-n", "--noop", action="store_true", help="dry run")
+
+    return p.parse_args()
+
+
+def main():
+    args = parse_args()
+
+    if args.list:
+        for algorithm in algorithms:
+            print(algorithm)
+        return
+
+    for fn in args.files:
+        if not os.path.isfile(fn):
+            continue
+
+        nf = format_hash(fn, args.algorithm)
+
+        if fn == nf:
+            continue
+
+        print(nf)
+
+        if not args.noop:
+            os.rename(fn, nf)
+
+
+if __name__ == "__main__":
+    main()

@@ -4,11 +4,6 @@ set -euo pipefail
 
 config_dir=$HOME/.config/nvim
 
-echo -n "generating neovim help tags " >&2
-
 for dir in "$config_dir"/doc "$config_dir"/pack/default/start/*/doc; do
     vim -c "helptags $dir" -c q &>/dev/null
-    echo -n "." >&2
 done
-
-echo " done" >&2

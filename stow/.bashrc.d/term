@@ -1,4 +1,7 @@
 # Update LINES and COLUMNS after each command.
 shopt -s checkwinsize
 
+# Update the terminal title to show the current directory.
+PROMPT_COMMAND='echo -en "\033]0;bash ${PWD/$HOME/\~}\a"'
+
 # vi:ft=sh

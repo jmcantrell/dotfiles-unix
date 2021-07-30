@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+rsync -avz --delete --delete-excluded \
+    --cvs-exclude --exclude=.git --exclude=.gitmodules \
+    ~/.dotfiles "$1":~

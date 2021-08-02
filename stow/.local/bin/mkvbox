@@ -12,6 +12,7 @@ isofile=${2:?missing iso file}
 ostype=${ostype:-Linux_64}
 memory=${memory:-4096}
 cpus=${cpus:-2}
+firmware=${firmware:-bios}
 
 vmsdir=$(
     VBoxManage list systemproperties |
@@ -30,15 +31,15 @@ VBoxManage createvm \
     --name "$name" --ostype "$ostype" --register
 
 VBoxManage modifyvm "$name" \
-    --ioapic on --memory "$memory" --cpus "$cpus" --pae on \
-    --hwvirtex on --paravirtprovider kvm --nestedpaging on \
-    --largepages on --nested-hw-virt on \
-    --rtcuseutc on --clipboard bidirectional \
-    --usb on --usbehci on --usbxhci on \
-    --graphicscontroller vmsvga --vram 128 \
+    --memory "$memory" --clipboard bidirectional \
+    --boot1 dvd --boot2 disk --boot3 none --boot4 none \
+    --ioapic on --firmware "$firmware" --rtcuseutc on \
+    --cpus "$cpus" --pae on --hwvirtex on --nested-hw-virt on \
+    --paravirtprovider kvm --nestedpaging on --largepages on \
+    --vram 128 --graphicscontroller vmsvga \
     --audiocontroller hda --audioin on --audioout on \
     --nic1 bridged --bridgeadapter1 "$bridgedif" \
-    --boot1 dvd --boot2 disk --boot3 none --boot4 none \
+    --usb on --usbehci on --usbxhci on \
     --defaultfrontend headless
 
 vdifile="$vmsdir/$name.vdi"

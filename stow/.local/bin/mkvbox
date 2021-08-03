@@ -34,7 +34,7 @@ VBoxManage modifyvm "$name" \
     --memory "$memory" --clipboard bidirectional \
     --boot1 dvd --boot2 disk --boot3 none --boot4 none \
     --ioapic on --firmware "$firmware" --rtcuseutc on \
-    --cpus "$cpus" --pae on --hwvirtex on --nested-hw-virt on \
+    --cpus "$cpus" --pae on --hwvirtex on \
     --paravirtprovider kvm --nestedpaging on --largepages on \
     --vram 128 --graphicscontroller vmsvga \
     --audiocontroller hda --audioin on --audioout on \

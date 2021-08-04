@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+unset PATH
+. /etc/profile
+
+options=()
+if [[ -n $TORRENT_PORT ]]; then
+    options+=(--listen-port "$TORRENT_PORT" --dht-listen-port "$TORRENT_PORT")
+fi
+
+exec aria2c "${options[@]}" "$@"

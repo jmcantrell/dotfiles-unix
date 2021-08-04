@@ -31,8 +31,8 @@ PS1+='${vcs_info_msg_0_:+ $vcs_info_msg_0_}'
 
 PS1+=$'\n'
 
-# hostname (if over ssh)
-PS1+='${SSH_CLIENT:+%m }'
+# hostname (if not in tmux)
+[[ -z $TMUX ]] && PS1+='%m '
 
 # user privilege indicator
 PS1+='%# '

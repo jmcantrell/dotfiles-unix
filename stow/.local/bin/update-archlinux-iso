@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+# Download the latest Arch Linux ISO, if needed.
+
+set -euo pipefail
+
+releases_file=${XDG_CACHE_HOME:-$HOME/.cache}/archlinux/releases.json
+mkdir -p "$(dirname "$releases_file")"
+curl -Ls -o "$releases_file" https://archlinux.org/releng/releases/json
+
+iso_name=$(jq -r .releases[0].torrent.file_name "$releases_file")
+iso_file=${XDG_DATA_HOME:-$HOME/.local/share}/archlinux/$iso_name
+iso_dir=$(dirname "$iso_file")
+mkdir -p "$iso_dir"
+
+if [[ ! -f "$iso_file" || -f "$iso_file".aria2 ]]; then
+    magnet_uri=$(jq -r .releases[0].magnet_uri "$releases_file")
+    aria2c -d "$iso_dir" --seed-time 0 "$magnet_uri"
+fi
+
+ln -sfvr "$iso_file" "$iso_dir"/archlinux.iso

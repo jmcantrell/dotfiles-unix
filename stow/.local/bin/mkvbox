@@ -39,7 +39,6 @@ VBoxManage modifyvm "$name" \
     --vram 128 --graphicscontroller vmsvga \
     --audiocontroller hda --audioin on --audioout on \
     --nic1 bridged --bridgeadapter1 "$bridgedif" \
-    --usb on --usbehci on --usbxhci on \
     --defaultfrontend headless
 
 vdifile="$vmsdir/$name.vdi"

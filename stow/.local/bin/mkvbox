@@ -11,6 +11,7 @@ isofile=${2:?missing iso file}
 
 ostype=${ostype:-Linux_64}
 memory=${memory:-4096}
+size=${size:-10}
 cpus=${cpus:-2}
 firmware=${firmware:-bios}
 
@@ -44,7 +45,7 @@ VBoxManage modifyvm "$name" \
 vdifile="$vmsdir/$name.vdi"
 
 VBoxManage createhd \
-    --filename "$vdifile" --size $((50 * 1024))
+    --filename "$vdifile" --size $((size * 1024))
 
 VBoxManage storagectl "$name" \
     --name "SATA Controller" \

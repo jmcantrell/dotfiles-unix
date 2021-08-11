@@ -1,5 +1,5 @@
 # File that defines what's global in interactive sessions.
-export PYTHONSTARTUP=$HOME/.pythonrc
+export PYTHONSTARTUP=${XDG_CONFIG_HOME:-$HOME/.config}/python/startup.py
 
 # Don't alter the prompt when activating virtual environments.
 export VIRTUAL_ENV_DISABLE_PROMPT=1

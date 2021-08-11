@@ -9,5 +9,3 @@ readline.parse_and_bind("tab: complete")
 
 # Display values with pprint by default.
 sys.displayhook = pprint
-
-# vi:ft=python

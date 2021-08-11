@@ -2,7 +2,7 @@
 
 # Delete a branch locally and at the origin.
 
-set -euo pipefail
+set -eu
 
 branch=${1:?missing branch name}
 

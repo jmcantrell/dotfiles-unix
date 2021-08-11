@@ -4,7 +4,7 @@
 # Usage: mkvbox "Linux" linux.iso
 #        OSTYPE=ArchLinux_64 mkvbox "Arch Linux" archlinux.iso
 
-set -euo pipefail
+set -eu
 
 name=${1:?missing machine name}
 isofile=${2:?missing iso file}

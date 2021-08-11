@@ -2,7 +2,7 @@
 
 # Run a bunch of maintenance tasks on a git repository.
 
-set -euo pipefail
+set -eu
 
 git fsck --full
 git reflog expire --expire=now --all

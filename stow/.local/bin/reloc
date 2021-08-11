@@ -3,7 +3,7 @@
 # Move files to a directory, then symlink them back to their original location.
 # Usage: reloc DIRECTORY [PATH...]
 
-set -euo pipefail
+set -eu
 
 dst=${1:?missing destination directory}
 shift

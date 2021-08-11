@@ -2,7 +2,7 @@
 
 # Find and output groups of duplicate files.
 
-set -euo pipefail
+set -eu
 
 find "$@" -type f | sort |              # sort initial files
     xargs -r -I{} md5sum {} |           # prepend the checksum

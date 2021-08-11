@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -eu
 
 mkdir -p ~/.local/tmp
 chmod 700 ~/.local/tmp

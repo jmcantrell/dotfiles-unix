@@ -2,7 +2,7 @@
 
 # Edit any files passed over stdin.
 
-set -euo pipefail
+set -eu
 
 readarray -t paths
 

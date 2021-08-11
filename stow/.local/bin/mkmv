@@ -4,7 +4,7 @@
 # If no files are given, it behaves exactly like mkdir -p.
 # Usage: mkmv DIRECTORY [FILE...]
 
-set -euo pipefail
+set -eu
 
 dir=${1:?no directory given}
 shift

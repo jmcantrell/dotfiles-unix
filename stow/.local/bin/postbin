@@ -3,7 +3,7 @@
 # Post files/links to a shareable URL.
 # Usage: postbin ITEM [ACTION]
 
-set -euo pipefail
+set -eu
 
 src=${1:?missing the item to post}
 action=${2:-}

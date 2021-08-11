@@ -2,7 +2,7 @@
 
 # Import gnupg data from a directory.
 
-set -euo pipefail
+set -eu
 
 dir=${1:-$PWD}
 

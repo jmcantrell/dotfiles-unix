@@ -4,6 +4,6 @@
 # Usage: pastebin /path/to/file
 #        command-with-stdout | pastebin
 
-set -euo pipefail
+set -eu
 
 exec curl --data-binary @"${1:-/dev/stdin}" https://paste.rs

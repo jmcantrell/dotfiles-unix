@@ -2,7 +2,7 @@
 
 # Download the latest Arch Linux ISO, if needed.
 
-set -euo pipefail
+set -eu
 
 releases_file=${XDG_CACHE_HOME:-$HOME/.cache}/archlinux/releases.json
 mkdir -p "$(dirname "$releases_file")"

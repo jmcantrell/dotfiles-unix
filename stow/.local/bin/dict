@@ -2,6 +2,6 @@
 
 # Lookup a definition on dict.org.
 
-set -euo pipefail
+set -eu
 
 exec curl -s dict.org/define:"${1:?missing word}":english | pager

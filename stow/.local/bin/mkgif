@@ -3,6 +3,6 @@
 # Convert given images into an animated gif.
 # Usage: mkgif IMAGES... GIF
 
-set -euo pipefail
+set -eu
 
 exec convert -verbose -delay 15 -loop 0 -resize 500 "$@"

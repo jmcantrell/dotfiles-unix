@@ -2,6 +2,6 @@
 
 # Use gron with yaml files.
 
-set -euo pipefail
+set -eu
 
 exec yq . "$@" | gron | sed 's/^json\./yaml./'

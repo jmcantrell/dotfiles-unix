@@ -3,6 +3,6 @@
 # Repair permissions on a gpg home directory.
 # Usage: fixgpg [DIRECTORY]
 
-set -euo pipefail
+set -eu
 
 exec chmod -R go-rwx "${1:-${GNUPGHOME:-$HOME/.gnupg}}"

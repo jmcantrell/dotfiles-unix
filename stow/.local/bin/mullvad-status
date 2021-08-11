@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -eu
 
 json=$(curl https://am.i.mullvad.net/json 2>/dev/null) || {
     echo "Status: unknown" >&2

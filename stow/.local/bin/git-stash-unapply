@@ -2,6 +2,6 @@
 
 # Unapply the given (or last stash).
 
-set -euo pipefail
+set -eu
 
 git stash show -p "$@" | git apply -R

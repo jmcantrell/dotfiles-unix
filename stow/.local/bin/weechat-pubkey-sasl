@@ -2,7 +2,7 @@
 
 # Output the SASL public key for a weechat IRC server.
 
-set -euo pipefail
+set -eu
 
 name=${1:?missing server name}
 pem=${XDG_CONFIG_HOME:-$HOME/.config}/weechat/$name.pem

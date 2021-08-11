@@ -2,7 +2,7 @@
 
 # Show top disk usage offenders.
 
-set -euo pipefail
+set -eu
 
 find "$@" -mindepth 1 -maxdepth 1 -exec du -sb {} \; | # prepend byte size
     sort --numeric-sort --reverse |                    # sort descending

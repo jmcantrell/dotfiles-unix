@@ -3,7 +3,7 @@
 # Execute a command in a given directory.
 # Usage: ind DIRECTORY COMMAND [ARGUMENT...]
 
-set -euo pipefail
+set -eu
 
 dir=${1:?no directory given}
 shift

@@ -3,7 +3,7 @@
 # Repair permissions on an ssh directory.
 # Usage: fixssh [DIRECTORY]
 
-set -euo pipefail
+set -eu
 
 dir=${1:-$HOME/.ssh}
 

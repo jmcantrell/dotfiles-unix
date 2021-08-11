@@ -54,7 +54,7 @@ while getopts ":halc" option; do
     a) action="add" ;;
     l) action="list" ;;
     c) action="clear" ;;
-    *) die "invalid option '$option'" ;;
+    *) die "invalid option: $option" ;;
     esac
 done && shift $((OPTIND - 1))
 

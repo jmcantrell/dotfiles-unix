@@ -53,7 +53,7 @@ while getopts ":hf:s:i:W:wn" option; do
     W) width=$OPTARG ;;
     w) seq_options+=(-w) ;;
     n) noop=1 ;;
-    *) die "invalid option '$option'" ;;
+    *) die "invalid option: $option" ;;
     esac
 done && shift $((OPTIND - 1))
 

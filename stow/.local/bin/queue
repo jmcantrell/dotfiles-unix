@@ -39,7 +39,7 @@ while getopts ":hplca:" option; do
         action="add"
         item=$OPTARG
         ;;
-    *) die "invalid option '$option'" ;;
+    *) die "invalid option: $option" ;;
     esac
 done && shift $((OPTIND - 1))
 

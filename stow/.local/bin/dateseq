@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+# Return a sequence of dates.
+
+# The start date parameter can be any string that `date` recognizes,
+# and every argument after the count parameter is passed on to `date`, so you
+# can do stuff like the following examples:
+
+# Get the dates for the next five hours, starting now:
+# dateseq now hour 5
+
+# Get the UTC dates in ISO 8601 format for the first three months of 2001:
+# dateseq 2001-01-01 month 3 --utc --iso-8601
+
+set -eu
+
+start_date=$1
+increment=$2
+count=$3
+shift 3
+
+if [[ $count == -* ]]; then
+    op=-
+    count=${count##-}
+else
+    op=+
+    count=${count##+}
+fi
+
+for ((i = 0; i < count; i++)); do
+    date --date="$start_date $op $i $increment" "$@"
+done

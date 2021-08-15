@@ -6,10 +6,14 @@ set -eu
 
 dir=${1:-$PWD}
 
-[[ -d $dir ]] || dir=$(dirname "$dir")
+if [[ ! -d $dir ]]; then
+    dir=$(dirname "$dir")
+fi
 
 while [[ -d $dir && ! -e $dir/.git ]]; do
     dir+=/..
 done
 
-[[ -d $dir ]] && realpath "$dir"
+if [[ -d $dir ]]; then
+    realpath "$dir"
+fi

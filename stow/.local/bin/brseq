@@ -53,9 +53,10 @@ while getopts ":hf:s:i:W:wn" option; do
     W) width=$OPTARG ;;
     w) seq_options+=(-w) ;;
     n) noop=1 ;;
-    *) die "invalid option: $option" ;;
+    *) die "invalid option: $OPTARG" ;;
     esac
 done && shift $((OPTIND - 1))
+unset option OPTIND OPTARG
 
 [[ $format == *%n* ]] || die "format does not contain '%n'"
 [[ $width == *[!0-9]* ]] && die "width must be a positive integer"

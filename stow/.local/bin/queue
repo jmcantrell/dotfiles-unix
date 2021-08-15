@@ -39,9 +39,10 @@ while getopts ":hplca:" option; do
         action="add"
         item=$OPTARG
         ;;
-    *) die "invalid option: $option" ;;
+    *) die "invalid option: $OPTARG" ;;
     esac
 done && shift $((OPTIND - 1))
+unset option OPTIND OPTARG
 
 queue=${1:?missing queue file}
 

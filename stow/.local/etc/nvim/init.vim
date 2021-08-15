@@ -197,11 +197,14 @@ nmap gr :diffget RE<cr>
 nmap gb :diffget BA<cr>
 nmap gl :diffget LO<cr>
 
+" Copy the file name to the clipboard.
+nmap <silent> gyn :call setreg('+', expand('%:t'), 'v')<cr>
+
 " Copy the file path to the clipboard.
-nmap <silent> gyf :call setreg('+', expand('%:p'), 'v')<cr>
+nmap <silent> gyp :call setreg('+', expand('%:p'), 'v')<cr>
 
 " Copy the file path (with line number) to the clipboard.
-nmap <silent> gyl :call setreg('+', expand('%:p').':'.line('.'), 'v')<cr>
+nmap <silent> gyP :call setreg('+', expand('%:p').':'.line('.'), 'v')<cr>
 
 " Write file with sudo.
 command! -bar W :w !sudo tee % >/dev/null<cr>

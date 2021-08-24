@@ -2,7 +2,8 @@
 
 """Rename files to hashes based on contents."""
 
-import os, hashlib
+import os
+import hashlib
 from argparse import ArgumentParser
 
 algorithms = sorted(hashlib.algorithms_guaranteed)

@@ -7,7 +7,6 @@ format="%d/%b (%n of %N)%e"
 start_num=1
 increment=1
 width=1
-noop=
 
 me=${0##*/}
 usage="Rename files as a sequence of numbers.
@@ -46,22 +45,33 @@ declare -a seq_options
 unset OPTIND OPTARG
 while getopts ":hf:s:i:W:wn" option; do
     case $option in
-    h) usage ;;
     f) format=$OPTARG ;;
     s) start_num=$OPTARG ;;
     i) increment=$OPTARG ;;
     W) width=$OPTARG ;;
     w) seq_options+=(-w) ;;
     n) noop=1 ;;
+    h) usage ;;
     *) die "invalid option: $OPTARG" ;;
     esac
 done && shift $((OPTIND - 1))
 unset option OPTIND OPTARG
 
-[[ $format == *%n* ]] || die "format does not contain '%n'"
-[[ $width == *[!0-9]* ]] && die "width must be a positive integer"
-[[ $start_num == *[!0-9]* ]] && die "start number must be a positive integer"
-[[ $increment == *[!0-9]* ]] && die "increment must be a positive integer"
+if [[ $format != *%n* ]]; then
+    die "format does not contain '%n'"
+fi
+
+if [[ $width == *[!0-9]* ]]; then
+    die "width must be a positive integer"
+fi
+
+if [[ $start_num == *[!0-9]* ]]; then
+    die "start number must be a positive integer"
+fi
+
+if [[ $increment == *[!0-9]* ]]; then
+    die "increment must be a positive integer"
+fi
 
 end_num=$((start_num + $# - 1))
 
@@ -85,7 +95,9 @@ for num in "${nums[@]}"; do
     dst=${dst/\%b/$base}
     dst=${dst/\%e/$ext}
 
-    [[ -z $noop ]] && mv -i -T "$src" "$dst"
+    if [[ ! -v noop ]]; then
+        mv -i -T "$src" "$dst"
+    fi
 
     echo "$dst"
 done

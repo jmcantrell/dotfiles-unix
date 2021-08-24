@@ -31,7 +31,6 @@ die() {
 unset OPTIND OPTARG
 while getopts ":hplca:" option; do
     case $option in
-    h) usage ;;
     p) action="pop" ;;
     l) action="list" ;;
     c) action="clear" ;;
@@ -39,6 +38,7 @@ while getopts ":hplca:" option; do
         action="add"
         item=$OPTARG
         ;;
+    h) usage ;;
     *) die "invalid option: $OPTARG" ;;
     esac
 done && shift $((OPTIND - 1))
@@ -50,7 +50,9 @@ queue=${1:?missing queue file}
 # If it doesn't, wait until it does.
 
 if [[ "${FLOCKER:-}" != "$0" ]]; then
-    [[ $queue ]] || die "no queue file provided"
+    if [[ -z $queue ]]; then
+        die "no queue file provided"
+    fi
 
     export FLOCKER=$0
     export QUEUE=$queue
@@ -91,4 +93,4 @@ queue_clear() {
     sed -E -i "/^\s*[^#]/s/^\s*/# /" "$QUEUE"
 }
 
-queue_$ACTION
+queue_"$ACTION"

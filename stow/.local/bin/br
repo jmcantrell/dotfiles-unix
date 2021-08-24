@@ -26,8 +26,8 @@ noop=
 unset OPTIND OPTARG
 while getopts ":hn" option; do
     case $option in
-    h) usage ;;
     n) noop=1 ;;
+    h) usage ;;
     *) die "invalid option: $OPTARG" ;;
     esac
 done && shift $((OPTIND - 1))

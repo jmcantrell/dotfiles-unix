@@ -2,7 +2,8 @@
 
 """Sort lines using a regular expression."""
 
-import sys, re
+import sys
+import re
 from argparse import ArgumentParser
 
 

@@ -1,49 +1,49 @@
 [core]
-    excludesFile = ~/.local/etc/git/ignore
+	excludesFile = ~/.local/etc/git/ignore
 
 [include]
-    path = ~/.local/etc/git/secret
+	path = ~/.local/etc/git/secret
 
 [init]
-    defaultBranch = master
+	defaultBranch = main
 
 [color]
-    ui = auto
-    branch = auto
-    diff = auto
-    interactive = auto
-    status = auto
+	ui = auto
+	branch = auto
+	diff = auto
+	interactive = auto
+	status = auto
 
 [pull]
-    rebase = false
+	rebase = false
 
 [push]
-    default = current
+	default = current
 
 [branch]
-    autoSetupMerge = true
+	autoSetupMerge = true
 
 [diff]
-    mnemonicPrefix = true
-    submodule = log
-    colorMoved = default
+	mnemonicPrefix = true
+	submodule = log
+	colorMoved = default
 
 [difftool]
-    prompt = false
+	prompt = false
 
 [merge]
-    tool = vimdiff
+	tool = vimdiff
 
 [mergetool]
-    prompt = false
+	prompt = false
 
 [web]
-    browser = browser
+	browser = browser
 
 [alias]
-    ls = ls-files
-    fix = mergetool
-    amend = commit --amend
+	ls = ls-files
+	fix = mergetool
+	amend = commit --amend
 
 [advice]
-    detachedHead = false
+	detachedHead = false

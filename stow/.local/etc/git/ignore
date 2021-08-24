@@ -21,3 +21,6 @@
 # todo files
 TODO
 *.todo
+
+.envrc
+.direnv/

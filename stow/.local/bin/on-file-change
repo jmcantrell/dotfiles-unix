@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+directory=${1:?missing directory to watch}
+shift
+
+trap 'kill $$' INT
+
+while sleep 0.1; do
+    find "$directory" -type f | entr -acd "$@" || continue
+done

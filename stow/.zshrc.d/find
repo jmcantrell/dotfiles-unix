@@ -1,3 +1,0 @@
-alias find='noglob find'
-
-# vi:ft=zsh

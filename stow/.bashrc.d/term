@@ -3,7 +3,15 @@ shopt -s checkwinsize
 
 INPUTRC=$HOME/.local/etc/inputrc
 
+_set_term_title() {
+    printf "\033]0;bash %s\a" "$*"
+}
+
+_set_term_title_cwd() {
+    _set_term_title "${PWD/$HOME/\~}"
+}
+
 # Update the terminal title to show the current directory.
-PROMPT_COMMAND='echo -en "\033]0;bash ${PWD/$HOME/\~}\a"'
+PROMPT_COMMAND=_set_term_title_cwd${PROMPT_COMMAND:+;$PROMPT_COMMAND}
 
 # vi:ft=sh

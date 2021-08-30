@@ -2,20 +2,23 @@
 
 set -eu
 
-me=${0##*/}
+name=${0##*/}
 usage="Safely manage a queue of items.
 
-Usage: $me [-h] [-lpc] [-a ITEM] FILE
-
-Options:
-    -h         show this help message
-    -a ITEM    add ITEM to queue
-    -l         list items in queue (this is the default)
-    -p         pop the next item and print it
-    -c         clear the queue
+Usage:
+    $name FILE [ACTION]
 
 Arguments:
-    FILE       use FILE as queue storage
+    FILE      file in which to store queued items
+    ACTION    action to perform against queue file
+
+Actions:
+    list      list items in the queue (default)
+    add       add items from stdin to queue
+    pop       remove next item from queue and print it
+    clear     remove all items from queue
+
+Items are popped from the top and added to the bottom.
 "
 
 usage() {
@@ -24,73 +27,65 @@ usage() {
 }
 
 die() {
-    echo "$me: $*" >&2
+    echo "ERROR: $*" >&2
     exit 1
 }
 
-unset OPTIND OPTARG
-while getopts ":hplca:" option; do
+while getopts ":h" option; do
     case $option in
-    p) action="pop" ;;
-    l) action="list" ;;
-    c) action="clear" ;;
-    a)
-        action="add"
-        item=$OPTARG
-        ;;
     h) usage ;;
-    *) die "invalid option: $OPTARG" ;;
+    *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
-unset option OPTIND OPTARG
 
-queue=${1:?missing queue file}
+if [[ ! -v 1 ]]; then
+    die "Missing queue file"
+fi
+
+queue=$1
+action=${2:-list}
+
+case $action in
+list | add | pop | clear | hold) ;;
+*) die "Invalid action '$action'" ;;
+esac
 
 # Ensure this invocation has exclusive access to the queue file.
 # If it doesn't, wait until it does.
 
-if [[ "${FLOCKER:-}" != "$0" ]]; then
-    if [[ -z $queue ]]; then
-        die "no queue file provided"
-    fi
-
-    export FLOCKER=$0
-    export QUEUE=$queue
-    export ACTION=${action:-list}
-    export ITEM=${item:-}
-
-    exec flock "$queue" "$0" "$@"
+if [[ ${FLOCKER:-} != "$0" ]]; then
+    FLOCKER=$0 exec flock "$queue" "$0" "$queue" "$action"
 fi
 
 unset FLOCKER
 
-queue_list() {
-    grep -v -E "$@" '^\s*(#|$)' "$QUEUE"
+do_list() {
+    grep -v -E "$@" '^\s*(#|$)' "$queue"
 }
 
-queue_add() {
-    echo "$ITEM" >>"$QUEUE"
+do_add() {
+    cat >>"$queue"
 }
 
-queue_pop() {
+do_pop() {
     # Get the first line in the queue that isn't blank or commented out.
     # The line number is included so that it can be referenced directly with sed.
-    next=$(queue_list -m1 -n)
+    next=$(do_list -n -m1 "$@")
 
-    # As soon as the queue is empty, the grep command will fail and this script will
-    # exit with a non-zero status.
+    # As soon as the queue is empty, the grep command will fail and this script
+    # will exit with a non-zero status.
 
     line_num=${next%%:*}
     line=${next#*:}
 
     # Comment out the line that was just retrieved.
-    sed -E -i "${line_num}s/^\s*/# /" "$QUEUE"
+    sed -E -i "${line_num}s/^\s*/# /" "$queue"
 
     echo "$line"
 }
 
-queue_clear() {
-    sed -E -i "/^\s*[^#]/s/^\s*/# /" "$QUEUE"
+do_clear() {
+    sed -E -i "/^\s*[^#]/s/^\s*/# /" "$queue"
 }
 
-queue_"$ACTION"
+do_"$action"

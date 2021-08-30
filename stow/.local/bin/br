@@ -2,14 +2,14 @@
 
 set -eu
 
-me=${0##*/}
+name=${0##*/}
 usage="Rename files using your preferred editor.
 
-Usage: $me [-h] [-n] FILE...
+Usage:
+    $name [-n] FILE...
 
 Options:
-    -h    show this help message
-    -n    show the renamed files without actually renaming them
+    -n    dry-run (no changes are made)
 "
 
 usage() {
@@ -18,31 +18,32 @@ usage() {
 }
 
 die() {
-    echo "$me: $*" >&2
+    echo "ERROR: $*" >&2
     exit 1
 }
 
-noop=
-unset OPTIND OPTARG
-while getopts ":hn" option; do
+while getopts ":nh" option; do
     case $option in
-    n) noop=1 ;;
+    n) dry_run=1 ;;
     h) usage ;;
-    *) die "invalid option: $OPTARG" ;;
+    *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
-unset option OPTIND OPTARG
 
-(($# == 0)) && die "no files to rename"
+if (($# == 0)); then
+    die "no files to rename"
+fi
 
-temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
+temp_dir=$(mktemp -d -t "${name}.XXXXXXXXXX")
 trap 'rm -rf "$temp_dir"' INT TERM EXIT
 
 src_list=$temp_dir/src
 dst_list=$temp_dir/dst
 
 for file in "$@"; do
-    [[ -e $file ]] && echo "$file"
+    if [[ -e $file ]]; then
+        echo "$file"
+    fi
 done >"$src_list"
 
 cp "$src_list" "$dst_list"
@@ -53,16 +54,18 @@ readarray -t src_lines <"$src_list"
 readarray -t dst_lines <"$dst_list"
 
 if ((${#src_lines[@]} != ${#dst_lines[@]})); then
-    die "lines were added or removed"
+    die "Lines were added or removed"
 fi
 
 for ((i = 0; i < ${#dst_lines[@]}; i += 1)); do
     src=${src_lines[$i]}
     dst=${dst_lines[$i]}
 
-    [[ "$src" == "$dst" ]] && continue
+    if [[ $src == "$dst" ]]; then
+        continue
+    fi
 
-    if [[ -z $noop ]]; then
+    if [[ -z $dry_run ]]; then
         mkdir -p "$(dirname "$dst")"
         mv -i -T "$src" "$dst"
     fi

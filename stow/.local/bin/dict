@@ -4,4 +4,4 @@
 
 set -eu
 
-exec curl -s dict.org/define:"${1:?missing word}":english | pager
+exec curl -s dict.org/define:"${1:?missing word}":english | "${PAGER:-less}"

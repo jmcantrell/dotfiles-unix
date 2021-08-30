@@ -2,34 +2,12 @@
 alias y='yank'
 
 # Append to yanked files.
-alias ya='yank -a'
+alias ya='yank add'
 
 # List yanked files.
-alias yl='yank -l'
+alias yl='yank list'
 
 # Clear yanked files.
-alias yc='yank -c'
-
-# Run a command against yanked files.
-yx() {
-    yank -l | xargs -r -I{} "$@"
-}
-
-# Copy yanked files.
-ycp() {
-    yx cp -av {} "${1:-$PWD}"
-}
-
-# Move yanked files.
-ymv() {
-    yx mv -v {} "${1:-$PWD}"
-    yank -c
-}
-
-# Remove yanked files.
-yrm() {
-    yx rm -irfv {}
-    yank -c
-}
+alias yc='yank clear'
 
 # vi:ft=sh

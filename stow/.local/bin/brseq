@@ -2,32 +2,30 @@
 
 set -eu
 
-# Default options:
-format="%d/%b (%n of %N)%e"
+format=%d/%b_%n%e
 start_num=1
 increment=1
-width=1
 
-me=${0##*/}
+name=${0##*/}
 usage="Rename files as a sequence of numbers.
 
-Usage: $me [OPTIONS] FILE...
+Usage:
+    $name [OPTIONS] FILE...
 
 Options:
-    -h           show this help message
+    -n           dry-run (make no changes)
     -w           equalize width by padding with leading zeroes
-    -n           show the renamed files without actually renaming them
-    -s NUMBER    change start number (default: 1)
-    -i NUMBER    change increment (default: 1)
-    -W NUMBER    set the width of each number to NUMBER characters with leading zeroes
-    -f FORMAT    format file basename before extension (default: '$format')
+    -W NUMBER    pad each number to an exact width with leading zeroes
+    -s NUMBER    starting number (default: $start_num)
+    -i NUMBER    increment (default: $increment)
+    -f FORMAT    file path format (default: $format)
 
-When specifying FORMAT, it can include some placeholders:
-    %N           the total number of files
-    %n           the number of FILE
-    %d           the directory of FILE
-    %b           the basename of FILE
-    %e           the extension of FILE
+The following placeholders are recognized in FORMAT:
+    %n           number of FILE (required)
+    %N           total number of files
+    %d           directory of FILE
+    %b           basename of FILE
+    %e           extension of FILE
 "
 
 usage() {
@@ -36,51 +34,49 @@ usage() {
 }
 
 die() {
-    echo "$me: $*" >&2
+    echo "ERROR: $*" >&2
     exit 1
 }
 
 declare -a seq_options
 
-unset OPTIND OPTARG
-while getopts ":hf:s:i:W:wn" option; do
+while getopts ":f:s:i:W:wnh" option; do
     case $option in
     f) format=$OPTARG ;;
     s) start_num=$OPTARG ;;
     i) increment=$OPTARG ;;
     W) width=$OPTARG ;;
     w) seq_options+=(-w) ;;
-    n) noop=1 ;;
+    n) dry_run=1 ;;
     h) usage ;;
-    *) die "invalid option: $OPTARG" ;;
+    *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
-unset option OPTIND OPTARG
 
 if [[ $format != *%n* ]]; then
-    die "format does not contain '%n'"
+    die "Format does not contain '%n'"
 fi
 
-if [[ $width == *[!0-9]* ]]; then
-    die "width must be a positive integer"
+if [[ -v width && $width == *[!0-9]* ]]; then
+    die "Width must be a positive integer"
 fi
 
 if [[ $start_num == *[!0-9]* ]]; then
-    die "start number must be a positive integer"
+    die "Start number must be a positive integer"
 fi
 
 if [[ $increment == *[!0-9]* ]]; then
-    die "increment must be a positive integer"
+    die "Increment must be a positive integer"
 fi
 
 end_num=$((start_num + $# - 1))
 
 format=${format/\%N/$#}
 
-readarray -t nums < <(seq "${seq_options[@]}" "$start_num" "$increment" "$end_num")
-
-for num in "${nums[@]}"; do
-    ((width > 1)) && num=$(printf "%0${width}d" "$num")
+while IFS= read -r -d $'\n' num; do
+    if [[ -v width ]]; then
+        num=$(printf "%0${width}d" "$num")
+    fi
 
     src=$1
     shift
@@ -95,9 +91,9 @@ for num in "${nums[@]}"; do
     dst=${dst/\%b/$base}
     dst=${dst/\%e/$ext}
 
-    if [[ ! -v noop ]]; then
+    if [[ ! -v dry_run ]]; then
         mv -i -T "$src" "$dst"
     fi
 
     echo "$dst"
-done
+done < <(seq "${seq_options[@]}" "$start_num" "$increment" "$end_num")

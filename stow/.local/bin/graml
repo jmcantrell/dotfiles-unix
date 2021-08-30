@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-# Use gron with yaml files.
-
-set -eu
-
-exec yq . "$@" | gron | sed 's/^json\./yaml./'

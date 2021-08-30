@@ -5,7 +5,7 @@
 
 set -eu
 
-dir=${1:?no directory given}
+dir=${1:?missing directory}
 shift
 
 cd "$dir"

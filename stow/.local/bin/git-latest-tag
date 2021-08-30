@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Display the latest git tag.
+# Print the latest git tag.
 
 set -eu
 

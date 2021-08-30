@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-# Get the extension of a given file.
+# Get all extensions of a given file.
+# Example: extname /path/to/file.tar.gz  # => .tar.gz
 
 set -eu
 

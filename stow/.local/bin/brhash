@@ -32,22 +32,27 @@ def format_hash(fn, alg):
 def parse_args():
     p = ArgumentParser(description=__doc__)
 
-    p.add_argument("files", nargs="*", metavar="file", help="file to rename")
+    p.add_argument("files", nargs="*", metavar="FILE", help="file to rename")
+
     p.add_argument(
         "-a",
         "--algorithm",
         default="md5",
-        metavar="hash",
+        metavar="NAME",
         choices=algorithms,
-        help="use hash when renaming",
+        help="algorithm to use when computing hash of file contents",
     )
+
     p.add_argument(
-        "-l",
-        "--list",
-        action="store_true",
-        help="list available algorithms (default is first)",
+        "-l", "--list", action="store_true", help="list recognized algorithms"
     )
-    p.add_argument("-n", "--noop", action="store_true", help="dry run")
+
+    p.add_argument(
+        "-n",
+        "--dry-run",
+        action="store_true",
+        help="dry run (no changes are made)",
+    )
 
     return p.parse_args()
 
@@ -71,7 +76,7 @@ def main():
 
         print(nf)
 
-        if not args.noop:
+        if not args.dry_run:
             os.rename(fn, nf)
 
 

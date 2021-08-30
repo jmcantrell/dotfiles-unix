@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Generate a SASL client key for a weechat IRC server.
+# Usage: weechat-genkey-sasl SERVER_NAME
 
 set -eu
 

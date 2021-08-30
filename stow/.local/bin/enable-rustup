@@ -14,7 +14,7 @@ fi
 rustup component add rust-src clippy
 cargo install cargo-edit
 
-zsh_completions=$HOME/.local/share/zsh/functions
+zsh_completions=$HOME/.local/share/zsh/site-functions
 mkdir -p "$zsh_completions"
 rustup completions zsh >"$zsh_completions/_rustup"
 rustup completions zsh cargo >"$zsh_completions/_cargo"

@@ -1,4 +1,0 @@
-compdef __git_stashes git-stash-unapply
-compdef __git_branch_names git-nuke
-
-# vi:ft=zsh

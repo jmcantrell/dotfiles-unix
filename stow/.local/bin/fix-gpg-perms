@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Repair permissions on a gpg home directory.
-# Usage: fixgpg [DIRECTORY]
+# Usage: fix-gpg-perms [DIRECTORY]
 
 set -eu
 

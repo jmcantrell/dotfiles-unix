@@ -2,10 +2,22 @@
 
 set -eu
 
-json=$(curl https://am.i.mullvad.net/json 2>/dev/null) || {
+declare -A entries=(
+    [Type]=.mullvad_server_type
+    [Address]=.ip
+    [Host]=.mullvad_exit_ip_hostname
+    [Blacklisted]=.blacklisted.blacklisted
+    [Country]=.country
+    [City]=.city
+    [Longitude]=.longitude
+    [Latitude]=.latitude
+    [Owner]=.organization
+)
+
+if ! json=$(curl https://am.i.mullvad.net/json 2>/dev/null); then
     echo "Status: unknown" >&2
     exit 1
-}
+fi
 
 is() {
     jq -e "$@" <<<"$json" &>/dev/null
@@ -28,13 +40,7 @@ fi
 
 {
     entry Status connected
-    entry Type "$(get ".mullvad_server_type")"
-    entry Address "$(get ".ip")"
-    entry Host "$(get ".mullvad_exit_ip_hostname")"
-    entry Blacklisted "$(get ".blacklisted.blacklisted")"
-    entry Country "$(get ".country")"
-    entry City "$(get ".city")"
-    entry Longitude "$(get ".longitude")"
-    entry Latitude "$(get ".latitude")"
-    entry Owner "$(get ".organization")"
+    for key in "${!entries[@]}"; do
+        entry "$key" "$(get "${entries[$key]}")"
+    done
 } | column -t -s $'\t' >&2

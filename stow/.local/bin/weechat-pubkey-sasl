@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 # Output the SASL public key for a weechat IRC server.
+# Usage: weechat-pubkey-sasl SERVER_NAME
 
 set -eu
 

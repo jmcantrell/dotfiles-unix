@@ -1,22 +1,37 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
-me=${0##*/}
-usage="Yank file paths in order to operate on them in bulk.
+cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/yank
 
-Usage: $me [-h] [-alc] PATH...
+name=${0##*/}
+usage="Move text around using file-based registers.
+
+Usage:
+    $name [OPTIONS] ACTION
 
 Options:
-    -h    show this help message
-    -a    append paths
-    -l    list paths
-    -c    clear paths
+    -R              perform action on all existing registers
+    -r NAME         perform action on register (can use multiple times)
 
-The default action is to set the paths.
+    -C DIRECTORY    directory in which to store registers
+                    (default: $cache_dir)
+
+Arguments:
+    ACTION          perform action on lines of a register
+
+Actions:
+    list            print register names to stdout
+    set             set register contents from stdin
+    add             add lines from stdin to register
+    edit            open register in editor
+    print           print register to stdout
+    clear           clear register contents
+
+If no register is specified, it defaults to 'default'.
+When operating on all registers with -R, 'default' will be included.
 "
-
-paths=${XDG_CACHE_HOME:-$HOME/.cache}/yank/paths
 
 usage() {
     echo "$usage" >&2
@@ -24,39 +39,73 @@ usage() {
 }
 
 die() {
-    echo "$me: $*" >&2
+    echo "ERROR: $*" >&2
     exit 1
 }
 
 do_add() {
-    mkdir -p "$(dirname "$paths")"
-    realpath "$@" >>"$paths"
+    mkdir -p "$cache_dir"
+    tee -a "${register_files[@]}" >/dev/null
 }
 
 do_set() {
     do_clear
-    do_add "$@"
+    do_add
+}
+
+do_edit() {
+    exec "${VISUAL:-$EDITOR}" "${register_files[@]}"
 }
 
 do_list() {
-    [[ -f $paths ]] && cat "$paths"
+    if [[ -d $cache_dir ]]; then
+        find "$cache_dir" -type f -printf "%f\n"
+    fi
+}
+
+do_print() {
+    local register_file
+    for register_file in "${register_files[@]}"; do
+        if [[ -r $register_file ]]; then
+            cat "$register_file"
+        fi
+    done
 }
 
 do_clear() {
-    rm -f "$paths"
+    rm -f "${register_files[@]}"
 }
 
-action="set"
-unset OPTIND OPTARG
-while getopts ":halc" option; do
+declare -A register_files_seen=()
+
+while getopts ":r:RC:h" option; do
     case $option in
-    a) action="add" ;;
-    l) action="list" ;;
-    c) action="clear" ;;
+    R)
+        for register_file in "$cache_dir"/default "$cache_dir"/*; do
+            register_files_seen[$register_file]=1
+        done
+        ;;
+    r)
+        register_file=$cache_dir/$OPTARG
+        register_files_seen[$register_file]=1
+        ;;
+    C) cache_dir=$OPTARG ;;
     h) usage ;;
-    *) die "invalid option: $OPTARG" ;;
+    *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
-unset option OPTIND OPTARG
 
-do_"$action" "$@"
+register_files=("${!register_files_seen[@]}")
+
+if ((${#register_files[@]} == 0)); then
+    register_files=("$cache_dir"/default)
+fi
+
+action=${1:-set}
+
+case $action in
+add | set | edit | list | print | clear) ;;
+*) die "Invalid action '$action'" ;;
+esac
+
+do_"$action"

@@ -31,16 +31,10 @@ for name in "${!plugins[@]}"; do
 done
 
 cat >"$dir"/default-packages <<-EOF
-bandit
 black
-bpython
+build
 flake8
-jedi-language-server
-mypy
 pip
-pipenv
-poetry
-pudb
 pynvim
 twine
 wheel

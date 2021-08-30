@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 
-# Create a new virtualbox instance.
+# Create a new virtualbox guest.
 # Usage: mkvbox "Linux" linux.iso
-#        OSTYPE=ArchLinux_64 mkvbox "Arch Linux" archlinux.iso
 
 set -eu
 

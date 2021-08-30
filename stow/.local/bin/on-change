@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Run a command when any file changes in the given directory.
+# Usage: on-change DIRECTORY COMMAND [ARGUMENT...]
+
 set -eu
 
 directory=${1:?missing directory to watch}

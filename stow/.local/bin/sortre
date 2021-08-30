@@ -51,23 +51,26 @@ def parse_args():
         action="store_true",
         help="ignore case when matching lines",
     )
+
     p.add_argument(
         "-n",
         "--numeric",
         action="store_true",
         help="compare according to string numerical value",
     )
+
     p.add_argument(
         "-r",
         "--reverse",
         action="store_true",
         help="reverse the result of comparisons",
     )
+
     p.add_argument(
         "-o",
         "--output",
         metavar="FILE",
-        help="write result to file instead of standard output",
+        help="write result to %(metavar)s instead of standard output",
     )
 
     return p.parse_args()

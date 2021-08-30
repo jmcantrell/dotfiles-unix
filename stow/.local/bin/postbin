@@ -1,19 +1,25 @@
 #!/usr/bin/env bash
 
 # Post files/links to a shareable URL.
-# Usage: postbin ITEM [ACTION]
+# Usage: postbin ITEM [ACTION]  # url, file, shorten
 
 set -eu
 
 src=${1:?missing the item to post}
 action=${2:-}
 
+if [[ $src == *://* ]]; then
+    target=$src
+else
+    target=@$src
+fi
+
 if [[ -z $action ]]; then
     if [[ $src == *://* ]]; then
-        action="url=$src"
+        action=url
     else
-        action="file=@$src"
+        action=file
     fi
 fi
 
-exec curl -F "$action" https://0x0.st
+exec curl -F "$action=$target" https://0x0.st

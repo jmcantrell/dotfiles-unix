@@ -5,5 +5,5 @@
 
 set -eu
 
-basename "${1:?missing file path}" |
+basename "${1:?Missing file path}" |
     awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }'

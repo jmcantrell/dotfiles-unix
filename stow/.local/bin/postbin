@@ -5,7 +5,7 @@
 
 set -eu
 
-src=${1:?missing the item to post}
+src=${1:?Missing the item to post}
 action=${2:-}
 
 if [[ $src == *://* ]]; then
@@ -16,9 +16,9 @@ fi
 
 if [[ -z $action ]]; then
     if [[ $src == *://* ]]; then
-        action=url
+        action="url"
     else
-        action=file
+        action="file"
     fi
 fi
 

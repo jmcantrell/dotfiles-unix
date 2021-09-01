@@ -5,7 +5,7 @@
 
 set -eu
 
-directory=${1:?missing directory to watch}
+directory=${1:?Missing directory to watch}
 shift
 
 trap 'kill $$' INT

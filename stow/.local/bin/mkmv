@@ -6,7 +6,7 @@
 
 set -eu
 
-dir=${1:?missing directory}
+dir=${1:?Missing directory}
 shift
 
 mkdir -p "$dir"

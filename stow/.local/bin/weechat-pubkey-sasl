@@ -5,7 +5,7 @@
 
 set -eu
 
-name=${1:?missing server name}
+name=${1:?Missing server name}
 pem=${XDG_CONFIG_HOME:-$HOME/.config}/weechat/$name.pem
 
 openssl ec -noout -text -conv_form compressed -in "$pem" |

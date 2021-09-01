@@ -193,3 +193,6 @@
 [submodule "vim-clever-f"]
 	path = stow/.local/etc/nvim/pack/default/start/clever-f
 	url = https://github.com/rhysd/clever-f.vim.git
+[submodule "vim-matchup"]
+	path = stow/.local/etc/nvim/pack/default/start/matchup
+	url = https://github.com/andymass/vim-matchup.git

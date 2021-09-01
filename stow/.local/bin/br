@@ -63,7 +63,7 @@ for ((i = 0; i < ${#dst_lines[@]}; i += 1)); do
         continue
     fi
 
-    if [[ -z $dry_run ]]; then
+    if [[ ! -v dry_run ]]; then
         mkdir -p "$(dirname "$dst")"
         mv -i -T "$src" "$dst"
     fi

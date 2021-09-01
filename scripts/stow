@@ -19,4 +19,4 @@ ln -sfrT ~/.local/etc ~/.config
 
 stow --no-folding -d . -t ~ -R stow
 
-./build.sh
+./scripts/build

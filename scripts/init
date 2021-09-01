@@ -4,4 +4,4 @@ set -eu
 
 git submodule update --init --recursive
 
-./build.sh
+./scripts/build

@@ -4,4 +4,4 @@ set -eu
 
 git submodule update --remote
 
-./build.sh
+./scripts/build

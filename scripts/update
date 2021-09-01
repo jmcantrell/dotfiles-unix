@@ -5,4 +5,4 @@ set -eu
 git pull origin main
 git submodule update --init --recursive
 
-./build.sh
+./scripts/build

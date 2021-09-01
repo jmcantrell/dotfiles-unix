@@ -28,3 +28,6 @@ TODO
 # environment files
 .envrc
 .direnv/
+
+# personal repo storage
+.mine/

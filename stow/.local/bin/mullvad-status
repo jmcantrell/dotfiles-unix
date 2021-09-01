@@ -43,4 +43,4 @@ fi
     for key in "${!entries[@]}"; do
         entry "$key" "$(get "${entries[$key]}")"
     done
-} | column -t -s $'\t' >&2
+} | column -t -s $'\t'

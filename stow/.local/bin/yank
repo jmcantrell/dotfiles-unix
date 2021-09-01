@@ -33,11 +33,6 @@ If no register is specified, it defaults to 'default'.
 When operating on all registers with -R, 'default' will be included.
 "
 
-usage() {
-    echo "$usage" >&2
-    exit 0
-}
-
 die() {
     echo "ERROR: $*" >&2
     exit 1
@@ -90,7 +85,10 @@ while getopts ":r:RC:h" option; do
         register_files_seen[$register_file]=1
         ;;
     C) cache_dir=$OPTARG ;;
-    h) usage ;;
+    h)
+        echo "$usage"
+        exit
+        ;;
     *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))

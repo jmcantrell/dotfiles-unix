@@ -9,5 +9,4 @@ dir=${1:?missing directory}
 shift
 
 cd "$dir"
-pwd >&2
 exec "$@"

@@ -21,11 +21,6 @@ Actions:
 Items are popped from the top and added to the bottom.
 "
 
-usage() {
-    echo "$usage" >&2
-    exit 0
-}
-
 die() {
     echo "ERROR: $*" >&2
     exit 1
@@ -33,7 +28,10 @@ die() {
 
 while getopts ":h" option; do
     case $option in
-    h) usage ;;
+    h)
+        echo "$usage"
+        exit
+        ;;
     *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))

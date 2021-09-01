@@ -28,11 +28,6 @@ The following placeholders are recognized in FORMAT:
     %e           extension of FILE
 "
 
-usage() {
-    echo "$usage" >&2
-    exit 0
-}
-
 die() {
     echo "ERROR: $*" >&2
     exit 1
@@ -48,7 +43,10 @@ while getopts ":f:s:i:W:wnh" option; do
     W) width=$OPTARG ;;
     w) seq_options+=(-w) ;;
     n) dry_run=1 ;;
-    h) usage ;;
+    h)
+        echo "$usage"
+        exit
+        ;;
     *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))

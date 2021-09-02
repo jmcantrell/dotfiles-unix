@@ -1,3 +1,4 @@
 disable=SC1090 # sourcing variable paths
 disable=SC1091 # sourcing partial variable paths
 disable=SC2064 # expansion in trap commands
+disable=SC2153 # possible misspelling

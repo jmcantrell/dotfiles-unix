@@ -6,25 +6,34 @@ My configuration files and scripts common to all UNIX-like systems.
 
 Clone this repository:
 
-```
-$ git clone git@gitlab.com:jmcantrell/dotfiles-unix.git ~/.dotfiles-unix
-$ cd ~/.dotfiles-unix
-```
-
-Update the repository:
-
-```
-$ ./update.sh
+```sh
+git clone git@gitlab.com:jmcantrell/dotfiles-unix.git ~/.dotfiles-unix
+cd ~/.dotfiles-unix
 ```
 
-Stow the files to your home directory:
+Initialize repository, symlink files, install packages, and configure system:
 
-```
-$ ./stow.sh
+```sh
+./scripts/init
+./scripts/stow
+./scripts/install
+./scripts/config
 ```
 
-Remove the stowed files from your home directory:
+Upgrade submodules to the latest version:
 
+```sh
+./scripts/upgrade
 ```
-$ ./unstow.sh
+
+Update repository with the latest changes:
+
+```sh
+./scripts/update
+```
+
+Remove files from home directory:
+
+```sh
+./scripts/unstow
 ```

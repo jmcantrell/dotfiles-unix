@@ -1,7 +1,0 @@
-# Use more intuitive word boundaries.
-export WORDCHARS=${WORDCHARS:s#/#}
-export WORDCHARS=${WORDCHARS:s/./}
-export WORDCHARS=${WORDCHARS:s/-/}
-export WORDCHARS=${WORDCHARS:s/_/}
-
-# vi:ft=zsh

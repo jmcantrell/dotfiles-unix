@@ -14,7 +14,6 @@ Usage:
 Options:
     -R              perform action on all existing registers
     -r NAME         perform action on register (can use multiple times)
-
     -C DIRECTORY    directory in which to store registers
                     (default: $cache_dir)
 
@@ -34,7 +33,7 @@ When operating on all registers with -R, 'default' will be included.
 "
 
 die() {
-    echo "ERROR: $*" >&2
+    printf "ERROR: %s" "$*" >&2
     exit 1
 }
 
@@ -86,7 +85,7 @@ while getopts ":r:RC:h" option; do
         ;;
     C) cache_dir=$OPTARG ;;
     h)
-        echo "$usage"
+        printf "%s\n" "$usage"
         exit
         ;;
     *) die "Invalid option '$OPTARG'" ;;

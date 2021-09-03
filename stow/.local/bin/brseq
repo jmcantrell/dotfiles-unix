@@ -29,7 +29,7 @@ The following placeholders are recognized in FORMAT:
 "
 
 die() {
-    echo "ERROR: $*" >&2
+    printf "ERROR: %s\n" "$*" >&2
     exit 1
 }
 
@@ -44,7 +44,7 @@ while getopts ":f:s:i:W:wnh" option; do
     w) seq_options+=(-w) ;;
     n) dry_run=1 ;;
     h)
-        echo "$usage"
+        printf "%s\n" "$usage"
         exit
         ;;
     *) die "Invalid option '$OPTARG'" ;;
@@ -93,5 +93,5 @@ while IFS= read -r -d $'\n' num; do
         mv -i -T "$src" "$dst"
     fi
 
-    echo "$dst"
+    printf "%s\n" "$dst"
 done < <(seq "${seq_options[@]}" "$start_num" "$increment" "$end_num")

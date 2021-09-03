@@ -15,7 +15,7 @@ declare -A entries=(
 )
 
 if ! json=$(curl https://am.i.mullvad.net/json 2>/dev/null); then
-    echo "Status: unknown" >&2
+    printf "Status: unknown\n" >&2
     exit 1
 fi
 
@@ -30,11 +30,11 @@ get() {
 entry() {
     local name=$1
     shift
-    echo -e "$name:\t$*"
+    printf "%s:\t%s" "$name" "$*"
 }
 
 if ! is '.mullvad_exit_ip'; then
-    echo "Status: disconnected" >&2
+    printf "Status: disconnected\n" >&2
     exit 1
 fi
 

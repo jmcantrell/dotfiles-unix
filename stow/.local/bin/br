@@ -13,7 +13,7 @@ Options:
 "
 
 die() {
-    echo "ERROR: $*" >&2
+    printf "ERROR: %s\n" "$*" >&2
     exit 1
 }
 
@@ -21,7 +21,7 @@ while getopts ":nh" option; do
     case $option in
     n) dry_run=1 ;;
     h)
-        echo "$usage"
+        printf "%s\n" "$usage"
         exit
         ;;
     *) die "Invalid option '$OPTARG'" ;;
@@ -40,7 +40,7 @@ dst_list=$temp_dir/dst
 
 for file in "$@"; do
     if [[ -e $file ]]; then
-        echo "$file"
+        printf "%s\n" "$file"
     fi
 done >"$src_list"
 
@@ -68,5 +68,5 @@ for ((i = 0; i < ${#dst_lines[@]}; i += 1)); do
         mv -i -T "$src" "$dst"
     fi
 
-    echo "$dst"
+    printf "%s\n" "$dst"
 done

@@ -22,14 +22,14 @@ Items are popped from the top and added to the bottom.
 "
 
 die() {
-    echo "ERROR: $*" >&2
+    printf "ERROR: %s\n" "$*" >&2
     exit 1
 }
 
 while getopts ":h" option; do
     case $option in
     h)
-        echo "$usage"
+        printf "%s\n" "$usage"
         exit
         ;;
     *) die "Invalid option '$OPTARG'" ;;
@@ -79,7 +79,7 @@ do_pop() {
     # Comment out the line that was just retrieved.
     sed -E -i "${line_num}s/^\s*/# /" "$queue"
 
-    echo "$line"
+    printf "%s\n" "$line"
 }
 
 do_clear() {

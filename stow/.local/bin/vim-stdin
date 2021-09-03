@@ -8,7 +8,7 @@ set -eu
 readarray -t paths
 
 if ((${#paths[@]} == 0)); then
-    echo "ERROR: Nothing to edit" >&2
+    printf "ERROR: Nothing to edit\n" >&2
     exit 1
 fi
 

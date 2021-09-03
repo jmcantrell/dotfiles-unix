@@ -22,6 +22,6 @@ shift 3
 timestamp=$(date --date="$timestamp" "$@")
 
 for ((i = 0; i < count; i++)); do
-    echo "$timestamp"
+    printf "%s\n" "$timestamp"
     timestamp=$(date --date="$timestamp $increment" "$@")
 done

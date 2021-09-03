@@ -22,7 +22,7 @@ printf " %*s " $min_width " "
 for bgn in {0..15}; do
     printf " %*s " "$width" "$bgn"
 done
-echo
+printf "\n"
 
 # rows = fg, columns = bg
 for fgn in {0..15}; do
@@ -30,5 +30,5 @@ for fgn in {0..15}; do
     for bgn in {0..15}; do
         printf " %s %-*s" "${fg[$fgn]}${bg[$bgn]}" $width "$sample"
     done
-    echo " $reset"
+    printf "%s\n" "$reset"
 done

@@ -4,3 +4,4 @@ disable=SC2064 # expansion in trap commands
 disable=SC2153 # possible misspelling
 disable=SC2059 # variables in printf format
 disable=SC2220 # no * case for getopts
+disable=SC2016 # expressions in single quotes

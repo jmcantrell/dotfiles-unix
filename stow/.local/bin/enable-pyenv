@@ -2,6 +2,12 @@
 
 set -eu
 
+if [[ -f /etc/arch-release ]]; then
+    sudo pacman -S --noconfirm --needed base-devel openssl xz zlib
+elif [[ $OSTYPE == darwin* ]]; then
+    brew install openssl readline sqlite3 xz zlib
+fi
+
 dir=${PYENV_ROOT:-$HOME/.pyenv}
 
 if [[ -d $dir ]]; then

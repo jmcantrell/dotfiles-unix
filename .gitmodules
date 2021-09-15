@@ -196,3 +196,6 @@
 [submodule "vim-matchup"]
 	path = stow/.local/etc/nvim/pack/default/start/matchup
 	url = https://github.com/andymass/vim-matchup.git
+[submodule "vim-sway"]
+	path = stow/.local/etc/nvim/pack/default/start/sway
+	url = https://github.com/ajouellette/sway-vim-syntax.git

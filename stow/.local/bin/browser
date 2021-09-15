@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-# Run the preferred web browser.
-
-exec "$BROWSER" "$@"

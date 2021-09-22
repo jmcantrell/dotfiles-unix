@@ -83,7 +83,7 @@ set completeopt=menu,menuone,noselect,noinsert
 set wildmenu wildignorecase wildmode=longest:full,list:full
 
 " Enable auto formatting for commented text.
-set textwidth=80 formatoptions+=corn
+set textwidth=79 formatoptions+=corn
 
 " Reformat paragraphs according to textwidth.
 set formatoptions+=q

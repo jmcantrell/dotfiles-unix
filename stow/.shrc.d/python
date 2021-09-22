@@ -1,5 +1,11 @@
+# Look for extra modules here.
+export PYTHONPATH=$HOME/.local/lib/python
+
 # File that defines what's global in interactive sessions.
 export PYTHONSTARTUP=${XDG_CONFIG_HOME:-$HOME/.config}/python/startup.py
+
+# Disable __pycache__ directory creation.
+export PYTHONDONTWRITEBYTECODE=1
 
 # Don't alter the prompt when activating virtual environments.
 export VIRTUAL_ENV_DISABLE_PROMPT=1

@@ -30,7 +30,7 @@ get() {
 entry() {
     local name=$1
     shift
-    printf "%s:\t%s" "$name" "$*"
+    printf "%s:\t%s\n" "$name" "$*"
 }
 
 if ! is '.mullvad_exit_ip'; then

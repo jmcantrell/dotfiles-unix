@@ -11,7 +11,8 @@ chmod -R 700 ~/.gnupg
 mkdir -p ~/.ssh
 chmod -R 700 ~/.ssh
 touch ~/.ssh/{known_hosts,authorized_keys}
-chmod 600 ~/.ssh/{id_*,known_hosts,authorized_keys}
+chmod 600 ~/.ssh/{known_hosts,authorized_keys}
+find ~/.ssh -name "id_*" -exec chmod 600 {} \;
 
 mkdir -p ~/.local/etc/nvim/spell
 

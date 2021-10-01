@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
 mkdir -p ~/.local/tmp
 chmod 700 ~/.local/tmp
@@ -9,10 +10,9 @@ mkdir -p ~/.gnupg
 chmod -R 700 ~/.gnupg
 
 mkdir -p ~/.ssh
-chmod -R 700 ~/.ssh
+chmod 700 ~/.ssh
 touch ~/.ssh/{known_hosts,authorized_keys}
-chmod 600 ~/.ssh/{known_hosts,authorized_keys}
-find ~/.ssh -name "id_*" -exec chmod 600 {} \;
+chmod 600 ~/.ssh/{id_*,known_hosts,authorized_keys}
 
 mkdir -p ~/.local/etc/nvim/spell
 

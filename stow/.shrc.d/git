@@ -1,3 +1,6 @@
+# Prefer editor (instead of visual)
+export GIT_EDITOR=$EDITOR
+
 alias g='git'
 alias gm='g submodule'
 

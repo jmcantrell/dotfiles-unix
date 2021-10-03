@@ -10,7 +10,7 @@ isofile=${2:?Missing ISO file}
 
 ostype=${ostype:-Linux_64}
 memory=${memory:-4096}
-size=${size:-10}
+size=${size:-20}
 cpus=${cpus:-2}
 firmware=${firmware:-bios}
 
@@ -36,7 +36,7 @@ VBoxManage modifyvm "$name" \
     --ioapic on --firmware "$firmware" --rtcuseutc on \
     --cpus "$cpus" --pae on --hwvirtex on \
     --paravirtprovider kvm --nestedpaging on --largepages on \
-    --vram 128 --graphicscontroller vmsvga \
+    --vram 128 --graphicscontroller vmsvga --accelerate3d on \
     --audiocontroller hda --audioin on --audioout on \
     --nic1 bridged --bridgeadapter1 "$bridgedif" \
     --defaultfrontend headless

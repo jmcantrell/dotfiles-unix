@@ -199,3 +199,6 @@
 [submodule "vim-sway"]
 	path = stow/.local/etc/nvim/pack/default/start/sway
 	url = https://github.com/ajouellette/sway-vim-syntax.git
+[submodule "vim-signature"]
+	path = stow/.local/etc/nvim/pack/default/start/signature
+	url = https://github.com/kshenoy/vim-signature.git

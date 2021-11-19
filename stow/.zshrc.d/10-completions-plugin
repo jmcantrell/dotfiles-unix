@@ -1,0 +1,3 @@
+. ~/.local/share/zsh/scripts/completions/zsh-completions.plugin.zsh
+
+# vi:ft=zsh

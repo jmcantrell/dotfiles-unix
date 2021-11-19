@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Download the latest NixOS ISO, if needed.
+
+set -eu
+
+iso_name=nixos-minimal
+iso_url=https://channels.nixos.org/nixos-unstable/latest-${iso_name}-x86_64-linux.iso
+iso_url_ver=$(
+    curl -sLI "$iso_url" |
+        grep '^location:' |
+        awk '{print $2}' |
+        sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//'
+)
+
+iso_dir=${XDG_DATA_HOME:-$HOME/.local/share}/nixos
+iso_file_ver=$iso_dir/${iso_url_ver##*/}
+iso_file=${iso_url##*/}
+
+if [[ ! -f $iso_file_ver ]]; then
+    mkdir -p "$iso_dir"
+    cd "$iso_dir"
+    curl -o "$iso_file_ver" "$iso_url_ver"
+fi
+
+ln -sfvr "$iso_file_ver" "$iso_file"

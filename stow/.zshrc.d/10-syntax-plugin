@@ -1,0 +1,4 @@
+. ~/.local/share/zsh/scripts/syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# vi:ft=zsh
+

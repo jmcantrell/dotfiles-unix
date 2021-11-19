@@ -202,3 +202,9 @@
 [submodule "vim-signature"]
 	path = stow/.local/etc/nvim/pack/default/start/signature
 	url = https://github.com/kshenoy/vim-signature.git
+[submodule "zsh-nix-completions"]
+	path = stow/.local/share/zsh/scripts/nix-completions
+	url = https://github.com/spwhitt/nix-zsh-completions.git
+[submodule "bash-nix-completions"]
+	path = stow/.local/share/bash/scripts/nix-completions
+	url = https://github.com/hedning/nix-bash-completions.git

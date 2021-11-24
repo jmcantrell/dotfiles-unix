@@ -4,8 +4,8 @@
 
 set -eu
 
-iso_name=nixos-minimal
-iso_url=https://channels.nixos.org/nixos-unstable/latest-${iso_name}-x86_64-linux.iso
+iso_name=nixos-minimal-x86_64
+iso_url=https://channels.nixos.org/nixos-unstable/latest-${iso_name}-linux.iso
 iso_url_ver=$(
     curl -sLI "$iso_url" |
         grep '^location:' |
@@ -15,7 +15,6 @@ iso_url_ver=$(
 
 iso_dir=${XDG_DATA_HOME:-$HOME/.local/share}/nixos
 iso_file_ver=$iso_dir/${iso_url_ver##*/}
-iso_file=${iso_url##*/}
 
 if [[ ! -f $iso_file_ver ]]; then
     mkdir -p "$iso_dir"
@@ -23,4 +22,4 @@ if [[ ! -f $iso_file_ver ]]; then
     curl -o "$iso_file_ver" "$iso_url_ver"
 fi
 
-ln -sfvr "$iso_file_ver" "$iso_file"
+ln -sfvr "$iso_file_ver" "${iso_name}.iso"

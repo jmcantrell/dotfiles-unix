@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Edit any files passed over stdin.
+# Edit files passed over stdin.
 # Example: find . -type f | vim-stdin
 
 set -eu

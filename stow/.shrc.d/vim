@@ -3,9 +3,6 @@ alias v='vim'
 # Edit files as root.
 alias V='sudo -e'
 
-# Edit files passed over standard input.
-alias vin='vim-stdin'
-
 # Edit program(s) in $PATH.
 vw() {
     command which "$@" 2>/dev/null | vim-stdin

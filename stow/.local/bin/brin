@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+# Rename files passed over stdin.
+# Example: find . -type f | br-stdin
+
+set -eu
+
+readarray -t paths
+
+if ((${#paths[@]} == 0)); then
+    printf "ERROR: Nothing to edit\n" >&2
+    exit 1
+fi
+
+exec br "${paths[@]}"

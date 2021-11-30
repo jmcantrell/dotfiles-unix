@@ -208,3 +208,6 @@
 [submodule "bash-nix-completions"]
 	path = stow/.local/share/bash/scripts/nix-completions
 	url = https://github.com/hedning/nix-bash-completions.git
+[submodule "vim-sneak"]
+	path = stow/.local/etc/nvim/pack/default/start/sneak
+	url = https://github.com/justinmk/vim-sneak.git

@@ -1,4 +1,4 @@
-let b:ale_linters = ['analyzer', 'cargo']
+let b:ale_linters = ['rls', 'cargo']
 let b:ale_fixers = ['rustfmt']
 
 let b:rust_default_edition = '2018'

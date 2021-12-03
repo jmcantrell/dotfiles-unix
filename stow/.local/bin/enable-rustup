@@ -11,8 +11,8 @@ fi
 
 . ~/.cargo/env
 
-rustup component add rust-src clippy
-cargo install cargo-edit
+rustup component add rust-src rls clippy
+cargo install cargo-{get,edit}
 
 zsh_completions=$HOME/.local/share/zsh/site-functions
 mkdir -p "$zsh_completions"

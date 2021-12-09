@@ -1,9 +1,6 @@
 let b:ale_linters = ['rls', 'cargo']
 let b:ale_fixers = ['rustfmt']
 
-let b:rust_edition = trim(system('cargo get --edition 2>/dev/null'))
-let g:ale_rust_rustfmt_options = '--edition ' .. b:rust_edition
-
 let g:ale_rust_cargo_use_clippy = 1
 let g:ale_rust_cargo_check_tests = 1
 let g:ale_rust_cargo_check_examples = 1

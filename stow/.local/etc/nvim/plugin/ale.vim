@@ -11,7 +11,7 @@ nmap <silent> <c-k> <plug>(ale_previous_wrap)
 nmap <silent> <c-j> <plug>(ale_next_wrap)
 nmap <silent> <leader>f <Plug>(ale_fix)
 nmap <silent> <leader>r :ALERename<cr>
-nmap <silent> <leader>d :ALEDetail<cr>
+nmap <silent> <leader>i :ALEDetail<cr>
 nmap <silent> gd :ALEGoToDefinition<cr>
 nmap <silent> gD :ALEGoToTypeDefinition<cr>
 nmap <silent> gr :ALEFindReferences<cr>

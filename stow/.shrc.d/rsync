@@ -1,3 +1,3 @@
-alias rsync='rsync -v --human-readable --progress --exclude-from=$HOME/.local/etc/rsync/exclude'
+alias rsync='rsync -v --human-readable --progress --exclude-from=${XDG_CONFIG_HOME:-$HOME/.config}/rsync/exclude'
 
 # vi:ft=sh

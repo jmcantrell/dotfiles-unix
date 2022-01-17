@@ -1,8 +1,8 @@
 [core]
-	excludesFile = ~/.local/etc/git/ignore
+	excludesFile = ~/.config/git/ignore
 
 [include]
-	path = ~/.local/etc/git/secret
+	path = ~/.config/git/secret
 
 [init]
 	defaultBranch = main

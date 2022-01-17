@@ -1,1 +1,1 @@
-.local/etc/nvim/init.vim
+.config/nvim/init.vim

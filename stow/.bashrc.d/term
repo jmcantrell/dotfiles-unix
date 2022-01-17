@@ -1,7 +1,7 @@
 # Update LINES and COLUMNS after each command.
 shopt -s checkwinsize
 
-INPUTRC=$HOME/.local/etc/inputrc
+INPUTRC=${XDG_CONFIG_HOME:$HOME/.config}/inputrc
 
 _set_term_title() {
     printf "\033]0;bash %s\a" "$*"

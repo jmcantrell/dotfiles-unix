@@ -1,0 +1,25 @@
+# Create a named directory, with optional aliases and completion.
+
+create_named_directory() {
+    local name=$1
+    local directory=$2
+    shift 2
+
+    eval "
+    cd$name() {
+        cd ${(z)directory}/\$1
+    }
+
+    _cd$name() {
+        ((CURRENT == 2)) && _files -/ -W ${(z)directory}
+    }
+
+    compdef _cd$name cd$name
+    "
+
+    for aka in $@; do
+        eval "alias cd$aka=cd$name"
+    done
+}
+
+# vi:ft=zsh

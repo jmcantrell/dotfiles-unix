@@ -4,6 +4,6 @@ set -eu
 
 config_dir=$HOME/.config/nvim
 
-for dir in "$config_dir"/doc "$config_dir"/pack/default/start/*/doc; do
+for dir in "$config_dir"/doc "$config_dir"/pack/*/start/*/doc; do
     vim -c "helptags $dir" -c q &>/dev/null
 done

@@ -5,5 +5,6 @@ set -eu
 config_dir=$HOME/.config/nvim
 
 for dir in "$config_dir"/doc "$config_dir"/pack/*/start/*/doc; do
+    printf "Generating vim helptags: %s\n" "$dir"
     vim -c "helptags $dir" -c q &>/dev/null
 done

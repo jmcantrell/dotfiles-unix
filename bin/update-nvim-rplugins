@@ -2,4 +2,5 @@
 
 set -eu
 
+printf "Generating vim rplugin manifests\n"
 nvim -c UpdateRemotePlugins -c q &>/dev/null

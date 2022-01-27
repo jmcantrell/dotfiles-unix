@@ -3,17 +3,19 @@
 set -eu
 shopt -s nullglob
 
-mkdir -p ~/.local/tmp
-chmod 700 ~/.local/tmp
+. ./stow/.profile.d/tmpdir
+mkdir -p "$TMPDIR"
+chmod 700 "$TMPDIR"
 
-mkdir -p ~/.gnupg
-chmod -R 700 ~/.gnupg
+. ./stow/.profile.d/gpg
+mkdir -p "$GNUPGHOME"
+chmod -R 700 "$GNUPGHOME"
 
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
-touch ~/.ssh/{known_hosts,authorized_keys}
-chmod 600 ~/.ssh/{id_*,known_hosts,authorized_keys}
+ssh_dir=$HOME/.ssh
+mkdir -p "$ssh_dir"
+chmod 700 "$ssh_dir"
+chmod 600 "$ssh_dir"/{id_*,*.pub}
 
-mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/spell"
+mkdir -p ~/.vim/spell
 
 stow --no-folding -d . -t ~ -R stow

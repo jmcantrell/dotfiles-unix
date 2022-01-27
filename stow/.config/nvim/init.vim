@@ -184,10 +184,14 @@ cmap <c-g>e <c-r>=expand('%:e')<cr>
 " Select the entire buffer.
 nnoremap <leader>a ggVG
 
-" Move cursor to the end of yanked/pasted text.
-nnoremap p p`]
-vnoremap y y`]
-vnoremap p p`]
+" Easier clipboard yank/paste.
+nnoremap gp "+p
+vnoremap gp "+p
+nnoremap gP "+P
+vnoremap gP "+P
+nnoremap gy "+y
+xnoremap gy "+y
+nnoremap gyy "+yy
 
 " Select the last inserted text.
 nnoremap <expr> gi '`[' . strpart(getregtype(), 0, 1) . '`]'

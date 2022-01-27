@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-# Repair permissions on a gpg home directory.
-# Usage: fix-gpg-perms [DIRECTORY]
-
-set -eu
-
-exec chmod -R go-rwx "${1:-${GNUPGHOME:-$HOME/.gnupg}}"

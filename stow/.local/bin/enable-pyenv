@@ -2,13 +2,21 @@
 
 set -eu
 
-if [[ -f /etc/arch-release ]]; then
-    sudo pacman -S --noconfirm --needed base-devel openssl xz zlib
-elif [[ $OSTYPE == darwin* ]]; then
-    brew install openssl readline sqlite3 xz zlib
-fi
-
 dir=${PYENV_ROOT:-$HOME/.pyenv}
+
+add_plugin() {
+    local name=$1
+    local url=$2
+
+    plugin_dir=$dir/plugins/$name
+
+    if [[ -d $plugin_dir ]]; then
+        cd "$plugin_dir"
+        git pull origin master
+    else
+        git clone "$url" "$plugin_dir"
+    fi
+}
 
 if [[ -d $dir ]]; then
     cd "$dir"
@@ -18,23 +26,10 @@ else
     cd "$dir"
 fi
 
-declare -A plugins
-
-plugins["pyenv-doctor"]=https://github.com/pyenv/pyenv-doctor.git
-plugins["pyenv-update"]=https://github.com/pyenv/pyenv-update.git
-plugins["pyenv-virtualenv"]=https://github.com/pyenv/pyenv-virtualenv.git
-plugins["pyenv-default-packages"]=https://github.com/jawshooah/pyenv-default-packages.git
-
-for name in "${!plugins[@]}"; do
-    plugin_dir=$dir/plugins/$name
-
-    if [[ -d $plugin_dir ]]; then
-        cd "$plugin_dir"
-        git pull origin master
-    else
-        git clone "${plugins[$name]}" "$plugin_dir"
-    fi
-done
+add_plugin pyenv-doctor https://github.com/pyenv/pyenv-doctor.git
+add_plugin pyenv-update https://github.com/pyenv/pyenv-update.git
+add_plugin pyenv-virtualenv https://github.com/pyenv/pyenv-virtualenv.git
+add_plugin pyenv-default-packages https://github.com/jawshooah/pyenv-default-packages.git
 
 cat >"$dir"/default-packages <<-EOF
 black

@@ -4,6 +4,20 @@ set -eu
 
 dir=${NODENV_ROOT:-$HOME/.nodenv}
 
+add_plugin() {
+    local name=$1
+    local url=$2
+
+    plugin_dir=$dir/plugins/$name
+
+    if [[ -d $plugin_dir ]]; then
+        cd "$plugin_dir"
+        git pull origin master
+    else
+        git clone "$url" "$plugin_dir"
+    fi
+}
+
 if [[ -d $dir ]]; then
     cd "$dir"
     git pull origin master
@@ -12,22 +26,9 @@ else
     cd "$dir"
 fi
 
-declare -A plugins
-
-plugins["node-build"]=https://github.com/nodenv/node-build.git
-plugins["nodenv-update"]=https://github.com/nodenv/nodenv-update.git
-plugins["nodenv-default-packages"]=https://github.com/nodenv/nodenv-default-packages.git
-
-for name in "${!plugins[@]}"; do
-    plugin_dir=$dir/plugins/$name
-
-    if [[ -d $plugin_dir ]]; then
-        cd "$plugin_dir"
-        git pull origin master
-    else
-        git clone "${plugins[$name]}" "$plugin_dir"
-    fi
-done
+add_plugin node-build https://github.com/nodenv/node-build.git
+add_plugin nodenv-update https://github.com/nodenv/nodenv-update.git
+add_plugin nodenv-default-packages https://github.com/nodenv/nodenv-default-packages.git
 
 cat >"$dir"/default-packages <<-EOF
 eslint

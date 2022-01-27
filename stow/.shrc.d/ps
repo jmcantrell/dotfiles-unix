@@ -1,6 +1,7 @@
-alias pgrep='pgrep --full --list-name --list-full --ignore-case'
 alias ps='ps -a'
 alias pu='ps -u $USER -o pid,%cpu,%mem,size,tty,stat,command'
 alias pa='ps -eo pid,%cpu,%mem,size,tty,stat,user,command'
+
+alias pgrep='pgrep --full --list-name --list-full --ignore-case'
 
 # vi:ft=sh

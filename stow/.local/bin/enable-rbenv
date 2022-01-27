@@ -4,6 +4,20 @@ set -eu
 
 dir=${RBENV_ROOT:-$HOME/.rbenv}
 
+add_plugin() {
+    local name=$1
+    local url=$2
+
+    plugin_dir=$dir/plugins/$name
+
+    if [[ -d $plugin_dir ]]; then
+        cd "$plugin_dir"
+        git pull origin master
+    else
+        git clone "$url" "$plugin_dir"
+    fi
+}
+
 if [[ -d $dir ]]; then
     cd "$dir"
     git pull origin master
@@ -12,23 +26,9 @@ else
     cd "$dir"
 fi
 
-declare -A plugins
-
-plugins["ruby-build"]=https://github.com/rbenv/ruby-build.git
-plugins["rbenv-update"]=https://github.com/rkh/rbenv-update.git
-plugins["rbenv-default-gems"]=https://github.com/rbenv/rbenv-default-gems.git
-
-for name in "${!plugins[@]}"; do
-    plugin_dir=$dir/plugins/$name
-
-    if [[ -d $plugin_dir ]]; then
-        cd "$plugin_dir"
-        git pull origin master
-    else
-        git clone "${plugins[$name]}" "$plugin_dir"
-        cd "$plugin_dir"
-    fi
-done
+add_plugin ruby-build https://github.com/rbenv/ruby-build.git
+add_plugin rbenv-update https://github.com/rkh/rbenv-update.git
+add_plugin rbenv-default-gems https://github.com/rbenv/rbenv-default-gems.git
 
 cat >"$dir"/default-gems <<-EOF
 bundler

@@ -1,5 +1,4 @@
 export EDITOR=vim
 export SUDO_EDITOR=$EDITOR
-export GIT_EDITOR=$EDITOR
 
 # vi:ft=sh

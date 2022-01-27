@@ -11,12 +11,12 @@ git clone git@gitlab.com:jmcantrell/dotfiles-unix.git ~/.dotfiles-unix
 cd ~/.dotfiles-unix
 ```
 
-Initialize repository, symlink files, install packages, and configure system:
+Initialize repository, install packages, symlink files, and configure system:
 
 ```sh
 ./scripts/init
-./scripts/stow
 ./scripts/install
+./scripts/stow
 ./scripts/config
 ```
 

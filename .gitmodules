@@ -109,9 +109,6 @@
 [submodule "vim-systemd"]
 	path = stow/.config/nvim/pack/default/start/systemd
 	url = https://github.com/wgwoods/vim-systemd-syntax.git
-[submodule "vim-sxhkd"]
-	path = stow/.config/nvim/pack/default/start/sxhkd
-	url = https://github.com/baskerville/vim-sxhkdrc.git
 [submodule "vim-svelte"]
 	path = stow/.config/nvim/pack/default/start/svelte
 	url = https://github.com/leafOfTree/vim-svelte-plugin.git

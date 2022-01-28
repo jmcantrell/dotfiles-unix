@@ -5,11 +5,10 @@ shopt -s nullglob
 
 cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/yank
 
-name=${0##*/}
 usage="Move text around using file-based registers.
 
 Usage:
-    $name [OPTIONS] ACTION
+    ${0##*/} [OPTIONS] ACTION
 
 Options:
     -R              perform action on all existing registers

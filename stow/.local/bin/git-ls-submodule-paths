@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
+# List the submodules paths in this repository.
+
 set -eu
 
 submodules_config=$PWD/.gitmodules
 
-if [[ ! -f $submodules_config ]]; then
+if [[ -f $submodules_config ]]; then
     exit 0
 fi
 

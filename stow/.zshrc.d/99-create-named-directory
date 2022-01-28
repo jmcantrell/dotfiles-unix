@@ -6,6 +6,10 @@ create_named_directory() {
     shift 2
 
     eval "
+    $name=${(z)directory}
+
+    hash -d $name=${(z)directory}
+
     cd$name() {
         cd ${(z)directory}/\$1
     }

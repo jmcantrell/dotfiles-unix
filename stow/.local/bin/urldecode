@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Decode a URL-encoded string.
+
 set -eu
 
 : "${*//+/ }"

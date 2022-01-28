@@ -4,11 +4,10 @@ set -eu
 
 config_dir=${XDG_CONFIG_HOME:-$HOME/.config}/snip
 
-name=${0##*/}
 usage="Manage text snippets.
 
 Usage:
-    $name [OPTIONS] ACTION [NAME]
+    ${0##*/} [OPTIONS] ACTION [NAME]
 
 Options:
     -C DIRECTORY    directory in which to store snippets
@@ -41,7 +40,7 @@ snippet_file_required() {
     file=$(snippet_file "$1")
 
     if [[ ! -f $file ]]; then
-        die "Snippet '$name' does not exist"
+        die "Snippet '$file' does not exist"
     fi
 
     printf "%s\n" "$file"

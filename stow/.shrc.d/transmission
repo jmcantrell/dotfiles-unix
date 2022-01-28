@@ -1,15 +1,16 @@
-transmission_done() {
-    transmission-remote -l |
+alias tx='transmission-remote'
+
+# List IDs of the finished torrents.
+tx_done_ids() {
+    tx -l |
         awk '{print $1,$2}' |
         tail -n+2 | head -n-1 |
         grep '\b100%\b' |
         awk '{print $1}'
 }
 
-alias tx='transmission-remote'
-
 # Remove finished downloads.
-alias txc='tx -t "$(transmission_done | paste -sd,)" -r'
+alias txc='tx -t "$(tx_done_ids | paste -sd,)" -r'
 
 # List active downloads.
 alias txl='tx -l | grep -vi queued'

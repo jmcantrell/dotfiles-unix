@@ -2,11 +2,10 @@
 
 set -eu
 
-name=${0##*/}
 usage="Safely manage a queue of items.
 
 Usage:
-    $name FILE [ACTION]
+    ${0##*/} FILE [ACTION]
 
 Arguments:
     FILE      file in which to store queued items

@@ -1,10 +1,10 @@
+HISTSIZE=15000
+HISTFILESIZE=10000
+
 # Omit duplicates or lines starting with a space.
 HISTCONTROL=ignoreboth
 
 # History is a union of all sessions.
 shopt -s histappend
-
-HISTSIZE=15000
-HISTFILESIZE=10000
 
 # vi:ft=sh

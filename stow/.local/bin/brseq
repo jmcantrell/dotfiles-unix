@@ -6,11 +6,10 @@ format=%d/%b_%n%e
 start_num=1
 increment=1
 
-name=${0##*/}
 usage="Rename files as a sequence of numbers.
 
 Usage:
-    $name [OPTIONS] FILE...
+    ${0##*/} [OPTIONS] FILE...
 
 Options:
     -n           dry-run (make no changes)

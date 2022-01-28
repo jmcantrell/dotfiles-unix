@@ -14,6 +14,9 @@ while [[ -d $dir && ! -e $dir/.git ]]; do
     dir+=/..
 done
 
-if [[ -d $dir ]]; then
-    realpath "$dir"
+if [[ ! -d $dir ]]; then
+    echo "ERROR: No git repository found!" >&2
+    exit 1
 fi
+
+realpath "$dir"

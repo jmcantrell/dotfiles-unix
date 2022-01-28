@@ -1,6 +1,0 @@
-alias ja='jobs -pl'
-alias jd='ja -d'
-alias jr='ja -r'
-alias js='ja -s'
-
-# vi:ft=sh

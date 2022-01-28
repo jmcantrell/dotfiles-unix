@@ -4,7 +4,7 @@
 
 set -eu
 
-find "$@" -type f | sort |              # sort initial files
-    xargs -r -I{} md5sum {} |           # prepend the checksum
-    uniq -w32 --all-repeated=separate | # group the duplicates
-    awk '{print $2}'                    # remove the checksum
+find "$@" -type f | sort |                   # sort initial files
+    xargs --no-run-if-empty -I{} md5sum {} | # prepend the checksum
+    uniq -w32 --all-repeated=separate |      # group the duplicates
+    awk '{print $2}'                         # remove the checksum

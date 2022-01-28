@@ -22,4 +22,4 @@ if [[ -z $action ]]; then
     fi
 fi
 
-exec curl -F "$action=$target" https://0x0.st
+curl -F "$action=$target" https://0x0.st

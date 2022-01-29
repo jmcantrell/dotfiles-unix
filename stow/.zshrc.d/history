@@ -1,3 +1,7 @@
+export HISTFILE=~/.zhistory
+export HISTSIZE=15000
+export SAVEHIST=10000
+
 # Don't beep if trying to access a non-existent history entry.
 setopt no_hist_beep
 

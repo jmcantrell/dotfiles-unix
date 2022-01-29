@@ -1,5 +1,0 @@
-export HISTFILE=~/.zhistory
-export HISTSIZE=15000
-export SAVEHIST=10000
-
-# vi:ft=zsh

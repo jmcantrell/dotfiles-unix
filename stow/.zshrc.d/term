@@ -1,3 +1,9 @@
+# Adjust word splitting characters.
+WORDCHARS=${WORDCHARS:s#/#}
+WORDCHARS=${WORDCHARS:s/./}
+WORDCHARS=${WORDCHARS:s/-/}
+WORDCHARS=${WORDCHARS:s/_/}
+
 # Don't beep on errors.
 setopt no_beep
 

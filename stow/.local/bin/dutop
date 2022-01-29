@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Show top disk usage offenders.
+# Show disk usage sorted by file size (descending).
 
 set -eu
 

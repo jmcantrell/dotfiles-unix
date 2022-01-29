@@ -4,6 +4,14 @@ set -eu
 
 dir=${NODENV_ROOT:-$HOME/.nodenv}
 
+if [[ -d $dir ]]; then
+    cd "$dir"
+    git pull origin master
+else
+    git clone https://github.com/nodenv/nodenv.git "$dir"
+    cd "$dir"
+fi
+
 add_plugin() {
     local name=$1
     local url=$2
@@ -17,14 +25,6 @@ add_plugin() {
         git clone "$url" "$plugin_dir"
     fi
 }
-
-if [[ -d $dir ]]; then
-    cd "$dir"
-    git pull origin master
-else
-    git clone https://github.com/nodenv/nodenv.git "$dir"
-    cd "$dir"
-fi
 
 add_plugin node-build https://github.com/nodenv/node-build.git
 add_plugin nodenv-update https://github.com/nodenv/nodenv-update.git

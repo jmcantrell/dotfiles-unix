@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Print mullvad server details.
+
 set -eu
 
 declare -A entries=(

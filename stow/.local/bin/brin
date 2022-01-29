@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Rename files passed over stdin.
-# Example: find . -type f | br-stdin
+# Example: find . -type f | brin
 
 set -eu
 

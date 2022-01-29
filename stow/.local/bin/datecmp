@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Compare two timestamps.
+# Returns standard comparison values (-1=less, 0=equal, 1=greater).
+
+set -eu
+
+timestamp_lhs=${1:?Missing left timestamp}
+timestamp_rhs=${2:?Missing right timestamp}
+
+seconds_since_epoch() {
+    date --utc --date="$1" +%s
+}
+
+seconds_lhs=$(seconds_since_epoch "$timestamp_lhs")
+seconds_rhs=$(seconds_since_epoch "$timestamp_rhs")
+
+if ((seconds_lhs < seconds_rhs)); then
+    result="-1"
+elif ((seconds_lhs > seconds_rhs)); then
+    result="1"
+else
+    result="0"
+fi
+
+printf "%s" "$result"

@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 
 # Return a sequence of dates.
+# Usage: dateseq TIMESTAMP INCREMENT COUNT
 
-# The start date parameter can be any string that `date` recognizes,
-# and every argument after the count parameter is passed on to `date`, so you
-# can do stuff like the following examples:
+# The timestamp parameter can be any string that `date` recognizes, and every
+# argument after the count parameter is passed on to `date`, so you can do
+# stuff like the following examples:
 
 # Get the dates for the next five hours, starting now:
 # dateseq now "+1 hour" 5
@@ -14,14 +15,18 @@
 
 set -eu
 
-timestamp=$1
-increment=$2
-count=$3
+timestamp=${1:?Missing initial timestamp}
+increment=${2:?Missing increment}
+count=${3:?Missing count}
 shift 3
 
-timestamp=$(date --date="$timestamp" "$@")
+normalize_timestamp() {
+    date --utc --iso-8601=ns --date="$1"
+}
+
+timestamp=$(normalize_timestamp "$timestamp")
 
 for ((i = 0; i < count; i++)); do
-    printf "%s\n" "$timestamp"
-    timestamp=$(date --date="$timestamp $increment" "$@")
+    date --date="$timestamp" "$@"
+    timestamp=$(normalize_timestamp "$timestamp $increment")
 done

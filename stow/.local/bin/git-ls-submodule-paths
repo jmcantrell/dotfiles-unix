@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-# List the submodules paths in this repository.
+# List the submodule paths in this repository.
 
 set -eu
 
-submodules_config=$PWD/.gitmodules
+config_file=$PWD/.gitmodules
 
-if [[ ! -f $submodules_config ]]; then
+if [[ ! -f $config_file ]]; then
     exit 0
 fi
 
-git config --file "$submodules_config" --name-only --get-regex "\.path$" | while read -r path_key; do
-    git config --file "$submodules_config" --get "$path_key"
+git config --file "$config_file" --name-only --get-regex "\.path$" | while read -r path_key; do
+    git config --file "$config_file" --get "$path_key"
 done

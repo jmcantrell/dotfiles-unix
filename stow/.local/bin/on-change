@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Run a command when any file changes in the given directory.
+# Run a command when any file changes in the given directory (default: .).
 # Usage: on-change [-d DIRECTORY]... COMMAND [ARGUMENT...]
 
 set -eu

@@ -2,7 +2,7 @@
 
 set -eu
 
-if which rustup &>/dev/null; then
+if which rustup >/dev/null; then
     rustup update
 else
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
@@ -14,12 +14,16 @@ fi
 rustup component add rust-src rls clippy
 cargo install cargo-{get,edit}
 
-zsh_completions=$HOME/.local/share/zsh/site-functions
-mkdir -p "$zsh_completions"
-rustup completions zsh >"$zsh_completions/_rustup"
-rustup completions zsh cargo >"$zsh_completions/_cargo"
+mkcd() {
+    local dir=$1
+    mkdir -p "$dir"
+    cd "$dir"
+}
 
-bash_completions=$HOME/.local/share/bash-completion/completions
-mkdir -p "$bash_completions"
-rustup completions bash >"$bash_completions/rustup"
-rustup completions bash cargo >"$bash_completions/cargo"
+mkcd ~/.local/share/zsh/site-functions
+rustup completions zsh >_rustup
+rustup completions zsh cargo >_cargo
+
+mkcd ~/.local/share/bash-completion/completions
+rustup completions bash >rustup
+rustup completions bash cargo >cargo

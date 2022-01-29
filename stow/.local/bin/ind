@@ -9,4 +9,4 @@ dir=${1:?Missing directory}
 shift
 
 cd "$dir"
-exec "$@"
+exec "${@:?Missing command}"

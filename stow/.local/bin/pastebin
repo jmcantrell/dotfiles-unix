@@ -2,7 +2,7 @@
 
 # Paste lines to a shareable URL.
 # Usage: pastebin /path/to/file...
-#        command-with-stdout | pastebin
+#        command-with-output | pastebin
 
 set -eu
 

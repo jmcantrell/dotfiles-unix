@@ -52,7 +52,7 @@ readarray -t src_lines <"$src_list"
 readarray -t dst_lines <"$dst_list"
 
 if ((${#src_lines[@]} != ${#dst_lines[@]})); then
-    die "Lines were added or removed"
+    die "Lines were added or removed!"
 fi
 
 for ((i = 0; i < ${#dst_lines[@]}; i += 1)); do

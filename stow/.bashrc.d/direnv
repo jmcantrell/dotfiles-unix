@@ -1,5 +1,5 @@
-if which direnv &>/dev/null; then
-    eval "$(direnv hook bash)"
-fi
+which direnv >/dev/null || return 0
+
+eval "$(direnv hook bash)"
 
 # vi:ft=bash

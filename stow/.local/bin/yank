@@ -5,10 +5,11 @@ shopt -s nullglob
 
 cache_dir=${XDG_CACHE_HOME:-$HOME/.cache}/yank
 
+me=${0##*/}
 usage="Move text around using file-based registers.
 
 Usage:
-    ${0##*/} [OPTIONS] ACTION
+    $me [OPTIONS] ACTION
 
 Options:
     -R              perform action on all existing registers
@@ -31,8 +32,13 @@ If no register is specified, it defaults to 'default'.
 When operating on all registers with -R, 'default' will be included.
 "
 
+usage() {
+    printf "%s\n" "$usage"
+    exit 0
+}
+
 die() {
-    printf "ERROR: %s" "$*" >&2
+    printf "ERROR: %s\n" "$*" >&2
     exit 1
 }
 
@@ -83,10 +89,7 @@ while getopts ":r:RC:h" option; do
         register_files_seen[$register_file]=1
         ;;
     C) cache_dir=$OPTARG ;;
-    h)
-        printf "%s\n" "$usage"
-        exit
-        ;;
+    h) usage ;;
     *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))

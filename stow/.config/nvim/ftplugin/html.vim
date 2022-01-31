@@ -2,6 +2,7 @@ let b:closetag_html_style = 1
 
 runtime! macros/closetag.vim
 
+setlocal sw=2 sts=2 ts=2
 setlocal formatoptions+=tcl
 setlocal wrap
 

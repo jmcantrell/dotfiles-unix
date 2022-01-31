@@ -2,14 +2,15 @@
 
 set -eu
 
-format=%d/%b_%n%e
+format=%d/%n%e
 start_num=1
 increment=1
 
+me=${0##*/}
 usage="Rename files as a sequence of numbers.
 
 Usage:
-    ${0##*/} [OPTIONS] FILE...
+    $me [OPTIONS] FILE...
 
 Options:
     -n           dry-run (make no changes)
@@ -27,6 +28,11 @@ The following placeholders are recognized in FORMAT:
     %e           extension of FILE
 "
 
+usage() {
+    printf "%s\n" "$usage"
+    exit 0
+}
+
 die() {
     printf "ERROR: %s\n" "$*" >&2
     exit 1
@@ -42,10 +48,7 @@ while getopts ":f:s:i:W:wnh" option; do
     W) width=$OPTARG ;;
     w) seq_options+=(-w) ;;
     n) dry_run=1 ;;
-    h)
-        printf "%s\n" "$usage"
-        exit
-        ;;
+    h) usage ;;
     *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
@@ -70,7 +73,7 @@ end_num=$((start_num + $# - 1))
 
 format=${format/\%N/$#}
 
-while IFS= read -r -d $'\n' num; do
+seq "${seq_options[@]}" "$start_num" "$increment" "$end_num" | while read -r num; do
     if [[ -v width ]]; then
         num=$(printf "%0${width}d" "$num")
     fi
@@ -93,4 +96,4 @@ while IFS= read -r -d $'\n' num; do
     fi
 
     printf "%s\n" "$dst"
-done < <(seq "${seq_options[@]}" "$start_num" "$increment" "$end_num")
+done

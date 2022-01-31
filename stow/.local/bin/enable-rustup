@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Install a rust toolchain and some tooling.
+
 set -eu
 
 if which rustup >/dev/null; then
@@ -8,11 +10,6 @@ else
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
         sh -s -- -y --no-modify-path
 fi
-
-. ~/.cargo/env
-
-rustup component add rust-src rls clippy
-cargo install cargo-{get,edit}
 
 mkcd() {
     local dir=$1
@@ -27,3 +24,11 @@ rustup completions zsh cargo >_cargo
 mkcd ~/.local/share/bash-completion/completions
 rustup completions bash >rustup
 rustup completions bash cargo >cargo
+
+. ~/.cargo/env
+
+rustup component add rust-src rls clippy
+
+cargo install cargo-{get,edit,generate}
+
+cargo install wasm-pack

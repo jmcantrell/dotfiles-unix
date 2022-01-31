@@ -12,6 +12,11 @@ Options:
     -n    dry-run (no changes are made)
 "
 
+usage() {
+    printf "%s\n" "$usage"
+    exit 0
+}
+
 die() {
     printf "ERROR: %s\n" "$*" >&2
     exit 1
@@ -20,10 +25,7 @@ die() {
 while getopts ":nh" option; do
     case $option in
     n) dry_run=1 ;;
-    h)
-        printf "%s\n" "$usage"
-        exit
-        ;;
+    h) usage ;;
     *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))

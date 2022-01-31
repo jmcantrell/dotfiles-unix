@@ -1,3 +1,4 @@
+setlocal sw=2 sts=2 ts=2
 setlocal commentstring=<!--%s-->
 
 let b:ale_linter_aliases = ['html', 'javascript', 'css']

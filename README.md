@@ -1,15 +1,8 @@
 # dotfiles-unix
 
-My configuration files and scripts common to all UNIX-like systems.
+My configuration files and scripts for UNIX-like systems.
 
 ## Installation
-
-Clone this repository:
-
-```sh
-git clone git@gitlab.com:jmcantrell/dotfiles-unix.git ~/.dotfiles-unix
-cd ~/.dotfiles-unix
-```
 
 Initialize repository, install packages, symlink files, and configure system:
 
@@ -19,6 +12,8 @@ Initialize repository, install packages, symlink files, and configure system:
 ./scripts/stow
 ./scripts/config
 ```
+
+## Additional tasks
 
 Upgrade submodules to the latest version:
 

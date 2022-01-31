@@ -15,13 +15,13 @@ Initialize repository, install packages, symlink files, and configure system:
 
 ## Additional tasks
 
-Upgrade submodules to the latest version:
+Upgrade files to latest version:
 
 ```sh
 ./scripts/upgrade
 ```
 
-Update repository with the latest changes:
+Update files with latest changes:
 
 ```sh
 ./scripts/update

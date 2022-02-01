@@ -1,5 +1,6 @@
-# List directory contents as a tree.
+# Set some default options.
 alias lt='tree --noreport --dirsfirst -F'
+
 alias ltl='lt -pugD --si' # long listing
 alias lta='lt -a'         # listing with hidden
 alias ltla='ltl -a'       # long listing with hidden

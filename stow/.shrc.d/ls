@@ -1,4 +1,6 @@
+# Set some default options.
 alias ls='ls --human-readable --classify --group-directories-first --color=auto'
+
 alias ll='ls -l'  # long listing
 alias la='ls -a'  # listing with hidden
 alias lla='ll -a' # long listing with hidden

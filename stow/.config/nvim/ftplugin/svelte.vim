@@ -1,6 +1,3 @@
-setlocal sw=2 sts=2 ts=2
-setlocal commentstring=<!--%s-->
-
 let b:ale_linter_aliases = ['html', 'javascript', 'css']
 let b:ale_linters = ['stylelint', 'eslint']
 let b:ale_fixers = ['prettier']
@@ -18,3 +15,6 @@ let b:context_filetype_filetypes =
 	\ ] }
 
 EmmetInstall
+
+setlocal sw=2 sts=2 ts=2
+setlocal commentstring=<!--%s-->

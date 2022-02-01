@@ -1,8 +1,13 @@
+# Set some default options.
 alias df='df --portability --print-type'
+
+# Display human-readable sizes.
 alias dfh='df --si'
-alias dfb='df --block-size=1'
-alias dfk='df --block-size=1K'
-alias dfm='df --block-size=1M'
-alias dfg='df --block-size=1G'
+
+# Display various size units.
+alias dfb='df --block-size=1'  # bytes
+alias dfk='df --block-size=1K' # kilobytes
+alias dfm='df --block-size=1M' # megabytes
+alias dfg='df --block-size=1G' # gigabytes
 
 # vi:ft=sh

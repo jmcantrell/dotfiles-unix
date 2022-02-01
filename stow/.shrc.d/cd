@@ -1,6 +1,6 @@
 # Push/pop from directory stack.
-alias pu='pushd'
-alias po='popd'
+alias pd='pushd'
+alias pD='popd'
 
 # List directory stack.
 alias dl='dirs -v -l'

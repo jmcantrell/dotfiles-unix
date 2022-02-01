@@ -1,6 +1,3 @@
-# Update LINES and COLUMNS after each command.
-shopt -s checkwinsize
-
 INPUTRC=${XDG_CONFIG_HOME:$HOME/.config}/inputrc
 
 _set_term_title() {
@@ -13,5 +10,8 @@ _set_term_title_cwd() {
 
 # Update the terminal title to show the current directory.
 PROMPT_COMMAND=_set_term_title_cwd${PROMPT_COMMAND:+;$PROMPT_COMMAND}
+
+# Update LINES and COLUMNS after each command.
+shopt -s checkwinsize
 
 # vi:ft=sh

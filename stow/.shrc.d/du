@@ -1,8 +1,16 @@
-alias du='du --count-links --si'
-alias dub='du --block-size=1'
-alias duk='du --block-size=1K'
-alias dum='du --block-size=1M'
-alias dug='du --block-size=1G'
+# Set some default options.
+alias du='du --count-links'
+
+# Display human-readable sizes.
+alias duh='du --si'
+
+# Display various size units.
+alias dub='du --block-size=1'  # bytes
+alias duk='du --block-size=1K' # kilobytes
+alias dum='du --block-size=1M' # megabytes
+alias dug='du --block-size=1G' # gigabytes
+
+# Display tree output.
 alias dut='tree --si --du'
 
 # vi:ft=sh

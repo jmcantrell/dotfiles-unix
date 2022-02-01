@@ -1,0 +1,4 @@
+# Set some default options.
+alias pgrep='pgrep --full --list-name --list-full --ignore-case'
+
+# vi:ft=sh

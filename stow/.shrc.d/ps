@@ -1,7 +1,12 @@
+# Show all terminal-associated processes by default.
 alias ps='ps -a'
-alias pu='ps -u $USER -o pid,%cpu,%mem,size,tty,stat,command'
+
+# Show all processes for every user.
 alias pa='ps -eo pid,%cpu,%mem,size,tty,stat,user,command'
 
-alias pgrep='pgrep --full --list-name --list-full --ignore-case'
+# Show all processes owned by a user (default: this user).
+pu() {
+    ps -u "${1:-$USER}" -o pid,%cpu,%mem,size,tty,stat,command
+}
 
 # vi:ft=sh

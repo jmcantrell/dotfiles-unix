@@ -94,11 +94,14 @@ set formatoptions-=t
 " Set the window title.
 set title titlestring=%{v:progname}\ %<%F
 
+" Set spellcheck options.
+set spelllang=en_us spellfile=~/.vim/spell/en.utf-8.add
+
 " Format the status line:
 
 " buffer number, file path and status
 set statusline=%#StatusLineBufferNr#%(\ %n\ %)%*
-set statusline+=\ %f%(\ %#StatusLineFlag#%m%r%w%*%)
+set statusline+=\ %F%(\ %#StatusLineFlag#%m%r%w%*%)
 
 " left / right side separator
 set statusline+=%=

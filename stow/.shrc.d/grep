@@ -1,4 +1,3 @@
-# Set some default options.
 alias grep='grep -I --color=auto'
 
 # vi:ft=sh

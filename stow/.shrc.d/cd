@@ -1,10 +1,3 @@
-# Push/pop from directory stack.
-alias pd='pushd'
-alias pD='popd'
-
-# List directory stack.
-alias dl='dirs -v -l'
-
 # Always create parent directories.
 alias mkdir='mkdir -p'
 

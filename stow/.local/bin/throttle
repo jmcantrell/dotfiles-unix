@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+# Only allow given command to be run once during a given period of time.
+# Usage: throttle ID DELAY COMMAND [ARGUMENT...]
+
+set -eu
+
+id=$1
+delay=$2
+shift 2
+
+me=${0##*/}
+lock_file=$XDG_RUNTIME_DIR/$me-$id.lock
+
+if [[ -e $lock_file ]]; then
+    exit 0
+fi
+
+touch "$lock_file"
+trap 'rm "$lock_file"' INT TERM EXIT
+
+"${@:?Missing command}"
+
+sleep "$delay"

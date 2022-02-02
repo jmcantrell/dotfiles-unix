@@ -1,4 +1,3 @@
-# Set some default options.
 alias lt='tree --noreport --dirsfirst -F'
 
 alias ltl='lt -pugD --si' # long listing

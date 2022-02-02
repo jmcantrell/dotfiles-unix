@@ -1,4 +1,3 @@
-# Set some default options.
 alias ls='ls --human-readable --classify --group-directories-first --color=auto'
 
 alias ll='ls -l'  # long listing

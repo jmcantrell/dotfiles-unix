@@ -29,6 +29,7 @@ add_plugin() {
 add_plugin node-build https://github.com/nodenv/node-build.git
 add_plugin nodenv-update https://github.com/nodenv/nodenv-update.git
 add_plugin nodenv-default-packages https://github.com/nodenv/nodenv-default-packages.git
+add_plugin xxenv-latest https://github.com/momo-lab/xxenv-latest.git
 
 cat >"$dir"/default-packages <<-EOF
 eslint
@@ -37,3 +38,7 @@ npm
 npm-upgrade
 prettier
 EOF
+
+export PATH=$dir/bin:$dir/shims:$PATH
+
+nodenv latest install --skip-existing

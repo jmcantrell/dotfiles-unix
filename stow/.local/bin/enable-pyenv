@@ -30,6 +30,7 @@ add_plugin pyenv-doctor https://github.com/pyenv/pyenv-doctor.git
 add_plugin pyenv-update https://github.com/pyenv/pyenv-update.git
 add_plugin pyenv-virtualenv https://github.com/pyenv/pyenv-virtualenv.git
 add_plugin pyenv-default-packages https://github.com/jawshooah/pyenv-default-packages.git
+add_plugin xxenv-latest https://github.com/momo-lab/xxenv-latest.git
 
 cat >"$dir"/default-packages <<-EOF
 black
@@ -40,3 +41,7 @@ pynvim
 twine
 wheel
 EOF
+
+export PATH=$dir/bin:$dir/shims:$PATH
+
+pyenv latest install --skip-existing

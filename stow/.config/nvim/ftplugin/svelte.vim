@@ -16,5 +16,5 @@ let b:context_filetype_filetypes =
 
 EmmetInstall
 
-setlocal sw=2 sts=2 ts=2
+setlocal shiftwidth=2 softtabstop=2 tabstop=2
 setlocal commentstring=<!--%s-->

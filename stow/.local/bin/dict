@@ -2,4 +2,4 @@
 
 # Lookup a definition on dict.org.
 
-exec curl -s dict.org/d:"${1:?Missing word}" | "${PAGER:-less}"
+curl -s dict.org/d:"${1:?Missing word}" | "${PAGER:-less}"

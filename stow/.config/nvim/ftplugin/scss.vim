@@ -1,3 +1,3 @@
 let b:ale_fixers = ['prettier']
 
-setlocal sw=2 sts=2 ts=2
+setlocal shiftwidth=2 softtabstop=2 tabstop=2

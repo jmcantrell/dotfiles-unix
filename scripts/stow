@@ -1,20 +1,6 @@
 #!/usr/bin/env bash
 
 set -eu
-shopt -s nullglob
-
-. ./stow/.profile.d/tmpdir
-mkdir -p "$TMPDIR"
-chmod 700 "$TMPDIR"
-
-. ./stow/.profile.d/gpg
-mkdir -p "$GNUPGHOME"
-chmod -R 700 "$GNUPGHOME"
-
-ssh_dir=$HOME/.ssh
-mkdir -p "$ssh_dir"
-chmod 700 "$ssh_dir"
-chmod 600 "$ssh_dir"/{id_*,*.pub}
 
 mkdir -p ~/.vim/spell
 

@@ -9,7 +9,7 @@ Initialize repository, install packages, symlink files, and configure system:
 ```sh
 ./scripts/init
 ./scripts/install
-./scripts/stow
+./scripts/deploy
 ./scripts/config
 ```
 
@@ -30,5 +30,5 @@ Update files with latest changes:
 Remove files from home directory:
 
 ```sh
-./scripts/unstow
+./scripts/undeploy
 ```

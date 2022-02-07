@@ -1,210 +1,210 @@
 [submodule "ls_colors"]
-	path = stow/.local/share/ls_colors
+	path = home/.local/share/ls_colors
 	url = https://github.com/trapd00r/LS_COLORS.git
 [submodule "zsh-completions"]
-	path = stow/.local/share/zsh/scripts/completions
+	path = home/.local/share/zsh/scripts/completions
 	url = https://github.com/zsh-users/zsh-completions.git
 [submodule "zsh-syntax-highlighting"]
-	path = stow/.local/share/zsh/scripts/syntax-highlighting
+	path = home/.local/share/zsh/scripts/syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule "vim-characterize"]
-	path = stow/.config/nvim/pack/default/start/characterize
+	path = home/.config/nvim/pack/default/start/characterize
 	url = https://github.com/tpope/vim-characterize.git
 [submodule "vim-endwise"]
-	path = stow/.config/nvim/pack/default/start/endwise
+	path = home/.config/nvim/pack/default/start/endwise
 	url = https://github.com/tpope/vim-endwise.git
 [submodule "vim-eunuch"]
-	path = stow/.config/nvim/pack/default/start/eunuch
+	path = home/.config/nvim/pack/default/start/eunuch
 	url = https://github.com/tpope/vim-eunuch.git
 [submodule "vim-fatrat"]
-	path = stow/.config/nvim/pack/default/start/fatrat
+	path = home/.config/nvim/pack/default/start/fatrat
 	url = https://github.com/jmcantrell/vim-fatrat.git
 [submodule "vim-jdaddy"]
-	path = stow/.config/nvim/pack/default/start/jdaddy
+	path = home/.config/nvim/pack/default/start/jdaddy
 	url = https://github.com/tpope/vim-jdaddy.git
 [submodule "vim-lion"]
-	path = stow/.config/nvim/pack/default/start/lion
+	path = home/.config/nvim/pack/default/start/lion
 	url = https://github.com/tommcdo/vim-lion.git
 [submodule "vim-noctu"]
-	path = stow/.config/nvim/pack/default/start/noctu
+	path = home/.config/nvim/pack/default/start/noctu
 	url = https://github.com/noahfrederick/vim-noctu.git
 [submodule "vim-node"]
-	path = stow/.config/nvim/pack/default/start/node
+	path = home/.config/nvim/pack/default/start/node
 	url = https://github.com/moll/vim-node.git
 [submodule "vim-ragtag"]
-	path = stow/.config/nvim/pack/default/start/ragtag
+	path = home/.config/nvim/pack/default/start/ragtag
 	url = https://github.com/tpope/vim-ragtag.git
 [submodule "vim-repeat"]
-	path = stow/.config/nvim/pack/default/start/repeat
+	path = home/.config/nvim/pack/default/start/repeat
 	url = https://github.com/tpope/vim-repeat.git
 [submodule "vim-scriptease"]
-	path = stow/.config/nvim/pack/default/start/scriptease
+	path = home/.config/nvim/pack/default/start/scriptease
 	url = https://github.com/tpope/vim-scriptease.git
 [submodule "vim-securemodelines"]
-	path = stow/.config/nvim/pack/default/start/securemodelines
+	path = home/.config/nvim/pack/default/start/securemodelines
 	url = https://github.com/ciaranm/securemodelines.git
 [submodule "vim-sensible"]
-	path = stow/.config/nvim/pack/default/start/sensible
+	path = home/.config/nvim/pack/default/start/sensible
 	url = https://github.com/tpope/vim-sensible.git
 [submodule "vim-sort-motion"]
-	path = stow/.config/nvim/pack/default/start/sort-motion
+	path = home/.config/nvim/pack/default/start/sort-motion
 	url = https://github.com/christoomey/vim-sort-motion.git
 [submodule "vim-surround"]
-	path = stow/.config/nvim/pack/default/start/surround
+	path = home/.config/nvim/pack/default/start/surround
 	url = https://github.com/tpope/vim-surround.git
 [submodule "vim-tagbar"]
-	path = stow/.config/nvim/pack/default/start/tagbar
+	path = home/.config/nvim/pack/default/start/tagbar
 	url = https://github.com/majutsushi/tagbar.git
 [submodule "vim-targets"]
-	path = stow/.config/nvim/pack/default/start/targets
+	path = home/.config/nvim/pack/default/start/targets
 	url = https://github.com/wellle/targets.vim.git
 [submodule "vim-undotree"]
-	path = stow/.config/nvim/pack/default/start/undotree
+	path = home/.config/nvim/pack/default/start/undotree
 	url = https://github.com/mbbill/undotree.git
 [submodule "vim-unimpaired"]
-	path = stow/.config/nvim/pack/default/start/unimpaired
+	path = home/.config/nvim/pack/default/start/unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
 [submodule "vim-visual-increment"]
-	path = stow/.config/nvim/pack/default/start/visual-increment
+	path = home/.config/nvim/pack/default/start/visual-increment
 	url = https://github.com/triglav/vim-visual-increment.git
 [submodule "vim-ale"]
-	path = stow/.config/nvim/pack/default/start/ale
+	path = home/.config/nvim/pack/default/start/ale
 	url = https://github.com/dense-analysis/ale.git
 [submodule "vim-context"]
-	path = stow/.config/nvim/pack/default/start/context
+	path = home/.config/nvim/pack/default/start/context
 	url = https://github.com/Shougo/context_filetype.vim.git
 [submodule "vim-commentary"]
-	path = stow/.config/nvim/pack/default/start/commentary
+	path = home/.config/nvim/pack/default/start/commentary
 	url = https://github.com/tpope/vim-commentary.git
 [submodule "vim-fencing"]
-	path = stow/.config/nvim/pack/default/start/fencing
+	path = home/.config/nvim/pack/default/start/fencing
 	url = https://github.com/jmcantrell/vim-fencing.git
 [submodule "vim-emmet"]
-	path = stow/.config/nvim/pack/default/start/emmet
+	path = home/.config/nvim/pack/default/start/emmet
 	url = https://github.com/mattn/emmet-vim.git
 [submodule "vim-dirvish"]
-	path = stow/.config/nvim/pack/default/start/dirvish
+	path = home/.config/nvim/pack/default/start/dirvish
 	url = https://github.com/justinmk/vim-dirvish.git
 [submodule "vim-togglelist"]
-	path = stow/.config/nvim/pack/default/start/togglelist
+	path = home/.config/nvim/pack/default/start/togglelist
 	url = https://github.com/milkypostman/vim-togglelist.git
 [submodule "vim-highlightedyank"]
-	path = stow/.config/nvim/pack/default/start/highlightedyank
+	path = home/.config/nvim/pack/default/start/highlightedyank
 	url = https://github.com/machakann/vim-highlightedyank.git
 [submodule "vim-editorconfig"]
-	path = stow/.config/nvim/pack/default/start/editorconfig
+	path = home/.config/nvim/pack/default/start/editorconfig
 	url = https://github.com/editorconfig/editorconfig-vim.git
 [submodule "vim-direnv"]
-	path = stow/.config/nvim/pack/default/start/direnv
+	path = home/.config/nvim/pack/default/start/direnv
 	url = https://github.com/direnv/direnv.vim.git
 [submodule "vim-nix"]
-	path = stow/.config/nvim/pack/default/start/nix
+	path = home/.config/nvim/pack/default/start/nix
 	url = https://github.com/LnL7/vim-nix.git
 [submodule "vim-toml"]
-	path = stow/.config/nvim/pack/default/start/toml
+	path = home/.config/nvim/pack/default/start/toml
 	url = https://github.com/cespare/vim-toml.git
 [submodule "vim-javascript"]
-	path = stow/.config/nvim/pack/default/start/javascript
+	path = home/.config/nvim/pack/default/start/javascript
 	url = https://github.com/pangloss/vim-javascript.git
 [submodule "vim-systemd"]
-	path = stow/.config/nvim/pack/default/start/systemd
+	path = home/.config/nvim/pack/default/start/systemd
 	url = https://github.com/wgwoods/vim-systemd-syntax.git
 [submodule "vim-svelte"]
-	path = stow/.config/nvim/pack/default/start/svelte
+	path = home/.config/nvim/pack/default/start/svelte
 	url = https://github.com/leafOfTree/vim-svelte-plugin.git
 [submodule "vim-rust"]
-	path = stow/.config/nvim/pack/default/start/rust
+	path = home/.config/nvim/pack/default/start/rust
 	url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim-ruby"]
-	path = stow/.config/nvim/pack/default/start/ruby
+	path = home/.config/nvim/pack/default/start/ruby
 	url = https://github.com/vim-ruby/vim-ruby.git
 [submodule "vim-python"]
-	path = stow/.config/nvim/pack/default/start/python
+	path = home/.config/nvim/pack/default/start/python
 	url = https://github.com/vim-python/python-syntax.git
 [submodule "vim-pug"]
-	path = stow/.config/nvim/pack/default/start/pug
+	path = home/.config/nvim/pack/default/start/pug
 	url = https://github.com/digitaltoad/vim-pug.git
 [submodule "vim-nginx"]
-	path = stow/.config/nvim/pack/default/start/nginx
+	path = home/.config/nvim/pack/default/start/nginx
 	url = https://github.com/chr4/nginx.vim.git
 [submodule "vim-markdown"]
-	path = stow/.config/nvim/pack/default/start/markdown
+	path = home/.config/nvim/pack/default/start/markdown
 	url = https://github.com/plasticboy/vim-markdown.git
 [submodule "vim-lua"]
-	path = stow/.config/nvim/pack/default/start/lua
+	path = home/.config/nvim/pack/default/start/lua
 	url = https://github.com/tbastos/vim-lua.git
 [submodule "vim-llvm"]
-	path = stow/.config/nvim/pack/default/start/llvm
+	path = home/.config/nvim/pack/default/start/llvm
 	url = https://github.com/rhysd/vim-llvm.git
 [submodule "vim-jq"]
-	path = stow/.config/nvim/pack/default/start/jq
+	path = home/.config/nvim/pack/default/start/jq
 	url = https://github.com/vito-c/jq.vim.git
 [submodule "vim-haskell"]
-	path = stow/.config/nvim/pack/default/start/haskell
+	path = home/.config/nvim/pack/default/start/haskell
 	url = https://github.com/neovimhaskell/haskell-vim.git
 [submodule "vim-go"]
-	path = stow/.config/nvim/pack/default/start/go
+	path = home/.config/nvim/pack/default/start/go
 	url = https://github.com/fatih/vim-go.git
 [submodule "vim-haproxy"]
-	path = stow/.config/nvim/pack/default/start/haproxy
+	path = home/.config/nvim/pack/default/start/haproxy
 	url = https://github.com/CH-DanReif/haproxy.vim.git
 [submodule "vim-mustache"]
-	path = stow/.config/nvim/pack/default/start/mustache
+	path = home/.config/nvim/pack/default/start/mustache
 	url = https://github.com/mustache/vim-mustache-handlebars.git
 [submodule "vim-haml"]
-	path = stow/.config/nvim/pack/default/start/haml
+	path = home/.config/nvim/pack/default/start/haml
 	url = https://github.com/tpope/vim-haml.git
 [submodule "vim-glsl"]
-	path = stow/.config/nvim/pack/default/start/glsl
+	path = home/.config/nvim/pack/default/start/glsl
 	url = https://github.com/tikhomirov/vim-glsl.git
 [submodule "vim-git"]
-	path = stow/.config/nvim/pack/default/start/git
+	path = home/.config/nvim/pack/default/start/git
 	url = https://github.com/tpope/vim-git.git
 [submodule "vim-fish"]
-	path = stow/.config/nvim/pack/default/start/fish
+	path = home/.config/nvim/pack/default/start/fish
 	url = https://github.com/blankname/vim-fish.git
 [submodule "vim-erlang"]
-	path = stow/.config/nvim/pack/default/start/erlang
+	path = home/.config/nvim/pack/default/start/erlang
 	url = https://github.com/vim-erlang/vim-erlang-runtime.git
 [submodule "vim-dockerfile"]
-	path = stow/.config/nvim/pack/default/start/dockerfile
+	path = home/.config/nvim/pack/default/start/dockerfile
 	url = https://github.com/ekalinin/Dockerfile.vim.git
 [submodule "vim-brewfile"]
-	path = stow/.config/nvim/pack/default/start/brewfile
+	path = home/.config/nvim/pack/default/start/brewfile
 	url = https://github.com/bfontaine/Brewfile.vim.git
 [submodule "vim-ocaml"]
-	path = stow/.config/nvim/pack/default/start/ocaml
+	path = home/.config/nvim/pack/default/start/ocaml
 	url = https://github.com/ocaml/vim-ocaml.git
 [submodule "vim-applescript"]
-	path = stow/.config/nvim/pack/default/start/applescript
+	path = home/.config/nvim/pack/default/start/applescript
 	url = https://github.com/mityu/vim-applescript.git
 [submodule "vim-cpp"]
-	path = stow/.config/nvim/pack/default/start/cpp
+	path = home/.config/nvim/pack/default/start/cpp
 	url = https://github.com/vim-jp/vim-cpp.git
 [submodule "vim-csv"]
-	path = stow/.config/nvim/pack/default/start/csv
+	path = home/.config/nvim/pack/default/start/csv
 	url = https://github.com/chrisbra/csv.vim.git
 [submodule "vim-latex"]
-	path = stow/.config/nvim/pack/default/start/latex
+	path = home/.config/nvim/pack/default/start/latex
 	url = https://github.com/lervag/vimtex.git
 [submodule "vim-clever-f"]
-	path = stow/.config/nvim/pack/default/start/clever-f
+	path = home/.config/nvim/pack/default/start/clever-f
 	url = https://github.com/rhysd/clever-f.vim.git
 [submodule "vim-matchup"]
-	path = stow/.config/nvim/pack/default/start/matchup
+	path = home/.config/nvim/pack/default/start/matchup
 	url = https://github.com/andymass/vim-matchup.git
 [submodule "vim-sway"]
-	path = stow/.config/nvim/pack/default/start/sway
+	path = home/.config/nvim/pack/default/start/sway
 	url = https://github.com/ajouellette/sway-vim-syntax.git
 [submodule "vim-signature"]
-	path = stow/.config/nvim/pack/default/start/signature
+	path = home/.config/nvim/pack/default/start/signature
 	url = https://github.com/kshenoy/vim-signature.git
 [submodule "zsh-nix-completions"]
-	path = stow/.local/share/zsh/scripts/nix-completions
+	path = home/.local/share/zsh/scripts/nix-completions
 	url = https://github.com/spwhitt/nix-zsh-completions.git
 [submodule "bash-nix-completions"]
-	path = stow/.local/share/bash/scripts/nix-completions
+	path = home/.local/share/bash/scripts/nix-completions
 	url = https://github.com/hedning/nix-bash-completions.git
 [submodule "vim-sneak"]
-	path = stow/.config/nvim/pack/default/start/sneak
+	path = home/.config/nvim/pack/default/start/sneak
 	url = https://github.com/justinmk/vim-sneak.git

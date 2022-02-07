@@ -4,4 +4,4 @@ set -eu
 
 mkdir -p ~/.vim/spell
 
-stow --no-folding --dir . --target ~ --restow stow
+stow --no-folding --dir . --target ~ --restow home

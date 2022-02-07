@@ -1,6 +1,3 @@
-# Always create parent directories.
-alias mkdir='mkdir -p'
-
 # Quickly traverse directory ancestry.
 alias ...='cd ../..'
 alias ....='cd ../../..'

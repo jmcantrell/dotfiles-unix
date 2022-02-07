@@ -3,6 +3,7 @@ alias cp='cp -v'
 alias mv='mv -v'
 alias ln='ln -vsf'
 alias rm='trash'
+alias mkdir='mkdir -p'
 alias rehash='hash -r'
 
 # vi:ft=sh

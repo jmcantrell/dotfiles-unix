@@ -1,6 +1,7 @@
 alias d='docker'
-alias dc='docker-compose'
 alias drun='d run -it --rm'
+
+alias dc='docker-compose'
 alias dcup='dc up --detach --build'
 alias dcdown='dc down --remove-orphans'
 

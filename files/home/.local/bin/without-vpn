@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+# Execute the given command outside the influence of the VPN.
+
+exec mullvad-exclude "$@"

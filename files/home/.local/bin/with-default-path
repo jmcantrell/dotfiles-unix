@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+# Reset PATH to the default value before executing the given command.
+
+unset PATH
+. /etc/profile
+exec "$@"

@@ -101,7 +101,7 @@ set spelllang=en_us spellfile=~/.vim/spell/en.utf-8.add
 
 " buffer number, file path and status
 set statusline=%#StatusLineBufferNr#%(\ %n\ %)%*
-set statusline+=\ %F%(\ %#StatusLineFlag#%m%r%w%*%)
+set statusline+=\ %f%(\ %#StatusLineFlag#%m%r%w%*%)
 
 " left / right side separator
 set statusline+=%=

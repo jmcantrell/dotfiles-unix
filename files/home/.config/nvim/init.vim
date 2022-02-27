@@ -213,6 +213,10 @@ nmap <silent> gyp :call setreg('+', expand('%:p'), 'v')<cr>
 " Copy the file path (with line number) to the clipboard.
 nmap <silent> gyP :call setreg('+', expand('%:p').':'.line('.'), 'v')<cr>
 
+" Split the current line at the cursor.
+inoremap <c-j> <cr><esc>O
+nmap <c-j> i<c-j><esc>
+
 " Write file with sudo.
 command! -bar W :w !sudo tee % >/dev/null<cr>
 

@@ -1,3 +1,5 @@
 export RIPGREP_CONFIG_PATH=${XDG_CONFIG_HOME:-$HOME/.config}/ripgreprc
 
+alias rg="noglob rg"
+
 # vi:ft=sh

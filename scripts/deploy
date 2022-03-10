@@ -2,6 +2,7 @@
 
 set -eu
 
-mkdir -p ~/.vim/spell
-
 stow --no-folding --dir ./files --target ~ --restow home
+
+ln -sfrn ~/.config/nvim ~/.vim
+ln -sfrn ~/.config/nvim/init.vim ~/.vimrc

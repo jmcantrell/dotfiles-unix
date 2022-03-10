@@ -2,7 +2,7 @@
 
 set -eu
 
-config_dir=$HOME/.config/nvim
+config_dir=$HOME/.vim
 
 for dir in "$config_dir"/doc "$config_dir"/pack/*/start/*/doc; do
     printf "Generating vim helptags: %s\n" "$dir"

@@ -4,5 +4,5 @@ set -eu
 
 export PATH=$PWD/bin:$PATH
 
-generate-nvim-helptags
+generate-vim-helptags
 update-nvim-rplugins

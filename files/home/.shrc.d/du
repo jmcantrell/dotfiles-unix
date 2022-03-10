@@ -2,7 +2,7 @@
 alias du='du --count-links'
 
 # Display human-readable sizes.
-alias duh='du --si'
+alias duh='du --human-readable'
 
 # Display various size units.
 alias dub='du --block-size=1'  # bytes
@@ -12,5 +12,11 @@ alias dug='du --block-size=1G' # gigabytes
 
 # Display tree output.
 alias dut='tree --si --du'
+
+# Show sizes sorted descending.
+dutop() {
+    duh --max-depth=1 --apparent-size "$@" |
+        sort --reverse --human-numeric-sort
+}
 
 # vi:ft=sh

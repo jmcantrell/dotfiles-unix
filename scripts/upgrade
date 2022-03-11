@@ -3,5 +3,3 @@
 set -eu
 
 git submodule update --remote
-
-./scripts/build

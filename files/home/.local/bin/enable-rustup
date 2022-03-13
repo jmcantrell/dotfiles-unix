@@ -25,7 +25,7 @@ mkcd ~/.local/share/bash-completion/completions
 rustup completions bash >rustup
 rustup completions bash cargo >cargo
 
-. ~/.cargo/env
+export PATH=$HOME/.cargo/bin:$PATH
 
 rustup component add rust-src rls clippy
 

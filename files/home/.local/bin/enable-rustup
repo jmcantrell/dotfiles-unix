@@ -7,8 +7,7 @@ set -eu
 if which rustup >/dev/null; then
     rustup update
 else
-    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
-        sh -s -- -y --no-modify-path
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 fi
 
 mkcd() {
@@ -28,7 +27,4 @@ rustup completions bash cargo >cargo
 export PATH=$HOME/.cargo/bin:$PATH
 
 rustup component add rust-src rls clippy
-
-cargo install cargo-{get,edit,generate}
-
-cargo install wasm-pack
+cargo install wasm-pack cargo-{get,edit,generate}

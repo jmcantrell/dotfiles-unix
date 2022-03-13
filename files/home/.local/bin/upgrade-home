@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -eu
+
+enable-ghcup
+enable-rustup
+enable-pyenv
+enable-nodenv
+enable-rbenv
+
+pass git pull
+
+cd ~/.dotfiles
+./scripts/update
+./scripts/upgrade
+./scripts/deploy

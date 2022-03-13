@@ -2,15 +2,17 @@
 
 set -eu
 
-export BOOTSTRAP_HASKELL_NONINTERACTIVE=1
-export BOOTSTRAP_HASKELL_INSTALL_HLS=1
-export BOOTSTRAP_HASKELL_INSTALL_STACK=1
-
-curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | SHELL=no sh
+if which ghcup >/dev/null; then
+    ghcup upgrade
+else
+    export BOOTSTRAP_HASKELL_NONINTERACTIVE=1
+    export BOOTSTRAP_HASKELL_INSTALL_HLS=1
+    export BOOTSTRAP_HASKELL_INSTALL_STACK=1
+    curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | SHELL=no sh
+fi
 
 export PATH=$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH
 
-ghcup install cabal latest
-ghcup install ghc latest
-ghcup install stack latest
-ghcup install hls latest
+for package in cabal ghc stack hls; do
+    ghcup install "$package" latest
+done

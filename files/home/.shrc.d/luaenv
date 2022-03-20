@@ -1,0 +1,8 @@
+[[ -d $HOME/.luaenv ]] || return 0
+
+export LUAENV_ROOT=$HOME/.luaenv
+export PATH=$LUAENV_ROOT/bin:$PATH
+
+eval "$(luaenv init -)"
+
+# vi:ft=sh

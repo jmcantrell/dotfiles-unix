@@ -7,10 +7,10 @@ enable-rustup
 enable-pyenv
 enable-nodenv
 enable-rbenv
+enable-luaenv
 
 pass git pull
 
 cd ~/.dotfiles
-./scripts/update
 ./scripts/upgrade
 ./scripts/deploy

@@ -7,7 +7,7 @@ env_info() {
     [[ -d node_modules || -f package.json ]] && env_names+=(node)
     [[ -f Cargo.toml ]] && env_names+=(rust)
     [[ -n $VIRTUAL_ENV ]] && env_names+=(python)
-    [[ -n $env_names ]] && env_info="%F{3}${env_names[*]}%f"
+    (( $#env_names > 0 )) && env_info="%F{3}${env_names[*]}%f"
 }
 precmd_functions+=env_info
 

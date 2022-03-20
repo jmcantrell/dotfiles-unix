@@ -1,4 +1,4 @@
-export PASSWORD_STORE_GPG_OPTS="--armor"
+export PASSWORD_STORE_GPG_OPTS="--armor --compress-algo zlib"
 export PASSWORD_STORE_GENERATED_LENGTH=16
 export PASSWORD_STORE_ENABLE_EXTENSIONS=true
 

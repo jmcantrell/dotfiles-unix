@@ -12,7 +12,7 @@
 	url = https://github.com/tpope/vim-characterize.git
 [submodule "vim-endwise"]
 	path = files/home/.config/nvim/pack/default/start/endwise
-	url = https://github.com/tpope/vim-endwise.git
+	url = https://github.com/jmcantrell/vim-endwise.git
 [submodule "vim-eunuch"]
 	path = files/home/.config/nvim/pack/default/start/eunuch
 	url = https://github.com/tpope/vim-eunuch.git

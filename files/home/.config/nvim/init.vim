@@ -17,7 +17,7 @@ set cursorline
 set noerrorbells
 
 " Use sensible tab settings.
-set noexpandtab tabstop=4 softtabstop=4 shiftwidth=4
+set expandtab tabstop=4 softtabstop=4 shiftwidth=4
 
 " Try to keep indentation consistent.
 set smarttab copyindent autoindent shiftround

@@ -1,12 +1,10 @@
 # Adjust word splitting characters.
 WORDCHARS=${WORDCHARS:s#/#}
-WORDCHARS=${WORDCHARS:s/./}
-WORDCHARS=${WORDCHARS:s/-/}
 WORDCHARS=${WORDCHARS:s/_/}
 
 # Set the terminal title.
 set_title() {
-	print -Pn '\e]2;zsh ${PWD/$HOME/~} \a'
+    print -Pn '\e]2;zsh ${PWD/$HOME/~} \a'
 }
 precmd_functions+=set_title
 preexec_functions+=set_title

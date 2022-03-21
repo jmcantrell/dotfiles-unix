@@ -8,8 +8,7 @@ enable-pyenv
 enable-nodenv
 enable-rbenv
 enable-luaenv
-
-pass git pull
+enable-pass
 
 cd ~/.dotfiles
 ./scripts/upgrade

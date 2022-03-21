@@ -1,3 +1,5 @@
+export DEFAULT_PATH=$PATH
+
 for file in ~/.profile.d/*; do
     test -r "$file" && . "$file"
 done

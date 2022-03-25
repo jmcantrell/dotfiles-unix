@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+[[ $(mullvad status | awk '{print $3}') == Connected ]]

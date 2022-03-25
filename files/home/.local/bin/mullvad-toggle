@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Toggle the Mullvad VPN connection.
+# This is primarily used for swaystatus interaction.
+
+set -eu
+
+if mullvad-connected; then
+    mullvad disconnect
+else
+    mullvad connect
+fi

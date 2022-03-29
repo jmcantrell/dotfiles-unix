@@ -1,6 +1,6 @@
 [[ $- != *i* ]] && return
 
-for file in /etc/{bashrc,bash.bashrc} ~/.bashrc.d/* ~/.shrc; do
+for file in ~/.shrc /etc/{bashrc,bash.bashrc} ~/.bashrc.d/*; do
     if [[ -r $file ]]; then
         . "$file"
     fi

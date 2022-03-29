@@ -1,4 +1,4 @@
-for file in ~/.zshrc.d/*(N) ~/.shrc; do
+for file in ~/.shrc ~/.zshrc.d/*(N); do
     . "$file"
 done
 unset file

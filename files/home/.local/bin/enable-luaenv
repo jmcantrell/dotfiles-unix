@@ -28,7 +28,6 @@ add_plugin() {
 
 add_plugin lua-build https://github.com/cehoffman/lua-build.git
 add_plugin luaenv-luarocks https://github.com/jmcantrell/luaenv-luarocks.git
-add_plugin luaenv-default-rocks https://github.com/jmcantrell/luaenv-default-rocks.git
 add_plugin xxenv-latest https://github.com/momo-lab/xxenv-latest.git
 
 export PATH=$dir/bin:$dir/shims:$PATH

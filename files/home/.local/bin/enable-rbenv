@@ -27,7 +27,6 @@ add_plugin() {
 }
 
 add_plugin ruby-build https://github.com/rbenv/ruby-build.git
-add_plugin rbenv-update https://github.com/rkh/rbenv-update.git
 add_plugin rbenv-default-gems https://github.com/rbenv/rbenv-default-gems.git
 add_plugin xxenv-latest https://github.com/momo-lab/xxenv-latest.git
 

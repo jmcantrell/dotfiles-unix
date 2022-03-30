@@ -28,7 +28,6 @@ add_plugin() {
 
 add_plugin node-build https://github.com/nodenv/node-build.git
 add_plugin node-build-update-defs https://github.com/nodenv/node-build-update-defs.git
-add_plugin nodenv-update https://github.com/nodenv/nodenv-update.git
 add_plugin nodenv-default-packages https://github.com/nodenv/nodenv-default-packages.git
 add_plugin xxenv-latest https://github.com/momo-lab/xxenv-latest.git
 

@@ -2,7 +2,7 @@
 
 set -eu
 
-if which ghcup >/dev/null; then
+if which ghcup &>/dev/null; then
     ghcup upgrade
 else
     export BOOTSTRAP_HASKELL_NONINTERACTIVE=1

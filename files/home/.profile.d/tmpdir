@@ -1,3 +1,5 @@
-export TMPDIR=$HOME/.local/tmp
+dir=$HOME/.local/tmp
+[[ -d $dir ]] && export TMPDIR=$dir
+unset dir
 
 # vi:ft=sh

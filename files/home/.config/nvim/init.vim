@@ -146,8 +146,12 @@ nmap <leader><leader> :b#<cr>
 nnoremap <c-g> 2<c-g>
 
 " Delete buffer.
-nmap <leader>d :bd<cr>
-nmap <leader>D :bd!<cr>
+nmap <leader>d :BD<cr>
+nmap <leader>D :BD!<cr>
+
+" Close window.
+nmap <leader>c :close<cr>
+nmap <leader>C :close!<cr>
 
 " Write changes and delete buffer.
 nmap <leader>w :w<cr>

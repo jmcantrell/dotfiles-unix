@@ -208,3 +208,6 @@
 [submodule "vim-sneak"]
     path = files/home/.config/nvim/pack/default/start/sneak
     url = https://github.com/justinmk/vim-sneak.git
+[submodule "vim-xit"]
+	path = files/home/.config/nvim/pack/default/start/xit
+	url = https://github.com/ryanolsonx/vim-xit.git

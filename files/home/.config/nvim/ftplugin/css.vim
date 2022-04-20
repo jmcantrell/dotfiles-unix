@@ -1,5 +1,5 @@
 let b:ale_fixers = ['prettier']
 
-EmmetInstall
+" EmmetInstall
 
 setlocal shiftwidth=2 softtabstop=2 tabstop=2

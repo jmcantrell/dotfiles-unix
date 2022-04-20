@@ -9,7 +9,7 @@ let b:fencing_options =
 let b:closetag_html_style = 1
 runtime! macros/closetag.vim
 
-EmmetInstall
+" EmmetInstall
 
 setlocal shiftwidth=2 softtabstop=2 tabstop=2
 setlocal formatoptions+=tcl

@@ -14,7 +14,7 @@ let b:context_filetype_filetypes =
     \   {'filetype': 'css', 'start': '<style>', 'end': '</style>'},
     \ ] }
 
-EmmetInstall
+" EmmetInstall
 
 setlocal shiftwidth=2 softtabstop=2 tabstop=2
 setlocal commentstring=<!--%s-->

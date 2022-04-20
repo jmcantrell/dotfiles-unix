@@ -214,3 +214,6 @@
 [submodule "vim-ultisnips"]
 	path = files/home/.config/nvim/pack/default/start/ultisnips
 	url = https://github.com/SirVer/ultisnips.git
+[submodule "vim-marko"]
+	path = files/home/.config/nvim/pack/default/start/marko
+	url = https://github.com/rajasegar/vim-marko.git

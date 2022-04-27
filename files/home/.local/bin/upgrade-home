@@ -8,6 +8,7 @@ enable-pyenv
 enable-nodenv
 enable-rbenv
 enable-luaenv
+enable-junest
 enable-pass
 
 cd ~/.dotfiles

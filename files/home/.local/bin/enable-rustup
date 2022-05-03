@@ -27,4 +27,4 @@ rustup completions bash cargo >cargo
 export PATH=$HOME/.cargo/bin:$PATH
 
 rustup component add rust-src rls clippy
-cargo install wasm-pack cargo-{get,edit,generate}
+cargo install cargo-{get,edit,generate}

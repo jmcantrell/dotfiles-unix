@@ -1,6 +1,10 @@
 \set QUIET on
 
+\timing
+\x auto
 \pset null NULL
+\pset border 2
+\pset linestyle unicode
 
 set timezone to 'UTC';
 set intervalstyle to postgres_verbose;

@@ -28,4 +28,4 @@ export PATH=$HOME/.cargo/bin:$PATH
 
 rustup target add wasm32-unknown-unknown
 rustup component add rust-src rls clippy
-cargo install cargo-{get,edit,generate}
+cargo install cargo-{get,edit,generate,play}

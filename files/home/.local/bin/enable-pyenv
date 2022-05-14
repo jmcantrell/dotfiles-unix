@@ -36,6 +36,7 @@ black
 build
 flake8
 pip
+pip-tools
 pynvim
 twine
 wheel

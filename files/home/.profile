@@ -1,7 +1,6 @@
-export DEFAULT_PATH=$PATH
-
 for file in ~/.profile.d/*; do
-    test -r "$file" && . "$file"
+    test -r "$file" || continue
+    . "$file" || echo "ERROR: Unable to load: $file" >&2
 done
 unset file
 

@@ -13,12 +13,12 @@ Usage:
     $me [OPTIONS] FILE...
 
 Options:
-    -n           dry-run (make no changes)
+    -f           use -f instead of -i in the generated mv commands
     -w           equalize width by padding with leading zeroes
     -W NUMBER    pad each number to an exact width with leading zeroes
     -s NUMBER    starting number (default: $start_num)
     -i NUMBER    increment (default: $increment)
-    -f FORMAT    file path format (default: $format)
+    -F FORMAT    file path format (default: $format)
 
 The following placeholders are recognized in FORMAT:
     %n           number of FILE (required)
@@ -38,16 +38,20 @@ die() {
     exit 1
 }
 
-declare -a seq_options
+extname() {
+    awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"$1"
+}
 
-while getopts ":f:s:i:W:wnh" option; do
+declare -a seq_options mkbr_options
+
+while getopts ":F:s:i:W:wfh" option; do
     case $option in
-    f) format=$OPTARG ;;
+    F) format=$OPTARG ;;
     s) start_num=$OPTARG ;;
     i) increment=$OPTARG ;;
     W) width=$OPTARG ;;
     w) seq_options+=(-w) ;;
-    n) dry_run=1 ;;
+    f) mkbr_options+=(-f) ;;
     h) usage ;;
     *) die "Invalid option '$OPTARG'" ;;
     esac
@@ -70,12 +74,18 @@ if [[ $increment == *[!0-9]* ]]; then
 fi
 
 end_num=$((start_num + $# - 1))
-
 format=${format/\%N/$#}
+
+temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
+printf -v cleanup "rm -rf %q" "$temp_dir"
+trap "$cleanup" INT TERM EXIT
+
+src_list=$temp_dir/src
+dst_list=$temp_dir/dst
 
 seq "${seq_options[@]}" "$start_num" "$increment" "$end_num" | while read -r num; do
     if [[ -v width ]]; then
-        num=$(printf "%0${width}d" "$num")
+        printf -v num "%0${width}d" "$num"
     fi
 
     src=$1
@@ -91,9 +101,8 @@ seq "${seq_options[@]}" "$start_num" "$increment" "$end_num" | while read -r num
     dst=${dst/\%b/$base}
     dst=${dst/\%e/$ext}
 
-    if [[ ! -v dry_run ]]; then
-        mv -i -T "$src" "$dst"
-    fi
-
-    printf "%s\n" "$dst"
+    echo "$src" >>"$src_list"
+    echo "$dst" >>"$dst_list"
 done
+
+mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"

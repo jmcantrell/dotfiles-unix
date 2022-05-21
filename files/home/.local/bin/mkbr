@@ -1,0 +1,115 @@
+#!/usr/bin/env bash
+
+set -eu
+
+me=${0##*/}
+usage="Generate, confirm, and execute a bulk rename script.
+
+Usage:
+    $me [OPTIONS] FROM_LIST TO_LIST
+
+Options:
+    -f           use -f instead of -i for generated mv commands
+
+Arguments:
+    FROM_LIST    file containing the original paths (one per line)
+    TO_LIST      file containing the desired paths (one per line)
+
+A script will be generated, opened in EDITOR for review, and executed with sh.
+
+It's expected that the path on a line in FROM_LIST corresponds with the path on
+the same line in TO_LIST.
+
+This command will error if the number of paths in each list does not match, or
+if any of the original paths do not exist.
+
+It will exit silently if the lists are empty.
+"
+
+usage() {
+    printf "%s\n" "$usage"
+    exit 0
+}
+
+die() {
+    printf "ERROR: %s\n" "$*" >&2
+    exit 1
+}
+
+is_readable_file() {
+    [[ -f $1 && -r $1 ]]
+}
+
+mv_option=i
+
+while getopts ":fh" option; do
+    case $option in
+    f) mv_option=f ;;
+    h) usage ;;
+    *) die "Invalid option '$OPTARG'" ;;
+    esac
+done && shift $((OPTIND - 1))
+
+if (($# != 2)) || ! is_readable_file "$1" || ! is_readable_file "$2"; then
+    die "The first two parameters must be readable files"
+fi
+
+readarray -t src_paths <"$1"
+readarray -t dst_paths <"$2"
+
+if ((${#src_paths[@]} != ${#dst_paths[@]})); then
+    die "The number of paths does not match"
+fi
+
+for path in "${src_paths[@]}"; do
+    if [[ ! -e $path ]]; then
+        die "Path does not exist: $path"
+    fi
+done
+
+if ((${#src_paths[@]} == 0)); then
+    exit 0
+fi
+
+script=$(mktemp -t "${me}.XXXXXXXXXX")
+printf -v cleanup "rm -f %q" "$script"
+trap "$cleanup" INT TERM EXIT
+
+cat >"$script" <<-EOF
+# This file will be executed when you close the editor.
+# Please double-check everything, clear the file to abort.
+EOF
+
+changed=0
+tmpl_mkdir="mkdir -vp -- %q\n"
+tmpl_mv="mv -v$mv_option -- %q %q\n"
+
+declare -A seen_dirs
+
+for ((i = 0; i < ${#src_paths[@]}; i += 1)); do
+    src=${src_paths[$i]}
+    dst=${dst_paths[$i]}
+
+    if [[ $src == "$dst" ]]; then
+        continue
+    fi
+
+    changed=1
+
+    src_dir=$(dirname "$src")
+    dst_dir=$(dirname "$dst")
+
+    if [[ $src_dir != "$dst_dir" && ! -v seen_dirs[$dst_dir] ]]; then
+        if [[ ! -d $dst_dir ]]; then
+            printf "$tmpl_mkdir" "$dst_dir" >>"$script"
+        fi
+        seen_dirs[$dst_dir]=1
+    fi
+
+    printf "$tmpl_mv" "$src" "$dst" >>"$script"
+done
+
+if ((changed)); then
+    ${EDITOR:-vim} "$script"
+    sh "$script"
+fi

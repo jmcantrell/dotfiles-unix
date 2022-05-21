@@ -1,84 +1,78 @@
-#!/usr/bin/env python3
+#!/usr/bin/env bash
 
-"""Rename files to hashes based on contents."""
+set -eu
 
-import os
-import hashlib
-from argparse import ArgumentParser
+algorithms=(md5 sha{1,224,256,384,512} b2)
 
-algorithms = sorted(hashlib.algorithms_guaranteed)
+me=${0##*/}
+usage="Rename files to hashes based on contents.
 
+Usage:
+    $me [OPTIONS] ALGORITHM FILE...
 
-def hash_content(fn, alg):
-    f = open(fn, "rb")
-    m = getattr(hashlib, alg)()
+Options:
+    -f    use -f instead of -i in the generated mv commands
 
-    while True:
-        data = f.read(8192)
-        if not data:
-            break
-        m.update(data)
+Where ALGORITHM is one of: ${algorithms[*]}
+"
 
-    return m.hexdigest()
+usage() {
+    printf "%s\n" "$usage"
+    exit 0
+}
 
+die() {
+    printf "ERROR: %s\n" "$*" >&2
+    exit 1
+}
 
-def format_hash(fn, alg):
-    d = os.path.dirname(fn)
-    ext = os.path.splitext(fn)[1]
-    h = hash_content(fn, alg)
-    return os.path.join(d, h + ext)
+extname() {
+    awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"$1"
+}
 
+mkbr_options=()
 
-def parse_args():
-    p = ArgumentParser(description=__doc__)
+while getopts ":fh" option; do
+    case $option in
+    f) mkbr_options+=(-f) ;;
+    h) usage ;;
+    *) die "Invalid option '$OPTARG'" ;;
+    esac
+done && shift $((OPTIND - 1))
 
-    p.add_argument("files", nargs="*", metavar="FILE", help="file to rename")
+if [[ ! -v 1 ]]; then
+    die "No algorithm provided"
+fi
 
-    p.add_argument(
-        "-a",
-        "--algorithm",
-        default="md5",
-        metavar="NAME",
-        choices=algorithms,
-        help="algorithm to use when computing hash of file contents",
-    )
+for possible_algorithm in "${algorithms[@]}"; do
+    if [[ $possible_algorithm == $1 ]]; then
+        algorithm=$possible_algorithm
+        shift
+        break
+    fi
+done
 
-    p.add_argument(
-        "-l", "--list", action="store_true", help="list recognized algorithms"
-    )
+if [[ ! -v algorithm ]]; then
+    die "Invalid digest algorithm"
+fi
 
-    p.add_argument(
-        "-n",
-        "--dry-run",
-        action="store_true",
-        help="dry run (no changes are made)",
-    )
+temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
+printf -v cleanup "rm -rf %q" "$temp_dir"
+trap "$cleanup" INT TERM EXIT
 
-    return p.parse_args()
+src_list=$temp_dir/src
+dst_list=$temp_dir/dst
 
+for src in "$@"; do
+    [[ -f $src && -r $src ]] || continue
 
-def main():
-    args = parse_args()
+    dir=$(dirname "$src")
+    ext=$(extname "$src")
+    base=$("$algorithm"sum "$src" | awk '{print $1}')
+    dst=$dir/$base$ext
 
-    if args.list:
-        for algorithm in algorithms:
-            print(algorithm)
-        return
+    echo "$src" >>"$src_list"
+    echo "$dst" >>"$dst_list"
+done
 
-    for fn in args.files:
-        if not os.path.isfile(fn):
-            continue
-
-        nf = format_hash(fn, args.algorithm)
-
-        if fn == nf:
-            continue
-
-        print(nf)
-
-        if not args.dry_run:
-            os.rename(fn, nf)
-
-
-if __name__ == "__main__":
-    main()
+mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"

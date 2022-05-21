@@ -6,10 +6,10 @@ me=${0##*/}
 usage="Rename files using your preferred editor.
 
 Usage:
-    $me [-n] FILE...
+    $me [OPTIONS] FILE...
 
 Options:
-    -n    dry-run (no changes are made)
+    -f    use -f instead of -i for generated mv commands
 "
 
 usage() {
@@ -22,53 +22,29 @@ die() {
     exit 1
 }
 
-while getopts ":nh" option; do
+mkbr_options=()
+
+while getopts ":fh" option; do
     case $option in
-    n) dry_run=1 ;;
+    f) mkbr_options+=(-f) ;;
     h) usage ;;
     *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
 
 if (($# == 0)); then
-    die "no files to rename"
+    die "No files to rename"
 fi
 
 temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
-trap 'rm -rf "$temp_dir"' INT TERM EXIT
+printf -v cleanup "rm -rf %q" "$temp_dir"
+trap "$cleanup" INT TERM EXIT
 
 src_list=$temp_dir/src
 dst_list=$temp_dir/dst
 
-for file in "$@"; do
-    if [[ -e $file ]]; then
-        printf "%s\n" "$file"
-    fi
-done >"$src_list"
+printf "%s\n" "$@" | tee "$src_list" "$dst_list"
 
-cp "$src_list" "$dst_list"
+${EDITOR:-vim} "$dst_list"
 
-"${VISUAL:-$EDITOR}" "$dst_list"
-
-readarray -t src_lines <"$src_list"
-readarray -t dst_lines <"$dst_list"
-
-if ((${#src_lines[@]} != ${#dst_lines[@]})); then
-    die "Lines were added or removed!"
-fi
-
-for ((i = 0; i < ${#dst_lines[@]}; i += 1)); do
-    src=${src_lines[$i]}
-    dst=${dst_lines[$i]}
-
-    if [[ $src == "$dst" ]]; then
-        continue
-    fi
-
-    if [[ ! -v dry_run ]]; then
-        mkdir -p "$(dirname "$dst")"
-        mv -i -T "$src" "$dst"
-    fi
-
-    printf "%s\n" "$dst"
-done
+mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"

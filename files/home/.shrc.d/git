@@ -73,8 +73,9 @@ alias glb='gl --branches --not --remotes --simplify-by-decoration --oneline'
 # List latest commits on branches (including remotes).
 alias glbr='gl --branches --simplify-by-decoration --oneline'
 
-# List tracked files (minus submodule paths).
-alias gls='g ls-files | grep -Fxvf <(g ls-submodule-paths)'
+# List tracked files.
+alias gla='g ls-files' # include submodule paths
+alias gls='gla | grep -Fxvf <(g ls-submodule-paths)'
 
 # List files changed since last commit.
 alias glsd='gd --name-only'

@@ -1,25 +1,26 @@
 import os
 
-# print a dictionary, sorted. %1 is the dict, %2 is the prefix for the names.
+# Print a dictionary, sorted. %1 is the dict, %2 is the prefix for the names.
 alias pd for k in sorted(%1.keys()): print "%s%-15s= %-80.80s" % ("%2",k,repr(%1[k]))
 
-# print the instance variables
+# Print instance variables.
 alias pi pd %1.__dict__ %1.
 
-# print the instance variables on self
+# Print instance variables on self.
 alias ps pi self
 
-# print the locals
+# Print local variables.
 alias pl pd locals() local:
 
-alias nl n;;l  # step over, list
-alias sl s;;l  # step into, list
-alias cl c;;l  # continue, list
-
-# always list the current line, even if you already listed it
+# Always list the current line, even if you already listed it.
 alias ll u;;d;;l
 
-# short cuts for walking up and down the stack
+# Control execution, with listing.
+alias nl n;;l  # step over
+alias sl s;;l  # step into
+alias cl c;;l  # continue
+
+# Quickly walk up and down the stack.
 alias uu u;;u
 alias uuu u;;u;;u
 alias uuuu u;;u;;u;;u

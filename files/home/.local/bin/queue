@@ -52,11 +52,9 @@ esac
 
 # Ensure this invocation has exclusive access to the queue file.
 # If it doesn't, wait until it does.
-
 if [[ ${FLOCKER:-} != "$0" ]]; then
     FLOCKER=$0 exec flock "$queue" "$0" "$queue" "$action"
 fi
-
 unset FLOCKER
 
 do_list() {

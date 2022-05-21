@@ -4,6 +4,7 @@ set -eu
 
 stow --no-folding --dir ./files --target ~ --restow home
 
+# Pretend neovim is vim.
 ln -sfrn ~/.config/nvim ~/.vim
 ln -sfrn ~/.config/nvim/init.vim ~/.vimrc
 

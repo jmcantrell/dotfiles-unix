@@ -1,12 +1,23 @@
 \set QUIET on
 
-\timing
+-- Don't rollback errors if interactive.
+\set ON_ERROR_ROLLBACK interactive
+
+-- Use expanded output if the terminal is big enough.
 \x auto
+
+-- Display value for nulls, instead of blank.
 \pset null NULL
+
+-- Show borders around results.
 \pset border 2
+
+-- Use box-drawing characters for borders.
 \pset linestyle unicode
 
 set timezone to 'UTC';
-set intervalstyle to postgres_verbose;
+
+-- Show timing statistics for queries.
+\timing
 
 \set QUIET off

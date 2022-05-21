@@ -1,8 +1,13 @@
 alias d='docker'
+alias dc='docker-compose'
+
+# Run a terminal command in a new self-destructing container.
 alias drun='d run -it --rm'
 
-alias dc='docker-compose'
+# Build and start daemonized docker-compose service(s).
 alias dcup='dc up --detach --build'
+
+# Stop and cleanup daemonized docker-compose service(s).
 alias dcdown='dc down --remove-orphans'
 
 # vi:ft=sh

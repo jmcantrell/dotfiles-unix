@@ -16,7 +16,7 @@ declare -A entries=(
     [Owner]=.organization
 )
 
-if ! json=$(curl https://am.i.mullvad.net/json 2>/dev/null); then
+if ! json=$(curl https://am.i.mullvad.net/json 2>/dev/null) || [[ -z $json ]]; then
     printf "Status: unknown\n" >&2
     exit 1
 fi

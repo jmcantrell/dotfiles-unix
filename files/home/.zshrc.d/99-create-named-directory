@@ -1,5 +1,4 @@
 # Create a named directory, with optional aliases and completion.
-
 create_named_directory() {
     local name=$1
     local directory=$2
@@ -21,6 +20,7 @@ create_named_directory() {
     compdef _cd$name cd$name
     "
 
+    local aka
     for aka in $@; do
         eval "alias cd$aka=cd$name"
     done

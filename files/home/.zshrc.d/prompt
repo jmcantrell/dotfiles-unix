@@ -4,9 +4,12 @@ env_info() {
     unset env_info
     local env_names=()
     [[ -n $DIRENV_DIR ]] && env_names+=(direnv)
-    [[ -d node_modules || -f package.json ]] && env_names+=(node)
-    [[ -f Cargo.toml ]] && env_names+=(rust)
-    [[ -n $VIRTUAL_ENV ]] && env_names+=(python)
+    [[ -n $VIRTUAL_ENV ]] && env_names+=(venv)
+    [[ -f package.json || -d node_modules ]] && env_names+=(node)
+    [[ -f deno.json ]] && env_names+=(deno)
+    [[ -f Cargo.toml ]] && env_names+=(cargo)
+    [[ -r stack.yaml ]] && env_names+=(stack)
+    [[ -n *.cabal(#qN) ]] && env_names+=(cabal)
     (( $#env_names > 0 )) && env_info="%F{3}${env_names[*]}%f"
 }
 precmd_functions+=env_info
@@ -33,7 +36,7 @@ PS1+='${vcs_info_msg_0_:+ $vcs_info_msg_0_}'
 PS1+=$'\n'
 
 # hostname (if not in tmux)
-[[ -z $TMUX ]] && PS1+='%m '
+[[ -v TMUX ]] || PS1+='%m '
 
 # user privilege indicator
 PS1+='%# '

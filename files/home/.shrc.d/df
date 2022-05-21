@@ -1,4 +1,4 @@
-# Set some default options.
+# Use POSIX output and include file system type.
 alias df='df --portability --print-type'
 
 # Display human-readable sizes.

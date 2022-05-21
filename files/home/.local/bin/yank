@@ -9,27 +9,27 @@ me=${0##*/}
 usage="Move text around using file-based registers.
 
 Usage:
-    $me [OPTIONS] ACTION
+    $me [OPTIONS] ACTION [REGISTER...]
 
 Options:
-    -R              perform action on all existing registers
-    -r NAME         perform action on register (can use multiple times)
+    -a              perform action on all existing registers
+                    (includes 'default', which is always first)
+
     -C DIRECTORY    directory in which to store registers
                     (default: $cache_dir)
 
 Arguments:
     ACTION          perform action on lines of a register
+    REGISTER        limit action to this register
+                    (default: 'default')
 
 Actions:
     list            print register names to stdout
     set             set register contents from stdin
     add             add lines from stdin to register
-    edit            open register in editor
+    edit            open register in VISUAL or EDITOR
     print           print register to stdout
     clear           clear register contents
-
-If no register is specified, it defaults to 'default'.
-When operating on all registers with -R, 'default' will be included.
 "
 
 usage() {
@@ -40,6 +40,15 @@ usage() {
 die() {
     printf "ERROR: %s\n" "$*" >&2
     exit 1
+}
+
+list_register_files() {
+    if [[ -d $cache_dir ]]; then
+        # Always list default register first, if it exists.
+        [[ -r $cache_dir/default ]] && echo "$cache_dir/default"
+        # Skip default register and sort others naturally.
+        find "$cache_dir" -type f | grep -v "/default$" | sort
+    fi
 }
 
 do_add() {
@@ -57,9 +66,7 @@ do_edit() {
 }
 
 do_list() {
-    if [[ -d $cache_dir ]]; then
-        find "$cache_dir" -type f -printf "%f\n"
-    fi
+    list_register_files | xargs -I{} basename {}
 }
 
 do_print() {
@@ -75,32 +82,30 @@ do_clear() {
     rm -f "${register_files[@]}"
 }
 
-declare -A register_files_seen=()
+select_all=0
+register_files=()
 
-while getopts ":r:RC:h" option; do
+while getopts ":C:ah" option; do
     case $option in
-    R)
-        for register_file in "$cache_dir"/default "$cache_dir"/*; do
-            register_files_seen[$register_file]=1
-        done
-        ;;
-    r)
-        register_file=$cache_dir/$OPTARG
-        register_files_seen[$register_file]=1
-        ;;
     C) cache_dir=$OPTARG ;;
+    a) select_all=1 ;;
     h) usage ;;
     *) die "Invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
 
-register_files=("${!register_files_seen[@]}")
+action=$1
+shift
 
-if ((${#register_files[@]} == 0)); then
+if ((select_all)); then
+    readarray -t register_files < <(list_register_files)
+elif (($# > 0)); then
+    for register_name in "$@"; do
+        register_files+=("$cache_dir/$register_name")
+    done
+else
     register_files=("$cache_dir"/default)
 fi
-
-action=${1:-set}
 
 case $action in
 add | set | edit | list | print | clear) ;;

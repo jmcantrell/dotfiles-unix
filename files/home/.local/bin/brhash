@@ -45,7 +45,7 @@ if [[ ! -v 1 ]]; then
 fi
 
 for possible_algorithm in "${algorithms[@]}"; do
-    if [[ $possible_algorithm == $1 ]]; then
+    if [[ $possible_algorithm == "$1" ]]; then
         algorithm=$possible_algorithm
         shift
         break

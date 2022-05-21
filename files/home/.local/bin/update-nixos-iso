@@ -8,8 +8,7 @@ iso_name=nixos-minimal-x86_64
 iso_url=https://channels.nixos.org/nixos-unstable/latest-${iso_name}-linux.iso
 iso_url_ver=$(
     curl -sLI "$iso_url" |
-        grep '^location:' |
-        awk '{print $2}' |
+        grep '^location:' | awk '{print $2}' |
         sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//'
 )
 

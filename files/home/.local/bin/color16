@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 # Show a 16x16 grid of foreground/background color combinations.
+# Usage: color16 [TEXT]
+
+# If TEXT is not given, it defaults to "0".
 
 set -eu
 

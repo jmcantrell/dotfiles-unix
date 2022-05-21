@@ -4,19 +4,19 @@
 
 set -eu
 
-dir=${1:-$PWD}
+path=${1:-$PWD}
 
-if [[ ! -d $dir ]]; then
-    dir=$(dirname "$dir")
+if [[ -f $path ]]; then
+    path=$(dirname "$path")
 fi
 
-while [[ -d $dir && ! -e $dir/.git ]]; do
-    dir+=/..
+while [[ -d $path && ! -e $path/.git ]]; do
+    path+=/..
 done
 
-if [[ ! -d $dir ]]; then
+if [[ ! -d $path ]]; then
     echo "ERROR: No git repository found!" >&2
     exit 1
 fi
 
-realpath "$dir"
+realpath "$path"

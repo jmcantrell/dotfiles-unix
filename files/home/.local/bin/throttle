@@ -5,8 +5,8 @@
 
 set -eu
 
-id=$1
-delay=$2
+id=${1:?Missing command ID}
+delay=${2:?Missing delay}
 shift 2
 
 me=${0##*/}
@@ -17,7 +17,8 @@ if [[ -e $lock_file ]]; then
 fi
 
 touch "$lock_file"
-trap 'rm "$lock_file"' INT TERM EXIT
+printf -v cleanup "rm -f %q" "$lock_file"
+trap "$cleanup" INT TERM EXIT
 
 "${@:?Missing command}"
 

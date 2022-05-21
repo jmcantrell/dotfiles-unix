@@ -1,6 +1,3 @@
-# Set some default options.
-alias du='du --count-links'
-
 # Display human-readable sizes.
 alias duh='du --human-readable'
 

@@ -19,10 +19,4 @@ alias pyls='pyll | cut -d= -f1'
 # Show the module paths visible to python.
 alias pypath='python -c "import sys, pprint; pprint.pprint(sys.path)"'
 
-# Serve the current directory over http.
-alias pyhttpd='python -m http.server'
-
-# Listen and display email being relayed through localhost.
-alias pysmtpd='sudo python -m smtpd -n -c DebuggingServer localhost:25'
-
 # vi:ft=sh

@@ -1,3 +1,6 @@
+# Recognize additional characters for filename generation (#, ~, ^).
+setopt extended_glob
+
 # Expand character classes.
 setopt brace_ccl
 

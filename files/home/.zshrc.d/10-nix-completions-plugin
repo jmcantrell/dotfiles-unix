@@ -3,4 +3,3 @@
 fpath=(~/.local/share/zsh/scripts/nix-completions $fpath)
 
 # vi:ft=zsh
-

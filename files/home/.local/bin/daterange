@@ -1,14 +1,16 @@
 #!/usr/bin/env bash
 
 # Print a list of timestamps spanning the two given timestamps.
-# Usage: daterange START END INCREMENT [DATE_ARGUMENT...]
+# Usage: daterange START END INCREMENT [ARG...]
 
-# The start and end timestamp parameters can be any string that `date`
-# recognizes, and every argument after the last parameter is passed on to
-# `date`, so you can do stuff like the following examples:
+# The start/end timestamp and increment parameters can be any string that
+# `date` recognizes as a time specification:
 
 # Get every day in 2001:
 # daterange 2001-01-01 2001-12-31 "+1 day"
+
+# All arguments after the increment parameter are passed on to
+# `date`, so you can control how the output is formatted:
 
 # Get every UTC minute in the next hour in ISO-8601 format:
 # daterange now "now +1 hour" "+1 minute" --utc --iso-8601=minute

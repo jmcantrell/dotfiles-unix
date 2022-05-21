@@ -1,3 +1,4 @@
+# Case-insensitive by default.
 alias locate='locate -i'
 
 # vi:ft=sh

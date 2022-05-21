@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
 # Compare two timestamps.
+# Usage: datecmp LHS RHS
+
 # Returns standard comparison values (-1=less, 0=equal, 1=greater).
+
+# The left/right timestamp parameters can be any string that `date` recognizes
+# as a time specification.
 
 set -eu
 

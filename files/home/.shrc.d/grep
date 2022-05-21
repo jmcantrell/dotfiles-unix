@@ -1,3 +1,4 @@
+# Ignore binary files and enable color.
 alias grep='grep -I --color=auto'
 
 # vi:ft=sh

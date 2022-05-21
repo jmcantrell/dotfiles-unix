@@ -1,6 +1,4 @@
 alias v='vim'
-
-# Edit files as root.
 alias V='sudo -e'
 
 # Edit program(s) in $PATH.
@@ -8,12 +6,12 @@ vw() {
     command which "$@" 2>/dev/null | vin
 }
 
-# Edit the output of a command.
+# Edit the stdout of a command.
 vx() {
     "$@" | vim -
 }
 
-# Edit all output of a command.
+# Edit both stdout and stderr of a command.
 vX() {
     "$@" 2>&1 | vim -
 }

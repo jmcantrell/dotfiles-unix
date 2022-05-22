@@ -3,7 +3,7 @@ alias V='sudo -e'
 
 # Edit program(s) in $PATH.
 vw() {
-    command which "$@" 2>/dev/null | vin
+    command -vp "$@" 2>/dev/null | vin
 }
 
 # Edit the stdout of a command.

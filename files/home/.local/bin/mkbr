@@ -20,8 +20,7 @@ A script will be generated, opened in EDITOR for review, and executed with sh.
 It's expected that the path on a line in FROM_LIST corresponds with the path on
 the same line in TO_LIST.
 
-This command will error if the number of paths in each list does not match, or
-if any of the original paths do not exist.
+This command will error if the number of paths in each list does not match.
 
 It will exit silently if the lists are empty.
 "
@@ -40,6 +39,10 @@ is_readable_file() {
     [[ -f $1 && -r $1 ]]
 }
 
+get_num_lines() {
+    wc -l <"$1"
+}
+
 mv_option=i
 
 while getopts ":fh" option; do
@@ -54,20 +57,17 @@ if (($# != 2)) || ! is_readable_file "$1" || ! is_readable_file "$2"; then
     die "The first two parameters must be readable files"
 fi
 
-readarray -t src_paths <"$1"
-readarray -t dst_paths <"$2"
+src_list=$1
+dst_list=$2
 
-if ((${#src_paths[@]} != ${#dst_paths[@]})); then
+src_num_lines=$(get_num_lines "$src_list")
+dst_num_lines=$(get_num_lines "$dst_list")
+
+if ((src_num_lines != dst_num_lines)); then
     die "The number of paths does not match"
 fi
 
-for path in "${src_paths[@]}"; do
-    if [[ ! -e $path ]]; then
-        die "Path does not exist: $path"
-    fi
-done
-
-if ((${#src_paths[@]} == 0)); then
+if ((src_num_lines == 0)); then
     exit 0
 fi
 
@@ -86,9 +86,10 @@ tmpl_mv="mv -v$mv_option -- %q %q\n"
 
 declare -A seen_dirs
 
-for ((i = 0; i < ${#src_paths[@]}; i += 1)); do
-    src=${src_paths[$i]}
-    dst=${dst_paths[$i]}
+exec 3<"$dst_list"
+
+while read -r src; do
+    read -r dst <&3
 
     if [[ $src == "$dst" ]]; then
         continue
@@ -107,7 +108,7 @@ for ((i = 0; i < ${#src_paths[@]}; i += 1)); do
     fi
 
     printf "$tmpl_mv" "$src" "$dst" >>"$script"
-done
+done <"$src_list"
 
 if ((changed)); then
     ${EDITOR:-vim} "$script"

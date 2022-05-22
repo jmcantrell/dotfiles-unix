@@ -42,7 +42,9 @@ extname() {
     awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"$1"
 }
 
-declare -a seq_options mkbr_options
+declare -a mkbr_options
+
+auto_width=0
 
 while getopts ":F:s:i:W:wfh" option; do
     case $option in
@@ -50,7 +52,7 @@ while getopts ":F:s:i:W:wfh" option; do
     s) start_num=$OPTARG ;;
     i) increment=$OPTARG ;;
     W) width=$OPTARG ;;
-    w) seq_options+=(-w) ;;
+    w) auto_width=1 ;;
     f) mkbr_options+=(-f) ;;
     h) usage ;;
     *) die "Invalid option '$OPTARG'" ;;
@@ -73,9 +75,6 @@ if [[ $increment == *[!0-9]* ]]; then
     die "Increment must be a positive integer"
 fi
 
-end_num=$((start_num + $# - 1))
-format=${format/\%N/$#}
-
 temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
 printf -v cleanup "rm -rf %q" "$temp_dir"
 trap "$cleanup" INT TERM EXIT
@@ -83,9 +82,26 @@ trap "$cleanup" INT TERM EXIT
 src_list=$temp_dir/src
 dst_list=$temp_dir/dst
 
-seq "${seq_options[@]}" "$start_num" "$increment" "$end_num" | while read -r num; do
+if (($# == 0)); then
+    cat >"$src_list"
+else
+    printf "%s\n" "$@" >"$src_list"
+fi
+
+num=$start_num
+format=${format/\%N/$#}
+num_lines=$(wc -l <"$src_list")
+end_num=$((start_num + num_lines - 1))
+
+if ((auto_width)); then
+    width=${#end_num}
+fi
+
+while read -r src; do
     if [[ -v width ]]; then
-        printf -v num "%0${width}d" "$num"
+        printf -v num_padded "%0${width}d" "$num"
+    else
+        num_padded=$num
     fi
 
     src=$1
@@ -96,13 +112,14 @@ seq "${seq_options[@]}" "$start_num" "$increment" "$end_num" | while read -r num
     base=$(basename "$src" "$ext")
 
     dst=$format
-    dst=${dst/\%n/$num}
+    dst=${dst/\%n/$num_padded}
     dst=${dst/\%d/$dir}
     dst=${dst/\%b/$base}
     dst=${dst/\%e/$ext}
 
-    echo "$src" >>"$src_list"
     echo "$dst" >>"$dst_list"
-done
+
+    num=$((num + increment))
+done <"$src_list"
 
 mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"

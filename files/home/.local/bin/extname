@@ -3,6 +3,6 @@
 # Get all extensions of a given file.
 # Example: extname /path/to/file.tar.gz  # => .tar.gz
 
-set -euo pipefail
+set -eu
 
 awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"${1:?Missing filename}"

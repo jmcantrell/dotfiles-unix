@@ -42,7 +42,7 @@ if [[ ! -v 1 ]]; then
     die "Missing queue file"
 fi
 
-queue=$1
+queue=${1:?Missing queue file}
 action=${2:-list}
 
 case $action in

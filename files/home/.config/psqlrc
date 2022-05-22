@@ -15,8 +15,6 @@
 -- Use box-drawing characters for borders.
 \pset linestyle unicode
 
-set timezone to 'UTC';
-
 -- Show timing statistics for queries.
 \timing
 

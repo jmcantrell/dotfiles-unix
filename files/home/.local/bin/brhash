@@ -63,7 +63,13 @@ trap "$cleanup" INT TERM EXIT
 src_list=$temp_dir/src
 dst_list=$temp_dir/dst
 
-for src in "$@"; do
+if (($# == 0)); then
+    cat >"$src_list"
+else
+    printf "%s\n" "$@" >"$src_list"
+fi
+
+while read -r src; do
     [[ -f $src && -r $src ]] || continue
 
     dir=$(dirname "$src")
@@ -71,8 +77,7 @@ for src in "$@"; do
     base=$("$algorithm"sum "$src" | awk '{print $1}')
     dst=$dir/$base$ext
 
-    echo "$src" >>"$src_list"
     echo "$dst" >>"$dst_list"
-done
+done <"$src_list"
 
 mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"

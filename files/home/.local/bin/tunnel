@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+# Create a (foregrounded) SSL-terminated, ephemeral HTTP tunnel to localhost.
+# Usage: tunnel [PORT=8080]
+
+set -euo pipefail
+
+port=${1:-8080}
+config_file=${TMPDIR:-/tmp}/tunnel.conf
+
+curl -s https://tunnel.pyjam.as/"$port" >"$config_file"
+chmod 600 "$config_file"
+
+echo "Using configuration: $config_file"
+
+wg-quick up "$config_file"
+
+# Wait for ctrl-c before continuing.
+(
+    trap exit SIGINT
+    read -rd '' _ </dev/tty
+)
+
+wg-quick down "$config_file"
+rm -f "$config_file"

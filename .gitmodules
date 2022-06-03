@@ -220,3 +220,6 @@
 [submodule "vim-marko"]
 	path = files/home/.config/nvim/pack/default/start/marko
 	url = https://github.com/rajasegar/vim-marko.git
+[submodule "cheatsheats-community"]
+	path = files/home/.config/cheat/cheatsheets/community
+	url = https://github.com/cheat/cheatsheets.git

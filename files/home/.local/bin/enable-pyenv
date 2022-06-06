@@ -35,7 +35,6 @@ cat >"$dir"/default-packages <<-EOF
 black
 build
 flake8
-pip
 pip-tools
 pynvim
 twine
@@ -45,3 +44,5 @@ EOF
 export PATH=$dir/bin:$dir/shims:$PATH
 
 pyenv latest install --skip-existing
+
+PYENV_VERSION=$(pyenv latest --print) pip install --upgrade pip

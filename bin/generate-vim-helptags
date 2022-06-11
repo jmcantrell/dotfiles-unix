@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -eu
+shopt -s nullglob
 
 for dir in ~/.vim/{doc,pack/*/start/*/doc}; do
     echo "Generating vim helptags: $dir"

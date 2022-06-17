@@ -1,0 +1,6 @@
+# Check spelling of given words and offer suggestions.
+spell() {
+    printf "%s\n" "$@" | aspell pipe
+}
+
+# vi:ft=sh

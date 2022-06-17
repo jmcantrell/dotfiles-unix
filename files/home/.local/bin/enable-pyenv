@@ -43,7 +43,3 @@ EOF
 export PATH=$dir/bin:$dir/shims:$PATH
 
 pyenv latest install --skip-existing
-
-while read -r version; do
-    PYENV_VERSION=$version pip install --upgrade pip
-done < <(pyenv versions --bare --skip-aliases)

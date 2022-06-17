@@ -34,7 +34,6 @@ add_plugin xxenv-latest https://github.com/momo-lab/xxenv-latest.git
 cat >"$dir"/default-packages <<-EOF
 eslint
 neovim
-npm
 npm-upgrade
 prettier
 EOF

@@ -6,8 +6,8 @@ WORDCHARS=${WORDCHARS:s/_/}
 set_title() {
     print -Pn '\e]2;zsh ${PWD/$HOME/~} \a'
 }
-precmd_functions+=set_title
-preexec_functions+=set_title
+precmd_functions+=set_title  # before each prompt
+preexec_functions+=set_title # before command executes
 
 # Don't beep on errors.
 setopt no_beep

@@ -1,3 +1,4 @@
+# Load a help function similar to bash's.
 unalias run-help
 autoload run-help
 alias help=run-help

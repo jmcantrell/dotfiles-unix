@@ -7,19 +7,24 @@ create_named_directory() {
     eval "
     $name=${(q)directory}
 
+    # Add the named directory.
     hash -d $name=${(q)directory}
 
+    # Add a cd function to attach completion to.
     cd$name() {
         cd ${(q)directory}/\$1
     }
 
+    # Add completion function.
     _cd$name() {
         ((CURRENT == 2)) && _files -/ -W ${(q)directory}
     }
 
+    # Associate completion function with cd function.
     compdef _cd$name cd$name
     "
 
+    # Add any aliases to the cd function.
     local aka
     for aka in $@; do
         eval "alias cd$aka=cd$name"

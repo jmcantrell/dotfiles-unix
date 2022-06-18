@@ -1,3 +1,4 @@
+# Load and initialize completion system.
 autoload -U compinit && compinit -u
 
 # vi:ft=zsh

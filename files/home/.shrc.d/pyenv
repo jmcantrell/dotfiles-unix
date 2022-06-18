@@ -1,8 +1,8 @@
-[[ -d $HOME/.pyenv ]] || return 0
-
 export PYENV_ROOT=$HOME/.pyenv
 export PATH=$PYENV_ROOT/bin:$PYENV_ROOT/shims:$PATH
 
-eval "$(pyenv init -)"
+if command -v pyenv >/dev/null; then
+    eval "$(pyenv init -)"
+fi
 
 # vi:ft=sh

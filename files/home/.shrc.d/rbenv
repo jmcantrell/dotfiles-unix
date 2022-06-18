@@ -1,8 +1,8 @@
-[[ -d $HOME/.rbenv ]] || return 0
-
 export RBENV_ROOT=$HOME/.rbenv
 export PATH=$RBENV_ROOT/bin:$PATH
 
-eval "$(rbenv init -)"
+if command -v rbenv >/dev/null; then
+    eval "$(rbenv init -)"
+fi
 
 # vi:ft=sh

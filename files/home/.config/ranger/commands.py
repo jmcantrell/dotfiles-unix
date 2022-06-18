@@ -1,5 +1,4 @@
 import os, shutil
-
 from ranger.api.commands import Command
 
 

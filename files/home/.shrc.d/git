@@ -1,5 +1,7 @@
-export GIT_EDITOR=$EDITOR
-export GIT_PAGER="$PAGER -FRX"
+export GIT_EDITOR=${EDITOR:-vim}
+export GIT_PAGER="${PAGER:-less} -FRX"
+
+alias git='noglob git'
 
 alias g='git'
 alias gm='g submodule'

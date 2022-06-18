@@ -231,7 +231,7 @@ autocmd BufFilePost * filetype detect
 autocmd CmdwinEnter * map <buffer> <tab> <cr>q:
 
 " Enable file type plugins.
-" filetype plugin indent on
+filetype plugin indent on
 
 " Enable syntax highlighting.
 syntax on

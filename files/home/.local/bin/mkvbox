@@ -41,7 +41,7 @@ VBoxManage modifyvm "$name" \
     --nic1 bridged --bridgeadapter1 "$bridgedif" \
     --defaultfrontend headless
 
-vdifile="$vmsdir/$name.vdi"
+vdifile=$vmsdir/$name.vdi
 
 VBoxManage createhd \
     --filename "$vdifile" --size $((size * 1024))

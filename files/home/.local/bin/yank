@@ -27,7 +27,7 @@ Actions:
     list            print register names to stdout
     set             set register contents from stdin
     add             add lines from stdin to register
-    edit            open register in VISUAL or EDITOR
+    edit            open register in EDITOR
     print           print register to stdout
     clear           clear register contents
 "
@@ -62,7 +62,7 @@ do_set() {
 }
 
 do_edit() {
-    exec "${VISUAL:-$EDITOR}" "${register_files[@]}"
+    exec ${EDITOR:-vim} "${register_files[@]}"
 }
 
 do_list() {
@@ -85,10 +85,10 @@ do_clear() {
 select_all=0
 register_files=()
 
-while getopts ":C:ah" option; do
+while getopts ":aC:h" option; do
     case $option in
-    C) cache_dir=$OPTARG ;;
     a) select_all=1 ;;
+    C) cache_dir=$OPTARG ;;
     h) usage ;;
     *) die "Invalid option '$OPTARG'" ;;
     esac

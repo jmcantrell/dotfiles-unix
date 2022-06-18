@@ -1,7 +1,5 @@
 command -v dircolors >/dev/null || return 0
 
-file=${XDG_CONFIG_HOME:-$HOME/.config}/dircolorsrc
-[[ -r $file ]] && eval "$(dircolors -b "$file")"
-unset file
+eval "$(dircolors -b "${XDG_CONFIG_HOME:-$HOME/.config}"/dircolorsrc)"
 
 # vi:ft=sh

@@ -2,4 +2,4 @@
 
 # Run the preferred pager.
 
-exec "${PAGER:-less}" "$@"
+exec ${PAGER:-less} "$@"

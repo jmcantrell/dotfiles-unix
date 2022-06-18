@@ -65,22 +65,24 @@ do_path() {
 do_write() {
     local file
     file=$(snippet_file "$1")
-
     mkdir -p "$(dirname "$file")"
-
     cat >"$file"
 }
 
 do_read() {
-    cat "$(snippet_file_required "$1")"
+    local file
+    file=$(snippet_file_required "$1")
+    cat "$file"
 }
 
 do_edit() {
-    exec "${VISUAL:-$EDITOR}" "$(snippet_file_required "$1")"
+    exec ${EDITOR:-vim} "$(snippet_file "$1")"
 }
 
 do_delete() {
-    rm -f "$(snippet_file_required "$1")"
+    local file
+    file=$(snippet_file_required "$1")
+    rm -f "$file"
 }
 
 while getopts ":C:h" option; do

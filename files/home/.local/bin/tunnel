@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Create a (foregrounded) SSL-terminated, ephemeral HTTP tunnel to localhost.
+# Create an SSL-terminated, ephemeral HTTP tunnel to localhost.
 # Usage: tunnel [PORT=8080]
 
 set -euo pipefail

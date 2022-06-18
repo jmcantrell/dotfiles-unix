@@ -31,9 +31,12 @@ add_plugin pyenv-default-packages https://github.com/jawshooah/pyenv-default-pac
 add_plugin xxenv-latest https://github.com/momo-lab/xxenv-latest.git
 
 cat >"$dir"/default-packages <<-EOF
+bandit
 black
 build
 flake8
+jedi-language-server
+mypy
 pip-tools
 pynvim
 twine

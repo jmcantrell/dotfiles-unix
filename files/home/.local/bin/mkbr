@@ -80,7 +80,7 @@ cat >"$script" <<-EOF
 # Please double-check everything, clear the file to abort.
 EOF
 
-changed=0
+has_changes=0
 tmpl_mkdir="mkdir -vp -- %q\n"
 tmpl_mv="mv -v$mv_option -- %q %q\n"
 
@@ -95,7 +95,7 @@ while read -r src; do
         continue
     fi
 
-    changed=1
+    has_changes=1
 
     src_dir=$(dirname "$src")
     dst_dir=$(dirname "$dst")
@@ -110,7 +110,7 @@ while read -r src; do
     printf "$tmpl_mv" "$src" "$dst" >>"$script"
 done <"$src_list"
 
-if ((changed)); then
+if ((has_changes)); then
     ${EDITOR:-vim} "$script"
     sh "$script"
 fi

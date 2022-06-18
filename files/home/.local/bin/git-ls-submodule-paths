@@ -6,10 +6,7 @@ set -eu
 
 config_file=$PWD/.gitmodules
 
-if [[ ! -f $config_file ]]; then
-    exit 0
-fi
+[[ -f $config_file ]] || exit 0
 
-git config --file "$config_file" --name-only --get-regex "\.path$" | while read -r path_key; do
-    git config --file "$config_file" --get "$path_key"
-done
+git config --file "$config_file" --name-only --get-regex "\.path$" |
+    xargs -r -I{} git config --file "$config_file" --get "{}"

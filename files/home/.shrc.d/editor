@@ -1,0 +1,19 @@
+alias e='editor'
+alias ein='editor-stdin'
+
+# Edit program(s) in $PATH.
+ew() {
+    command -v "$@" 2>/dev/null | editor-stdin
+}
+
+# Edit the stdout of a command.
+ex() {
+    "$@" | editor -
+}
+
+# Edit both stdout and stderr of a command.
+eX() {
+    "$@" 2>&1 | editor -
+}
+
+# vi:ft=sh

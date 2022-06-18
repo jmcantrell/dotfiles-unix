@@ -1,0 +1,4 @@
+# Add a reasonable completion function path.
+fpath=(~/.local/share/zsh/site-functions $fpath)
+
+# vi:ft=zsh

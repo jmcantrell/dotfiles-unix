@@ -1,8 +1,6 @@
-# Define hook functions arrays:
+# Define hook functions arrays.
 typeset -ga precmd_functions   # before prompt
 typeset -ga preexec_functions  # before command is executed
 typeset -ga chpwd_functions    # after cd
-
-fpath=(~/.local/share/zsh/site-functions $fpath)
 
 # vi:ft=zsh

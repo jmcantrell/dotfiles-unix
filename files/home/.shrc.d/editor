@@ -1,4 +1,9 @@
 alias e='editor'
+
+# Edit files with elevated privileges.
+alias E='editor-elevated'
+
+# Edit files piped to stdin.
 alias ein='editor-stdin'
 
 # Edit program(s) in $PATH.

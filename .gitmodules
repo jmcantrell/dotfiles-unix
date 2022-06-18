@@ -223,3 +223,6 @@
 [submodule "cheatsheats-community"]
 	path = files/home/.config/cheat/cheatsheets/community
 	url = https://github.com/cheat/cheatsheets.git
+[submodule "vim-zig"]
+	path = files/home/.config/nvim/pack/default/start/zig
+	url = https://github.com/ziglang/zig.vim.git

@@ -1,10 +1,7 @@
-for dir in ~/.shrc.d ~/.shrc-"${HOST%.local}".d; do
-    test -d "$dir" || continue
-    for file in "$dir"/*; do
-        test -r "$file" || continue
-        . "$file" || echo "ERROR: Unable to load: $file" >&2
-    done
+for file in ~/.shrc.d/*; do
+    test -r "$file" || continue
+    . "$file" || echo "ERROR: Unable to load: $file" >&2
 done
-unset dir file
+unset file
 
 # vi:ft=sh

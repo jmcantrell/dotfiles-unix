@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-# Get all extensions of a given file.
-# Example: extname /path/to/file.tar.gz  # => .tar.gz
-
-set -eu
-
-awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"${1:?Missing filename}"

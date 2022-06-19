@@ -2,4 +2,4 @@
 
 # Run the preferred shell.
 
-exec "${SHELL:-sh}" "$@"
+exec ${SHELL:-sh} "$@"

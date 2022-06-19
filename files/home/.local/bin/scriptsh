@@ -2,6 +2,6 @@
 
 # Start an interactive sh that's recorded to a file.
 # Usage: scriptsh [OPTIONS] [FILE]
-# See `man script` for options.
+# See script(1) for options.
 
 PS1='\$ ' script -q -c 'sh -l' "$@"

@@ -20,6 +20,7 @@ Options:
 
 Arguments:
     ACTION          perform action on lines of a register
+
     REGISTER        limit action to this register
                     (default: 'default')
 

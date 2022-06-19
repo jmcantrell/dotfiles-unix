@@ -2,6 +2,6 @@
 
 # Start an interactive zsh that's recorded to a file.
 # Usage: scriptzsh [OPTIONS] [FILE]
-# See `man script` for options.
+# See script(1) for options.
 
 PS1='%# ' script -q -c 'zsh -ldf' "$@"

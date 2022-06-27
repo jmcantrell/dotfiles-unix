@@ -5,6 +5,9 @@
 *.swp
 *.swo
 
+# binary data
+*.bin
+
 # temporary files
 temp/
 
@@ -31,3 +34,6 @@ TODO
 
 # personal repo storage
 .mine/
+
+# trash directories
+.Trash-*/

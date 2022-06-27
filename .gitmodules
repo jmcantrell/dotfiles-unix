@@ -226,3 +226,6 @@
 [submodule "vim-zig"]
 	path = files/home/.config/nvim/pack/default/start/zig
 	url = https://github.com/ziglang/zig.vim.git
+[submodule "vim-racket"]
+	path = files/home/.config/nvim/pack/default/start/racket
+	url = https://github.com/benknoble/vim-racket.git

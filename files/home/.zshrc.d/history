@@ -1,4 +1,4 @@
-export HISTFILE=~/.zhistory
+export HISTFILE=$HOME/.zsh_history
 export HISTSIZE=15000
 export SAVEHIST=10000
 

@@ -1,0 +1,4 @@
+export LESS="R --ignore-case --mouse"
+export LESSHISTFILE=$HOME/.less_history
+
+# vi:ft=sh

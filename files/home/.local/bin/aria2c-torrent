@@ -5,5 +5,5 @@
 set -eu
 
 exec aria2c \
-    --interface="$TORRENT_INTERFACE" \
-    --{,dht-}listen-port="$TORRENT_PORT" "$@"
+    --interface="$ARIA2_INTERFACE" \
+    --{,dht-}listen-port="$ARIA2_LISTEN_PORT" "$@"

@@ -1,0 +1,3 @@
+create_named_directory dotfiles ~/.dotfiles .
+
+# vi:ft=zsh

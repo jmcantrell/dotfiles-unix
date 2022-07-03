@@ -4,16 +4,19 @@
 
 set -eu
 
-releases_file=${XDG_CACHE_HOME:-$HOME/.cache}/archlinux/releases.json
-mkdir -p "$(dirname "$releases_file")"
-curl -Ls -o "$releases_file" https://archlinux.org/releng/releases/json
+output_dir=${1:-$HOME/disks}
 
-iso_name=$(jq -r .releases[0].torrent.file_name "$releases_file")
-iso_file=$(xdg-user-dir DOWNLOAD)/$iso_name
-iso_dir=$(dirname "$iso_file")
-mkdir -p "$iso_dir"
+metadata_file=$(mktemp -t "${0##*/}.XXXXXXXXXX")
+printf -v cleanup "rm -f %q" "$metadata_file"
+trap "$cleanup" INT TERM EXIT
+
+curl -Ls -o "$metadata_file" https://archlinux.org/releng/releases/json
+
+iso_name=$(jq -r .releases[0].torrent.file_name "$metadata_file")
+iso_file=$output_dir/$iso_name
 
 if [[ ! -f $iso_file ]]; then
-    magnet_uri=$(jq -r .releases[0].magnet_uri "$releases_file")
-    aria2c-torrent -d "$iso_dir" --seed-time 0 "$magnet_uri"
+    mkdir -p "$output_dir"
+    magnet_uri=$(jq -r .releases[0].magnet_uri "$metadata_file")
+    aria2c-torrent -d "$output_dir" --seed-time 0 "$magnet_uri"
 fi

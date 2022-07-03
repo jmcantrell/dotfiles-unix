@@ -1,0 +1,3 @@
+[[ -d $ASDF_DIR ]] && fpath=($ASDF_DIR/completions $fpath)
+
+# vi:ft=zsh

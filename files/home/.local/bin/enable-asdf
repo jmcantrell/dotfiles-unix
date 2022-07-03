@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+set -eu
+
+dir=${ASDF_DIR:-$HOME/.asdf}
+
+if [[ -d $dir ]]; then
+    cd "$dir"
+    git pull origin master
+else
+    git clone https://github.com/asdf-vm/asdf.git "$dir"
+    cd "$dir"
+fi
+
+. "$dir"/asdf.sh
+
+plugins=(deno lua nodejs python ruby)
+
+for plugin in "${plugins[@]}"; do
+    if [[ -d $dir/plugins/$plugin ]]; then
+        asdf plugin update "$plugin"
+    else
+        asdf plugin add "$plugin"
+    fi
+    asdf install "$plugin" latest
+    asdf global "$plugin" system
+done

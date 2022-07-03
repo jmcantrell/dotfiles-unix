@@ -1,0 +1,3 @@
+[[ -d $ASDF_DIR ]] && . "$ASDF_DIR"/completions/asdf.bash
+
+# vi:ft=sh

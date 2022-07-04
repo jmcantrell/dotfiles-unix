@@ -1,5 +1,5 @@
-export LUAENV_ROOT=$HOME/.luaenv
-export PATH=$LUAENV_ROOT/bin:$PATH
+export LUAENV_ROOT="$HOME"/.luaenv
+export PATH="$LUAENV_ROOT/bin:$PATH"
 
 if command -v luaenv >/dev/null; then
     eval "$(luaenv init -)"

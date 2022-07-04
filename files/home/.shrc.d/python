@@ -1,5 +1,5 @@
 # File that defines what's global in interactive sessions.
-export PYTHONSTARTUP=${XDG_CONFIG_HOME:-$HOME/.config}/python/startup.py
+export PYTHONSTARTUP="${XDG_CONFIG_HOME:-$HOME/.config}"/python/startup.py
 
 # Disable __pycache__ directory creation.
 export PYTHONDONTWRITEBYTECODE=1
@@ -8,7 +8,7 @@ export PYTHONDONTWRITEBYTECODE=1
 export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # Keep mypy cache centralized.
-export MYPY_CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}/mypy
+export MYPY_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}"/mypy
 
 # List installed packages.
 alias pyll='pip freeze --local --all'

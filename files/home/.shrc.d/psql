@@ -1,3 +1,3 @@
-export PSQLRC=${XDG_CONFIG_HOME:-$HOME/.config}/psqlrc
+export PSQLRC="${XDG_CONFIG_HOME:-$HOME/.config}"/psqlrc
 
 # vi:ft=sh

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -eu
+
+port=${1:-8025}
+cmd=(python -m smtpd -n -d -c DebuggingServer localhost:"$port")
+
+if ((port < 1024)); then
+	cmd=(sudo "${cmd[@]}")
+fi
+
+exec "${cmd[@]}"

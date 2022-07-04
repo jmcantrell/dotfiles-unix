@@ -1,7 +1,7 @@
-export NODENV_ROOT=$HOME/.nodenv
-export NODE_VERSIONS=$NODENV_ROOT/versions
+export NODENV_ROOT="$HOME"/.nodenv
+export NODE_VERSIONS="$NODENV_ROOT"/versions
 export NODE_VERSION_PREFIX=
-export PATH=$NODENV_ROOT/bin:$PATH
+export PATH="$NODENV_ROOT/bin:$PATH"
 
 if command -v nodenv >/dev/null; then
     eval "$(nodenv init -)"

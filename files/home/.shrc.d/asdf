@@ -1,4 +1,5 @@
-export ASDF_DIR=$HOME/.asdf
-[[ -d $ASDF_DIR ]] && . "$ASDF_DIR"/asdf.sh
+export ASDF_DIR="$HOME"/.asdf
+
+test -d "$ASDF_DIR" && . "$ASDF_DIR"/asdf.sh
 
 # vi:ft=sh

@@ -2,4 +2,4 @@ command -v direnv >/dev/null || return 0
 
 eval "$(direnv hook bash)"
 
-# vi:ft=sh
+# vi:ft=bash

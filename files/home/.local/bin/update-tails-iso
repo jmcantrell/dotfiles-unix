@@ -15,5 +15,5 @@ iso_file=$output_dir/$iso_name
 
 if [[ ! -f $iso_file ]]; then
     mkdir -p "$output_dir"
-	aria2c-torrent -d "$output_dir" --seed-time 0 "$torrent_uri"
+    aria2c-torrent -d "$output_dir" --seed-time 0 "$torrent_uri"
 fi

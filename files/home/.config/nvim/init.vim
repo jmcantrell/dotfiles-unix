@@ -16,8 +16,8 @@ set cursorline
 " Don't flash on errors.
 set noerrorbells
 
-" Use sensible tab settings.
-set noexpandtab tabstop=4 softtabstop=4 shiftwidth=4
+" Use tabs for indentation and display them as four spaces.
+set expandtab tabstop=4 softtabstop=4 shiftwidth=4
 
 " Try to keep indentation consistent.
 set smarttab copyindent autoindent shiftround

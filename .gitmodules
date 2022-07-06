@@ -209,20 +209,20 @@
     path = files/home/.config/nvim/pack/default/start/sneak
     url = https://github.com/justinmk/vim-sneak.git
 [submodule "vim-xit"]
-	path = files/home/.config/nvim/pack/default/start/xit
-	url = https://github.com/ryanolsonx/vim-xit.git
+    path = files/home/.config/nvim/pack/default/start/xit
+    url = https://github.com/ryanolsonx/vim-xit.git
 [submodule "vim-ultisnips"]
-	path = files/home/.config/nvim/pack/default/start/ultisnips
-	url = https://github.com/SirVer/ultisnips.git
+    path = files/home/.config/nvim/pack/default/start/ultisnips
+    url = https://github.com/SirVer/ultisnips.git
 [submodule "vim-jsx"]
-	path = files/home/.config/nvim/pack/default/start/jsx
-	url = https://github.com/MaxMEllon/vim-jsx-pretty.git
+    path = files/home/.config/nvim/pack/default/start/jsx
+    url = https://github.com/MaxMEllon/vim-jsx-pretty.git
 [submodule "vim-marko"]
-	path = files/home/.config/nvim/pack/default/start/marko
-	url = https://github.com/rajasegar/vim-marko.git
+    path = files/home/.config/nvim/pack/default/start/marko
+    url = https://github.com/rajasegar/vim-marko.git
 [submodule "vim-zig"]
-	path = files/home/.config/nvim/pack/default/start/zig
-	url = https://github.com/ziglang/zig.vim.git
+    path = files/home/.config/nvim/pack/default/start/zig
+    url = https://github.com/ziglang/zig.vim.git
 [submodule "vim-racket"]
-	path = files/home/.config/nvim/pack/default/start/racket
-	url = https://github.com/benknoble/vim-racket.git
+    path = files/home/.config/nvim/pack/default/start/racket
+    url = https://github.com/benknoble/vim-racket.git

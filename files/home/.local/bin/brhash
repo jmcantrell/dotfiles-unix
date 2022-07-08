@@ -22,8 +22,8 @@ usage() {
 }
 
 die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$*" >&2
-    exit 1
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
+    exit "${2:-1}"
 }
 
 extname() {
@@ -36,12 +36,12 @@ while getopts ":fh" option; do
     case $option in
     f) mkbr_options+=(-f) ;;
     h) usage ;;
-    *) die "invalid option '$OPTARG'" ;;
+    *) die "invalid option -- $OPTARG" ;;
     esac
 done && shift $((OPTIND - 1))
 
 if [[ ! -v 1 ]]; then
-    die "no algorithm provided"
+    die "missing algorithm"
 fi
 
 for possible_algorithm in "${algorithms[@]}"; do
@@ -53,7 +53,7 @@ for possible_algorithm in "${algorithms[@]}"; do
 done
 
 if [[ ! -v algorithm ]]; then
-    die "invalid digest algorithm"
+    die "invalid digest algorithm -- $1"
 fi
 
 temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")

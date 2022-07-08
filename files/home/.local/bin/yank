@@ -39,8 +39,8 @@ usage() {
 }
 
 die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$*" >&2
-    exit 1
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
+    exit "${2:-1}"
 }
 
 list_register_files() {
@@ -91,7 +91,7 @@ while getopts ":aC:h" option; do
     a) select_all=1 ;;
     C) cache_dir=$OPTARG ;;
     h) usage ;;
-    *) die "invalid option '$OPTARG'" ;;
+    *) die "invalid option -- $OPTARG" ;;
     esac
 done && shift $((OPTIND - 1))
 
@@ -110,7 +110,7 @@ fi
 
 case $action in
 add | set | edit | list | print | clear) ;;
-*) die "invalid action '$action'" ;;
+*) die "invalid action -- $action" ;;
 esac
 
 do_"$action"

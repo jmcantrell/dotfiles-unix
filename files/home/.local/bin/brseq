@@ -34,8 +34,8 @@ usage() {
 }
 
 die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$*" >&2
-    exit 1
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
+    exit "${2:-1}"
 }
 
 extname() {
@@ -55,12 +55,12 @@ while getopts ":F:s:i:W:wfh" option; do
     w) auto_width=1 ;;
     f) mkbr_options+=(-f) ;;
     h) usage ;;
-    *) die "invalid option '$OPTARG'" ;;
+    *) die "invalid option -- $OPTARG" ;;
     esac
 done && shift $((OPTIND - 1))
 
 if [[ $format != *%n* ]]; then
-    die "format does not contain '%n'"
+    die "format must contain '%n'"
 fi
 
 if [[ -v width && $width == *[!0-9]* ]]; then

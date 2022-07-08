@@ -33,8 +33,8 @@ usage() {
 }
 
 die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$*" >&2
-    exit 1
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
+    exit "${2:-1}"
 }
 
 snippet_file() {
@@ -46,7 +46,7 @@ snippet_file_required() {
     file=$(snippet_file "$1")
 
     if [[ ! -f $file ]]; then
-        die "snippet file does not exist: $file"
+        die "snippet file does not exist -- $file"
     fi
 
     printf "%s\n" "$file"
@@ -89,7 +89,7 @@ while getopts ":C:h" option; do
     case $option in
     C) config_dir=$OPTARG ;;
     h) usage ;;
-    *) die "invalid option '$OPTARG'" ;;
+    *) die "invalid option -- $OPTARG" ;;
     esac
 done && shift $((OPTIND - 1))
 
@@ -98,7 +98,7 @@ shift
 
 case $action in
 list | path | read | write | edit | delete) ;;
-*) die "invalid action '$action'" ;;
+*) die "invalid action -- $action" ;;
 esac
 
 if [[ $action == list ]]; then

@@ -5,7 +5,7 @@
 
 set -eu
 
-name=${1:?Missing server name}
+name=${1:?missing server name}
 pem=${XDG_CONFIG_HOME:-$HOME/.config}/weechat/$name.pem
 
 mkdir -p "$(dirname "$pem")"

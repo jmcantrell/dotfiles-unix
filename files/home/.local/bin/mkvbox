@@ -5,8 +5,8 @@
 
 set -eu
 
-name=${1:?Missing machine name}
-isofile=${2:?Missing ISO file}
+name=${1:?missing machine name}
+isofile=${2:?missing ISO file}
 
 ostype=${ostype:-Linux_64}
 memory=${memory:-4096}

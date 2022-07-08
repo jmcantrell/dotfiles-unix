@@ -39,7 +39,7 @@ usage() {
 }
 
 die() {
-    printf "ERROR: %s\n" "$*" >&2
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$*" >&2
     exit 1
 }
 
@@ -91,11 +91,11 @@ while getopts ":aC:h" option; do
     a) select_all=1 ;;
     C) cache_dir=$OPTARG ;;
     h) usage ;;
-    *) die "Invalid option '$OPTARG'" ;;
+    *) die "invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
 
-action=$1
+action=${1:?missing action}
 shift
 
 if ((select_all)); then
@@ -110,7 +110,7 @@ fi
 
 case $action in
 add | set | edit | list | print | clear) ;;
-*) die "Invalid action '$action'" ;;
+*) die "invalid action '$action'" ;;
 esac
 
 do_"$action"

@@ -6,10 +6,6 @@
 
 set -eu
 
-if (($# == 0)); then
-    set -- /dev/stdin
-fi
-
-for file in "$@"; do
+for file in "${@:-/dev/stdin}"; do
     curl --data-binary @"$file" https://paste.rs
 done

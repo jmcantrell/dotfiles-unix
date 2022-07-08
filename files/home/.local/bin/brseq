@@ -34,7 +34,7 @@ usage() {
 }
 
 die() {
-    printf "ERROR: %s\n" "$*" >&2
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$*" >&2
     exit 1
 }
 
@@ -55,24 +55,24 @@ while getopts ":F:s:i:W:wfh" option; do
     w) auto_width=1 ;;
     f) mkbr_options+=(-f) ;;
     h) usage ;;
-    *) die "Invalid option '$OPTARG'" ;;
+    *) die "invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
 
 if [[ $format != *%n* ]]; then
-    die "Format does not contain '%n'"
+    die "format does not contain '%n'"
 fi
 
 if [[ -v width && $width == *[!0-9]* ]]; then
-    die "Width must be a positive integer"
+    die "width must be a positive integer"
 fi
 
 if [[ $start_num == *[!0-9]* ]]; then
-    die "Start number must be a positive integer"
+    die "start number must be a positive integer"
 fi
 
 if [[ $increment == *[!0-9]* ]]; then
-    die "Increment must be a positive integer"
+    die "increment must be a positive integer"
 fi
 
 temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")

@@ -5,10 +5,14 @@
 set -eu
 
 output_dir=${1:-$HOME/disks}
+base_uri=https://tails.boum.org
 
-version=$(curl -Ls https://tails.boum.org/install/v2/Tails/amd64/stable/latest.json | jq -r .installations[0].version)
+version=$(
+    curl -Ls "$base_uri"/install/v2/Tails/amd64/stable/latest.json |
+        jq -r .installations[0].version
+)
 
-torrent_uri=https://tails.boum.org/torrents/files/tails-amd64-${version}.iso.torrent
+torrent_uri=$base_uri/torrents/files/tails-amd64-${version}.iso.torrent
 
 iso_name=$(basename "$torrent_uri" .torrent)
 iso_file=$output_dir/$iso_name

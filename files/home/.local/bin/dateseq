@@ -17,9 +17,9 @@
 
 set -eu
 
-timestamp=${1:?Missing initial timestamp}
-increment=${2:?Missing increment}
-count=${3:?Missing count}
+timestamp=${1:?missing initial timestamp}
+increment=${2:?missing increment}
+count=${3:?missing count}
 shift 3
 
 normalize_timestamp() {

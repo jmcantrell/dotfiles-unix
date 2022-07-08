@@ -1,4 +1,4 @@
-if [[ -v ASDF_DIR && -d $ASDF_DIR ]]; then
+if [[ -d $ASDF_DIR ]]; then
     fpath=($ASDF_DIR/completions $fpath)
 fi
 

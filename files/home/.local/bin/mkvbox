@@ -16,8 +16,7 @@ firmware=${firmware:-bios}
 
 vmsdir=$(
     VBoxManage list systemproperties |
-        grep '^Default machine folder:' |
-        cut -d: -f2 |
+        grep '^Default machine folder:' | cut -d: -f2 |
         sed 's/^[[:space:]]\+//;s/[[:space:]]\+$//'
 )
 

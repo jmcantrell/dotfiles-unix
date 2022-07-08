@@ -18,7 +18,7 @@ usage() {
 }
 
 die() {
-    printf "ERROR: %s\n" "$*" >&2
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$*" >&2
     exit 1
 }
 
@@ -28,7 +28,7 @@ while getopts ":fh" option; do
     case $option in
     f) mkbr_options+=(-f) ;;
     h) usage ;;
-    *) die "Invalid option '$OPTARG'" ;;
+    *) die "invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
 

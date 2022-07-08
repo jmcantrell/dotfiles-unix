@@ -31,12 +31,8 @@ usage() {
 }
 
 die() {
-    printf "ERROR: %s\n" "$*" >&2
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$*" >&2
     exit 1
-}
-
-is_readable_file() {
-    [[ -f $1 && -r $1 ]]
 }
 
 get_num_lines() {
@@ -49,12 +45,12 @@ while getopts ":fh" option; do
     case $option in
     f) mv_option=f ;;
     h) usage ;;
-    *) die "Invalid option '$OPTARG'" ;;
+    *) die "invalid option '$OPTARG'" ;;
     esac
 done && shift $((OPTIND - 1))
 
-if (($# != 2)) || ! is_readable_file "$1" || ! is_readable_file "$2"; then
-    die "The first two parameters must be readable files"
+if (($# != 2)) || [[ ! -f $1 || ! -f $2 ]]; then
+    die "the first two parameters must be readable files"
 fi
 
 src_list=$1
@@ -64,7 +60,7 @@ src_num_lines=$(get_num_lines "$src_list")
 dst_num_lines=$(get_num_lines "$dst_list")
 
 if ((src_num_lines != dst_num_lines)); then
-    die "The number of paths does not match"
+    die "the number of paths does not match"
 fi
 
 if ((src_num_lines == 0)); then

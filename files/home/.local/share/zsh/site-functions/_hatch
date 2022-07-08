@@ -22,14 +22,13 @@ _hatch_completion() {
         fi
     done
 
-    if [ -n "$completions_with_descriptions" ]; then
+    if [[ -n "$completions_with_descriptions" ]]; then
         _describe -V unsorted completions_with_descriptions -U
     fi
 
-    if [ -n "$completions" ]; then
+    if [[ -n "$completions" ]]; then
         compadd -U -V unsorted -a completions
     fi
 }
 
 compdef _hatch_completion hatch;
-

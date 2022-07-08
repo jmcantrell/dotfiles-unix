@@ -2,10 +2,10 @@ _hatch_completion() {
     local IFS=$'\n'
     local response
 
-    response=$(env COMP_WORDS="${COMP_WORDS[*]}" COMP_CWORD=$COMP_CWORD _HATCH_COMPLETE=bash_complete $1)
+    response=$(env COMP_WORDS="${COMP_WORDS[*]}" COMP_CWORD="$COMP_CWORD" _HATCH_COMPLETE=bash_complete "$1")
 
     for completion in $response; do
-        IFS=',' read type value <<< "$completion"
+        IFS=',' read -r type value <<<"$completion"
 
         if [[ $type == 'dir' ]]; then
             COMPREPLY=()
@@ -14,7 +14,7 @@ _hatch_completion() {
             COMPREPLY=()
             compopt -o default
         elif [[ $type == 'plain' ]]; then
-            COMPREPLY+=($value)
+            COMPREPLY+=("$value")
         fi
     done
 
@@ -25,5 +25,4 @@ _hatch_completion_setup() {
     complete -o nosort -F _hatch_completion hatch
 }
 
-_hatch_completion_setup;
-
+_hatch_completion_setup

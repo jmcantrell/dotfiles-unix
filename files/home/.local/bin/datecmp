@@ -10,8 +10,8 @@
 
 set -eu
 
-timestamp_lhs=${1:?Missing left timestamp}
-timestamp_rhs=${2:?Missing right timestamp}
+timestamp_lhs=${1:?missing left timestamp}
+timestamp_rhs=${2:?missing right timestamp}
 
 seconds_since_epoch() {
     date --utc --date="$1" +%s

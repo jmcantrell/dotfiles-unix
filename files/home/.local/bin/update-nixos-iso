@@ -7,7 +7,11 @@ set -eu
 output_dir=${1:-$HOME/disks}
 
 iso_uri=https://channels.nixos.org/nixos-unstable/latest-nixos-minimal-x86_64-linux.iso
-iso_name=$(curl -sLI "$iso_uri" | grep '^location:' | awk '{print $2}' | sed 's/^\s*//;s/\s*$//' | xargs -I{} basename {})
+iso_name=$(
+    curl -sLI "$iso_uri" |
+        grep '^location:' | awk '{print $2}' |
+        sed 's/^\s*//;s/\s*$//' | xargs -I{} basename {}
+)
 iso_file=$output_dir/$iso_name
 
 if [[ ! -f $iso_file ]]; then

@@ -4,4 +4,4 @@
 
 set -euo pipefail
 
-curl -s dict.org/d:"${1:?Missing word}" | "${PAGER:-less}"
+curl -s dict.org/d:"${1:?missing word}" | "${PAGER:-less}"

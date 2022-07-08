@@ -4,6 +4,11 @@
 
 set -eu
 
+die() {
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$*" >&2
+    exit 1
+}
+
 path=${1:-$PWD}
 
 if [[ -f $path ]]; then
@@ -15,8 +20,7 @@ while [[ -d $path && ! -e $path/.git ]]; do
 done
 
 if [[ ! -d $path ]]; then
-    echo "ERROR: No git repository found!" >&2
-    exit 1
+    die "no git repository found"
 fi
 
 realpath "$path"

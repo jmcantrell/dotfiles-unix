@@ -5,7 +5,7 @@
 set -eu
 
 die() {
-    printf "ERROR: %s\n" "$*" >&2
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$*" >&2
     exit 1
 }
 
@@ -24,7 +24,7 @@ permissions=()
 
 for path in "$@"; do
     if [[ -e $path && ! -f $path ]]; then
-        die "Path is not a regular file: $path"
+        die "path is not a regular file: $path"
     fi
 done
 

@@ -2,7 +2,7 @@
 
 for file in ~/.shrc /etc/{bashrc,bash.bashrc} ~/.bashrc.d/*; do
     [[ -r $file ]] || continue
-    . "$file" || echo "ERROR: Unable to load: $file" >&2
+    . "$file" || echo "$0: line $LINENO: unable to load file: $file" >&2
 done
 unset file
 

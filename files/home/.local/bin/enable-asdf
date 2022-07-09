@@ -14,7 +14,16 @@ fi
 
 . "$dir"/asdf.sh
 
-plugins=(deno lua nodejs python ruby)
+plugins=(
+    deno
+    lua
+    nim
+    nodejs
+    python
+    racket
+    ruby
+    zig
+)
 
 for plugin in "${plugins[@]}"; do
     if [[ -d $dir/plugins/$plugin ]]; then

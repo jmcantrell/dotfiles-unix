@@ -17,12 +17,9 @@ fi
 plugins=(
     deno
     lua
-    nim
     nodejs
     python
-    racket
     ruby
-    zig
 )
 
 for plugin in "${plugins[@]}"; do

@@ -15,11 +15,14 @@ fi
 . "$dir"/asdf.sh
 
 plugins=(
+    bun
     deno
     lua
+    nim
     nodejs
     python
     ruby
+    zig
 )
 
 for plugin in "${plugins[@]}"; do
@@ -28,6 +31,6 @@ for plugin in "${plugins[@]}"; do
     else
         asdf plugin add "$plugin"
     fi
-    asdf install "$plugin" latest
     asdf global "$plugin" system
+    asdf install "$plugin" latest
 done

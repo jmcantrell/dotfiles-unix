@@ -3,6 +3,7 @@ alias cp='cp -v'
 alias mv='mv -v'
 alias ln='ln -vsf'
 alias rm='trash -v'
+alias RM='/bin/rm -v'
 alias mkdir='mkdir -p'
 alias rehash='hash -r'
 

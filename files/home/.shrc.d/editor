@@ -11,6 +11,11 @@ ew() {
     command -v "$@" 2>/dev/null | editor-stdin
 }
 
+# Edit locate results.
+el() {
+    locate "$@" 2>/dev/null | editor-stdin
+}
+
 # Edit the stdout of a command.
 ex() {
     "$@" | editor -

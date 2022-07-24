@@ -4,6 +4,4 @@
 
 set -eu
 
-exec aria2c \
-    --interface="$ARIA2_INTERFACE" \
-    --{,dht-}listen-port="$ARIA2_LISTEN_PORT" "$@"
+exec aria2c --interface=wg-mullvad --{,dht-}listen-port="$MULLVAD_PORT" "$@"

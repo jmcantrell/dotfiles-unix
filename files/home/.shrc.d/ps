@@ -1,6 +1,3 @@
-# Show all terminal-associated processes by default.
-alias ps='ps -a'
-
 # Show all processes for every user.
 alias pa='ps -eo "pid,%cpu,%mem,size,tty,stat,user,command"'
 

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -eu
+
+# Split path string used by man into an array of directories.
+IFS=: read -r -d "" -a dirs < <(printf "%s:\0" "$(man -w)")
+
+# Search all the (possibly compressed) man pages in those directories.
+find "${dirs[@]}" -type f -print0 | xargs -r0 zgrep -l "$@"

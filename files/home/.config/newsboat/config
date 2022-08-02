@@ -1,0 +1,47 @@
+auto-reload yes
+refresh-on-startup yes
+reload-time 60
+reload-threads 2
+
+cleanup-on-quit yes
+goto-next-feed no
+
+always-display-description yes
+show-keymap-hint no
+
+feed-sort-order title-dec
+reload-only-visible-feeds yes
+
+datetime-format "%c"
+
+show-read-feeds no
+
+save-path ~
+
+ignore-article "*" "title =~ \"Sponsor\""
+ignore-article "*" "title =~ \"Advertisement\""
+ignore-mode download
+
+unbind-key j
+bind-key j down
+
+unbind-key k
+bind-key k up
+
+unbind-key J
+bind-key J next-feed
+
+unbind-key K
+bind-key K prev-feed
+
+unbind-key g
+bind-key g home
+
+unbind-key G
+bind-key G end
+
+# color                   <fg>     <bg>    [attribute...]
+color listfocus           default  blue
+color listfocus_unread    default  blue    bold
+color info                black    white   bold
+search-highlight-colors   black    yellow  bold

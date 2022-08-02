@@ -6,4 +6,4 @@ set -eu
 IFS=: read -r -d "" -a dirs < <(printf "%s:\0" "$(man -w)")
 
 # Search all the (possibly compressed) man pages in those directories.
-find "${dirs[@]}" -type f -print0 | xargs -r0 zgrep -l "$@"
+find "${dirs[@]}" -type f -print0 | xargs -r0 zgrep -l -m1 "$@"

@@ -14,7 +14,7 @@ reload-only-visible-feeds yes
 
 datetime-format "%c"
 
-show-read-feeds no
+show-title-bar no
 
 save-path ~
 

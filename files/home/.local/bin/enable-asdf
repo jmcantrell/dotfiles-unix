@@ -14,24 +14,14 @@ fi
 
 . "$dir"/asdf.sh
 
-plugins=(
-    bun
-    deno
-    julia
-    lua
-    nim
-    nodejs
-    python
-    ruby
-    zig
-)
-
-for plugin in "${plugins[@]}"; do
-    if [[ -d $dir/plugins/$plugin ]]; then
-        asdf plugin update "$plugin"
-    else
-        asdf plugin add "$plugin"
-    fi
-    asdf global "$plugin" system
-    asdf install "$plugin" latest
-done
+if [[ -f ~/.asdf-plugins ]]; then
+    while read -r name url; do
+        if [[ -d $dir/plugins/$name ]]; then
+            asdf plugin update "$name"
+        else
+            asdf plugin add "$name" "$url"
+        fi
+        asdf global "$name" system
+        asdf install "$name" latest
+    done <~/.asdf-plugins
+fi

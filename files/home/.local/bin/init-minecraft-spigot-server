@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -eu
+
+minecraft_version=${1:-latest}
+
+curl -LO https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+
+echo "eula=true" >eula.txt
+
+java -jar BuildTools.jar --rev "$minecraft_version"
+output_file=$(grep -m1 "Saved as" BuildTools.log.txt | sed 's:^.* \.\/\(.*\)$:\1:')
+ln -sfvn "$output_file" server.jar

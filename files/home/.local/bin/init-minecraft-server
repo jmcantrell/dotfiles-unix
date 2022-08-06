@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# Download Minecraft server for the given version.
+# Usage: download-minecraft-server [version]  # default version: latest
+
+set -eu
+
+versions_file=$(mktemp -t "${0##*/}.XXXXXXXXXX")
+printf -v cleanup "rm -f %q" "$versions_file"
+trap "$cleanup" INT TERM EXIT
+
+curl -sSL -o "$versions_file" https://launchermeta.mojang.com/mc/game/version_manifest.json
+
+if [[ ! -v 1 || $1 == latest ]]; then
+    version=$(jq -r ".latest.release" "$versions_file")
+else
+    version=$1
+fi
+
+release_json=$(
+    jq -r --arg version "$version" \
+        '.versions | map(select(.id == $version)) | first' \
+        "$versions_file"
+)
+
+downloads_url=$(jq -r ".url" <<<"$release_json")
+downloads_json=$(curl -sSL "$downloads_url" | jq -r ".downloads")
+
+server_file=server-$version.jar
+curl -L -o "$server_file" "$(jq -r ".server.url" <<<"$downloads_json")"
+ln -svfn "$server_file" server.jar

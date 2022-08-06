@@ -17,6 +17,7 @@ fi
 plugins=(
     bun
     deno
+    julia
     lua
     nim
     nodejs

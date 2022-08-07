@@ -37,24 +37,24 @@ if [[ ! -d $prefix ]]; then
     cd cpython-"$version"
 
     ./configure --prefix="$prefix" --enable-optimizations
-    make
-    make install
+    num_cpus=$(grep -c "^processor\b" /proc/cpuinfo)
+    make --jobs="$num_cpus" install
 fi
 
-cd "$prefix"/bin
+export PATH=$prefix/bin:$PATH
 
 major=${version%%.*}
 
-for bin in pip idle pydoc python; do
-    ln -sfn "$bin$major" "$bin"
+for name in pip idle pydoc python; do
+    ln -sfn "$prefix/bin/$name$major" "$prefix/bin/$name"
 done
 
-ln -sfn python"$major"-config python-config
+ln -sfn "$prefix/bin/python$major"-config "$prefix"/bin/python-config
 
-"$prefix"/bin/pip install --upgrade pip
+pip install --upgrade pip
 
 packages_file=${PYTHON_DEFAULT_PACKAGES:-$HOME/.default-python-packages}
 
 if [[ -f $packages_file ]]; then
-    "$prefix"/bin/pip install --upgrade --requirement "$packages_file"
+    pip install --upgrade --requirement "$packages_file"
 fi

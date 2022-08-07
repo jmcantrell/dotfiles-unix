@@ -1,7 +1,0 @@
-export ASDF_DIR="$HOME"/.asdf
-
-if test -d "$ASDF_DIR"; then
-    . "$ASDF_DIR"/asdf.sh
-fi
-
-# vi:ft=sh

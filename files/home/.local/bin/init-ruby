@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+# Initialize a Ruby prefix.
+# Usage: init-ruby VERSION
+
+set -eu
+
+die() {
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
+    exit "${2:-1}"
+}
+
+repo_url=https://github.com/ruby/ruby
+
+version=${1:?missing version}
+tag=v${version//./_}
+
+git ls-remote --tags --refs "$repo_url" |
+    grep -q "refs/tags/${tag}$" || die "invalid version -- $version"
+
+archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/ruby/ruby-$version.tar.gz
+
+if [[ ! -f $archive_file ]]; then
+    mkdir -p "$(dirname "$archive_file")"
+    url=$repo_url/archive/refs/tags/${tag}.tar.gz
+    curl -L -o "$archive_file" "$url" || die "unable to download archive -- $url"
+fi
+
+prefix=${XDG_DATA_HOME:-$HOME/.local/share}/ruby/$version
+
+if [[ ! -d $prefix ]]; then
+    temp_dir=$(mktemp -d -t "${0##*/}.XXXXXXXXXX")
+    printf -v cleanup "rm -rf %q" "$temp_dir"
+    trap "$cleanup" INT TERM EXIT
+
+    cd "$temp_dir"
+    tar -xf "$archive_file"
+    cd ruby-"${tag#v}"
+
+    ./autogen.sh
+    ./configure --prefix="$prefix"
+    num_cpus=$(grep -c "^processor\b" /proc/cpuinfo)
+    make --jobs="$num_cpus" install
+fi
+
+export PATH=$prefix/bin:$PATH
+
+gem update --system
+
+packages_file=${RUBY_DEFAULT_PACKAGES:-$HOME/.default-ruby-packages}
+
+if [[ -f $packages_file ]]; then
+    xargs -r gem install <"$packages_file"
+fi

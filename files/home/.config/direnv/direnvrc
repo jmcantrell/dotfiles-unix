@@ -1,0 +1,22 @@
+tool_version() {
+    local tool=$1
+    shift
+
+    if [[ -z $tool ]]; then
+        log_error "Missing tool name"
+        return 1
+    fi
+
+    for file in ."$tool"-version "$@"; do
+        if [[ -f $file ]]; then
+            cat "$file"
+            return
+        fi
+    done
+
+    if [[ -f .tool-versions ]]; then
+        grep "^$tool\b" .tool-versions | awk '{print $2}'
+    fi
+}
+
+# vi:ft=sh

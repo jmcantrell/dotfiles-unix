@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+# Initialize a Node.js prefix.
+# Usage: init-node VERSION
+
+set -eu
+
+die() {
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
+    exit "${2:-1}"
+}
+
+version=${1:?missing version}
+
+git ls-remote --tags --refs https://github.com/nodejs/node |
+    grep -q "refs/tags/v${version}$" || die "invalid version -- $version"
+
+archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/node/node-$version.tar.gz
+
+kernel=$(uname --kernel-name)
+kernel=${kernel,,}
+machine=$(uname --machine)
+machine=${machine/86_/}
+
+if [[ ! -f $archive_file ]]; then
+    mkdir -p "$(dirname "$archive_file")"
+    url=https://nodejs.org/dist/v$version/node-v$version-$kernel-$machine.tar.xz
+    curl -L -o "$archive_file" "$url" || die "unable to download archive -- $url"
+fi
+
+prefix=${XDG_DATA_HOME:-$HOME/.local/share}/node/$version
+
+if [[ ! -d $prefix ]]; then
+    temp_dir=$(mktemp -d -t "${0##*/}.XXXXXXXXXX")
+    printf -v cleanup "rm -rf %q" "$temp_dir"
+    trap "$cleanup" INT TERM EXIT
+
+    cd "$temp_dir"
+    tar -xf "$archive_file"
+    mkdir -p "$(dirname "$prefix")"
+    mv "node-v${version}-${kernel}-${machine}" "$prefix"
+fi
+
+export PATH=$prefix/bin:$PATH
+
+npm install --global npm
+
+packages_file=${NODE_DEFAULT_PACKAGES:-$HOME/.default-node-packages}
+
+if [[ -f $packages_file ]]; then
+    xargs -r npm install --global <"$packages_file"
+fi

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Initialize a Node.js prefix.
-# Usage: init-node VERSION
+# Usage: init-node VERSION [DIRECTORY]
 
 set -eu
 
@@ -11,24 +11,19 @@ die() {
 }
 
 version=${1:?missing version}
-
-git ls-remote --tags --refs https://github.com/nodejs/node |
-    grep -q "refs/tags/v${version}$" || die "invalid version -- $version"
-
-archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/node/node-$version.tar.gz
+prefix=${2:-${XDG_DATA_HOME:-$HOME/.local/share}/node/$version}
+archive=${XDG_CACHE_HOME:-$HOME/.cache}/node/node-$version.tar.gz
 
 kernel=$(uname --kernel-name)
 kernel=${kernel,,}
 machine=$(uname --machine)
 machine=${machine/86_/}
 
-if [[ ! -f $archive_file ]]; then
-    mkdir -p "$(dirname "$archive_file")"
+if [[ ! -f $archive ]]; then
+    mkdir -p "$(dirname "$archive")"
     url=https://nodejs.org/dist/v$version/node-v$version-$kernel-$machine.tar.xz
-    curl -L -o "$archive_file" "$url" || die "unable to download archive -- $url"
+    curl -L -o "$archive" "$url" || die "unable to download archive -- $url"
 fi
-
-prefix=${XDG_DATA_HOME:-$HOME/.local/share}/node/$version
 
 if [[ ! -d $prefix ]]; then
     temp_dir=$(mktemp -d -t "${0##*/}.XXXXXXXXXX")
@@ -36,7 +31,7 @@ if [[ ! -d $prefix ]]; then
     trap "$cleanup" INT TERM EXIT
 
     cd "$temp_dir"
-    tar -xf "$archive_file"
+    tar -xf "$archive"
     mkdir -p "$(dirname "$prefix")"
     mv "node-v${version}-${kernel}-${machine}" "$prefix"
 fi

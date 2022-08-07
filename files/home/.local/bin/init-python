@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# Initialize a Python prefix.
+# Usage: init-python VERSION
+
+set -eu
+
+die() {
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
+    exit "${2:-1}"
+}
+
+repo_url=https://github.com/python/cpython
+
+version=${1:?missing version}
+
+git ls-remote --tags --refs "$repo_url" |
+    grep -q "refs/tags/v${version}$" || die "invalid version -- $version"
+
+archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/python/python-$version.tar.gz
+
+if [[ ! -f $archive_file ]]; then
+    mkdir -p "$(dirname "$archive_file")"
+    url=$repo_url/archive/refs/tags/v${version}.tar.gz
+    curl -L -o "$archive_file" "$url" || die "unable to download archive -- $url"
+fi
+
+prefix=${XDG_DATA_HOME:-$HOME/.local/share}/python/$version
+
+if [[ ! -d $prefix ]]; then
+    temp_dir=$(mktemp -d -t "${0##*/}.XXXXXXXXXX")
+    printf -v cleanup "rm -rf %q" "$temp_dir"
+    trap "$cleanup" INT TERM EXIT
+
+    cd "$temp_dir"
+    tar -xf "$archive_file"
+    cd cpython-"$version"
+
+    ./configure --prefix="$prefix" --enable-optimizations
+    make
+    make install
+fi
+
+cd "$prefix"/bin
+
+major=${version%%.*}
+
+for bin in pip idle pydoc python; do
+    ln -sfn "$bin$major" "$bin"
+done
+
+ln -sfn python"$major"-config python-config
+
+"$prefix"/bin/pip install --upgrade pip
+
+packages_file=${PYTHON_DEFAULT_PACKAGES:-$HOME/.default-python-packages}
+
+if [[ -f $packages_file ]]; then
+    "$prefix"/bin/pip install --upgrade --requirement "$packages_file"
+fi

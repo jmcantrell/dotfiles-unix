@@ -2,10 +2,6 @@
 
 set -eu
 
-enable-ghcup
-enable-rustup
-enable-asdf
-enable-junest
 enable-pass
 
 cd ~/.dotfiles

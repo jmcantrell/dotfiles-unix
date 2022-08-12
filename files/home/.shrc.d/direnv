@@ -1,9 +1,0 @@
-data_home=${XDG_DATA_HOME:-$HOME/.local/share}
-
-export PYTHON_VERSIONS=$data_home/python
-export NODE_VERSIONS=$data_home/node
-export RUBY_VERSIONS=$data_home/ruby
-
-unset data_home
-
-# vi:ft=sh

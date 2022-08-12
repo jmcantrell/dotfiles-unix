@@ -1,0 +1,4 @@
+# User versions of deno releases are here:
+export DENO_VERSIONS=${XDG_DATA_HOME:-$HOME/.local/share}/deno
+
+# vi:ft=sh

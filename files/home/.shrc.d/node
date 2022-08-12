@@ -1,0 +1,4 @@
+# User versions of node releases are here:
+export NODE_VERSIONS=${XDG_DATA_HOME:-$HOME/.local/share}/node
+
+# vi:ft=sh

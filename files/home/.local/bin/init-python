@@ -30,8 +30,7 @@ if [[ ! -d $prefix ]]; then
     cd cpython-"$version"
 
     ./configure --prefix="$prefix" --enable-optimizations
-    num_cpus=$(grep -c "^processor\b" /proc/cpuinfo)
-    make --jobs="$num_cpus" install
+    make --jobs="$(nproc)" install
 fi
 
 export PATH=$prefix/bin:$PATH

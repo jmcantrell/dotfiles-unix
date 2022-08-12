@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -eu
+
+version=${1:-latest}
+prefix=${XDG_DATA_HOME:-$HOME/.local/share}/mincraft-spigot-server/$version
+
+if [[ -d $prefix ]]; then
+    exit 0
+fi
+
+mkdir -p "$prefix"
+cd "$prefix"
+
+curl -LO --progress-bar \
+    https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+
+java -jar BuildTools.jar --rev "$version"
+output_file=$(grep -m1 "Saved as" BuildTools.log.txt | sed 's:^.* \.\/\(.*\)$:\1:')
+ln -sfvn "$output_file" server.jar
+echo "eula=true" >eula.txt

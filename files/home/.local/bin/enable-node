@@ -34,7 +34,7 @@ machine=${machine/#x86_/x}
 if [[ ! -f $archive ]]; then
     mkdir -p "$(dirname "$archive")"
     url=https://nodejs.org/dist/v$version/node-v$version-$kernel-$machine.tar.xz
-    curl -L -o "$archive" "$url" || die "unable to download archive -- $url"
+    curl -L --progress-bar -o "$archive" "$url" || die "unable to download archive -- $url"
 fi
 
 if [[ -d $prefix ]]; then

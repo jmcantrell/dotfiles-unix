@@ -2,6 +2,11 @@
 
 set -eu
 
+enable-rustup
+enable-ghcup
+enable-python
+enable-deno
+enable-node
 enable-pass
 
 cd ~/.dotfiles

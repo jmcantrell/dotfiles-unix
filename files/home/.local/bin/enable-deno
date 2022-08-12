@@ -43,7 +43,7 @@ target=$machine-$kernel
 if [[ ! -f $archive ]]; then
     mkdir -p "$(dirname "$archive")"
     url=$REPO_URL/releases/download/v$version/deno-$target.zip
-    curl -L -o "$archive" "$url" || die "unable to download archive -- $url"
+    curl -L --progress-bar -o "$archive" "$url" || die "unable to download archive -- $url"
 fi
 
 if [[ -d $prefix ]]; then

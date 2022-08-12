@@ -1,37 +1,51 @@
 #!/usr/bin/env bash
 
 # Initialize a Python prefix.
-# Usage: init-python VERSION [DIRECTORY]
+# Usage: init-python [VERSION]
 
 set -eu
+
+REPO_URL=https://github.com/python/cpython
 
 die() {
     printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
     exit "${2:-1}"
 }
 
-version=${1:?missing version}
-prefix=${2:-${XDG_DATA_HOME:-$HOME/.local/share}/python/$version}
+versions() {
+    git ls-remote --tags --refs "$REPO_URL" |
+        sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
+        sort --version-sort
+}
+
+latest_version() {
+    versions | grep -vi '[a-z][0-9]$' | tail -n1
+}
+
+version=${1:-$(latest_version)}
+prefix=${XDG_DATA_HOME:-$HOME/.local/share}/python/$version
 archive=${XDG_CACHE_HOME:-$HOME/.cache}/python/python-$version.tar.gz
 
 if [[ ! -f $archive ]]; then
     mkdir -p "$(dirname "$archive")"
-    url=https://github.com/python/cpython/archive/refs/tags/v${version}.tar.gz
+    url=$REPO_URL/archive/refs/tags/v${version}.tar.gz
     curl -L -o "$archive" "$url" || die "unable to download archive -- $url"
 fi
 
-if [[ ! -d $prefix ]]; then
-    temp_dir=$(mktemp -d -t "${0##*/}.XXXXXXXXXX")
-    printf -v cleanup "rm -rf %q" "$temp_dir"
-    trap "$cleanup" INT TERM EXIT
-
-    cd "$temp_dir"
-    tar -xf "$archive"
-    cd cpython-"$version"
-
-    ./configure --prefix="$prefix" --enable-optimizations
-    make --jobs="$(nproc)" install
+if [[ -d $prefix ]]; then
+    exit 0
 fi
+
+temp_dir=$(mktemp -d -t "${0##*/}.XXXXXXXXXX")
+printf -v cleanup "rm -rf %q" "$temp_dir"
+trap "$cleanup" INT TERM EXIT
+
+cd "$temp_dir"
+tar -xf "$archive"
+cd cpython-"$version"
+
+./configure --prefix="$prefix" --enable-optimizations
+make --jobs="$(nproc)" install
 
 export PATH=$prefix/bin:$PATH
 

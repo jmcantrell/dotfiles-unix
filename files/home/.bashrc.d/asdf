@@ -1,5 +1,0 @@
-if [[ -d $ASDF_DIR ]]; then
-    source "$ASDF_DIR"/completions/asdf.bash
-fi
-
-# vi:ft=bash

@@ -1,5 +1,0 @@
-if [[ -d $ASDF_DIR ]]; then
-    fpath=($ASDF_DIR/completions $fpath)
-fi
-
-# vi:ft=zsh

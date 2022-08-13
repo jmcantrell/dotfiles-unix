@@ -7,5 +7,8 @@
 set -eu
 
 for file in "${@:-/dev/stdin}"; do
-    curl --data-binary @"$file" https://paste.rs
+    ext=${file##*/}
+    ext=${ext##*.}
+    url=$(curl --data-binary @"$file" https://paste.rs)
+    echo "$url${ext:+.$ext}"
 done

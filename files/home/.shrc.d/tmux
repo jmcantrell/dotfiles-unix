@@ -1,19 +1,4 @@
 # Start (or attach to) a non-daemon session.
 alias tn='tmux new-session -AD'
 
-alias ta='tmux attach-session'
-alias td='tmux detach-client'
-
-alias trn='tmux rename-window'
-alias trns='tmux rename-session'
-
-alias tls='tmux list-sessions'
-alias tlc='tmux list-clients'
-alias tlw='tmux list-windows'
-alias tlp='tmux list-panes'
-alias tlk='tmux list-keys'
-
-alias tk='tmux kill-session'
-alias tko='tmux kill-server'
-
 # vi:ft=sh

@@ -68,8 +68,7 @@ if ((src_num_lines == 0)); then
 fi
 
 script=$(mktemp -t "${me}.XXXXXXXXXX")
-printf -v cleanup "rm -f %q" "$script"
-trap "$cleanup" INT TERM EXIT
+trap 'rm -f ${script@Q}' INT TERM EXIT
 
 cat >"$script" <<-EOF
 # This file will be executed when you close the editor.

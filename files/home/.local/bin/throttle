@@ -17,8 +17,7 @@ if [[ -e $lock_file ]]; then
 fi
 
 touch "$lock_file"
-printf -v cleanup "rm -f %q" "$lock_file"
-trap "$cleanup" INT TERM EXIT
+trap 'rm -f ${lock_file@Q}' INT TERM EXIT
 
 "${@:?missing command}"
 

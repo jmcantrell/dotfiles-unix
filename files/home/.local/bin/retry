@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+# Adapted from: https://bbs.archlinux.org/viewtopic.php?pid=431568#p431568
+
+set -eu
+
+me=${0##*/}
+usage="Run a command repeatedly until it succeeds or runs out of retries.
+
+Usage:
+    $me [OPTIONS] COMMAND [ARGUMENT...]
+
+Options:
+    -n NUMBER    try to run COMMAND a maximum of NUMBER times
+    -d NUMBER    wait NUMBER seconds between each try
+"
+
+usage() {
+    printf "%s\n" "$usage"
+    exit 0
+}
+
+die() {
+    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
+    exit "${2:-1}"
+}
+
+retries_remaining=-1
+delay=0
+
+while getopts ":n:d:h" option; do
+    case $option in
+    n) retries_remaining=$OPTARG ;;
+    d) delay=$OPTARG ;;
+    h) usage ;;
+    *) die "invalid option -- $OPTARG" ;;
+    esac
+done && shift $((OPTIND - 1))
+
+exit_code=0
+
+while ((retries_remaining != 0)); do
+    ((retries_remaining--))
+
+    "$@"
+
+    exit_code=$?
+
+    if ((exit_code == 0)); then
+        break
+    fi
+
+    sleep "$delay"
+done
+
+exit "$exit_code"

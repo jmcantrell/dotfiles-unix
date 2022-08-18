@@ -127,9 +127,6 @@
 [submodule "vim-nginx"]
     path = files/home/.config/nvim/pack/default/start/nginx
     url = https://github.com/chr4/nginx.vim.git
-[submodule "vim-markdown"]
-    path = files/home/.config/nvim/pack/default/start/markdown
-    url = https://github.com/plasticboy/vim-markdown.git
 [submodule "vim-lua"]
     path = files/home/.config/nvim/pack/default/start/lua
     url = https://github.com/tbastos/vim-lua.git

@@ -1,8 +1,6 @@
-let g:vim_markdown_folding_disabled = 1
 let b:ale_fixers = ['prettier']
 
 setlocal spell
-setlocal formatoptions+=tcon
 setlocal textwidth=70
 setlocal conceallevel=0
 

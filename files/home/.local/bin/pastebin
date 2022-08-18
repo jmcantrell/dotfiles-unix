@@ -6,9 +6,17 @@
 
 set -eu
 
-for file in "${@:-/dev/stdin}"; do
-    ext=${file##*/}
-    ext=${ext##*.}
-    url=$(curl --data-binary @"$file" https://paste.rs)
-    echo "$url${ext:+.$ext}"
-done
+send() {
+    curl -sSL --data-binary @"$1" https://paste.rs
+}
+
+if (($# == 0)); then
+    send /dev/stdin
+else
+    for file in "$@"; do
+        ext=${file##*/}
+        ext=${ext##*.}
+        url=$(send "$file")
+        echo "$url${ext:+.$ext}"
+    done
+fi

@@ -3,8 +3,8 @@ setopt prompt_subst
 env_info() {
     unset env_info
     local env_names=()
-    [[ -n $DIRENV_DIR ]] && env_names+=(direnv)
-    [[ -n $VIRTUAL_ENV ]] && env_names+=(venv)
+    [[ -v DIRENV_DIR ]] && env_names+=(direnv)
+    [[ -v VIRTUAL_ENV ]] && env_names+=(venv)
     [[ -f package.json || -d node_modules ]] && env_names+=(node)
     [[ -f deno.json ]] && env_names+=(deno)
     [[ -f Cargo.toml ]] && env_names+=(cargo)

@@ -5,6 +5,4 @@
 
 set -eu
 
-readarray -t paths
-
-exec ${EDITOR:-vim} "$@" "${paths[@]:?nothing to edit}"
+exec xargs --no-run-if-empty --open-tty editor "$@"

@@ -7,6 +7,5 @@ installer
 jedi-language-server
 mypy
 pip-upgrader
-pynvim
 twine
 wheel

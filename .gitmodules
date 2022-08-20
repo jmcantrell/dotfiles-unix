@@ -8,215 +8,215 @@
     path = files/home/.local/share/zsh/scripts/syntax-highlighting
     url = https://github.com/zsh-users/zsh-syntax-highlighting.git
 [submodule "vim-characterize"]
-    path = files/home/.config/nvim/pack/default/start/characterize
+    path = files/home/.vim/pack/default/start/characterize
     url = https://github.com/tpope/vim-characterize.git
 [submodule "vim-endwise"]
-    path = files/home/.config/nvim/pack/default/start/endwise
+    path = files/home/.vim/pack/default/start/endwise
     url = https://github.com/tpope/vim-endwise.git
 [submodule "vim-eunuch"]
-    path = files/home/.config/nvim/pack/default/start/eunuch
+    path = files/home/.vim/pack/default/start/eunuch
     url = https://github.com/tpope/vim-eunuch.git
 [submodule "vim-fatrat"]
-    path = files/home/.config/nvim/pack/default/start/fatrat
+    path = files/home/.vim/pack/default/start/fatrat
     url = https://github.com/jmcantrell/vim-fatrat.git
 [submodule "vim-jdaddy"]
-    path = files/home/.config/nvim/pack/default/start/jdaddy
+    path = files/home/.vim/pack/default/start/jdaddy
     url = https://github.com/tpope/vim-jdaddy.git
 [submodule "vim-lion"]
-    path = files/home/.config/nvim/pack/default/start/lion
+    path = files/home/.vim/pack/default/start/lion
     url = https://github.com/tommcdo/vim-lion.git
 [submodule "vim-noctu"]
-    path = files/home/.config/nvim/pack/default/start/noctu
+    path = files/home/.vim/pack/default/start/noctu
     url = https://github.com/noahfrederick/vim-noctu.git
 [submodule "vim-node"]
-    path = files/home/.config/nvim/pack/default/start/node
+    path = files/home/.vim/pack/default/start/node
     url = https://github.com/moll/vim-node.git
 [submodule "vim-ragtag"]
-    path = files/home/.config/nvim/pack/default/start/ragtag
+    path = files/home/.vim/pack/default/start/ragtag
     url = https://github.com/tpope/vim-ragtag.git
 [submodule "vim-repeat"]
-    path = files/home/.config/nvim/pack/default/start/repeat
+    path = files/home/.vim/pack/default/start/repeat
     url = https://github.com/tpope/vim-repeat.git
 [submodule "vim-scriptease"]
-    path = files/home/.config/nvim/pack/default/start/scriptease
+    path = files/home/.vim/pack/default/start/scriptease
     url = https://github.com/tpope/vim-scriptease.git
 [submodule "vim-securemodelines"]
-    path = files/home/.config/nvim/pack/default/start/securemodelines
+    path = files/home/.vim/pack/default/start/securemodelines
     url = https://github.com/ciaranm/securemodelines.git
 [submodule "vim-sensible"]
-    path = files/home/.config/nvim/pack/default/start/sensible
+    path = files/home/.vim/pack/default/start/sensible
     url = https://github.com/tpope/vim-sensible.git
 [submodule "vim-sort-motion"]
-    path = files/home/.config/nvim/pack/default/start/sort-motion
+    path = files/home/.vim/pack/default/start/sort-motion
     url = https://github.com/christoomey/vim-sort-motion.git
 [submodule "vim-surround"]
-    path = files/home/.config/nvim/pack/default/start/surround
+    path = files/home/.vim/pack/default/start/surround
     url = https://github.com/tpope/vim-surround.git
 [submodule "vim-tagbar"]
-    path = files/home/.config/nvim/pack/default/start/tagbar
+    path = files/home/.vim/pack/default/start/tagbar
     url = https://github.com/majutsushi/tagbar.git
 [submodule "vim-targets"]
-    path = files/home/.config/nvim/pack/default/start/targets
+    path = files/home/.vim/pack/default/start/targets
     url = https://github.com/wellle/targets.vim.git
 [submodule "vim-undotree"]
-    path = files/home/.config/nvim/pack/default/start/undotree
+    path = files/home/.vim/pack/default/start/undotree
     url = https://github.com/mbbill/undotree.git
 [submodule "vim-unimpaired"]
-    path = files/home/.config/nvim/pack/default/start/unimpaired
+    path = files/home/.vim/pack/default/start/unimpaired
     url = https://github.com/tpope/vim-unimpaired.git
 [submodule "vim-visual-increment"]
-    path = files/home/.config/nvim/pack/default/start/visual-increment
+    path = files/home/.vim/pack/default/start/visual-increment
     url = https://github.com/triglav/vim-visual-increment.git
 [submodule "vim-ale"]
-    path = files/home/.config/nvim/pack/default/start/ale
+    path = files/home/.vim/pack/default/start/ale
     url = https://github.com/dense-analysis/ale.git
 [submodule "vim-context"]
-    path = files/home/.config/nvim/pack/default/start/context
+    path = files/home/.vim/pack/default/start/context
     url = https://github.com/Shougo/context_filetype.vim.git
 [submodule "vim-commentary"]
-    path = files/home/.config/nvim/pack/default/start/commentary
+    path = files/home/.vim/pack/default/start/commentary
     url = https://github.com/tpope/vim-commentary.git
 [submodule "vim-fencing"]
-    path = files/home/.config/nvim/pack/default/start/fencing
+    path = files/home/.vim/pack/default/start/fencing
     url = https://github.com/jmcantrell/vim-fencing.git
 [submodule "vim-emmet"]
-    path = files/home/.config/nvim/pack/default/start/emmet
+    path = files/home/.vim/pack/default/start/emmet
     url = https://github.com/mattn/emmet-vim.git
 [submodule "vim-dirvish"]
-    path = files/home/.config/nvim/pack/default/start/dirvish
+    path = files/home/.vim/pack/default/start/dirvish
     url = https://github.com/justinmk/vim-dirvish.git
 [submodule "vim-togglelist"]
-    path = files/home/.config/nvim/pack/default/start/togglelist
+    path = files/home/.vim/pack/default/start/togglelist
     url = https://github.com/milkypostman/vim-togglelist.git
 [submodule "vim-highlightedyank"]
-    path = files/home/.config/nvim/pack/default/start/highlightedyank
+    path = files/home/.vim/pack/default/start/highlightedyank
     url = https://github.com/machakann/vim-highlightedyank.git
 [submodule "vim-editorconfig"]
-    path = files/home/.config/nvim/pack/default/start/editorconfig
+    path = files/home/.vim/pack/default/start/editorconfig
     url = https://github.com/editorconfig/editorconfig-vim.git
 [submodule "vim-direnv"]
-    path = files/home/.config/nvim/pack/default/start/direnv
+    path = files/home/.vim/pack/default/start/direnv
     url = https://github.com/direnv/direnv.vim.git
 [submodule "vim-nix"]
-    path = files/home/.config/nvim/pack/default/start/nix
+    path = files/home/.vim/pack/default/start/nix
     url = https://github.com/LnL7/vim-nix.git
 [submodule "vim-toml"]
-    path = files/home/.config/nvim/pack/default/start/toml
+    path = files/home/.vim/pack/default/start/toml
     url = https://github.com/cespare/vim-toml.git
 [submodule "vim-javascript"]
-    path = files/home/.config/nvim/pack/default/start/javascript
+    path = files/home/.vim/pack/default/start/javascript
     url = https://github.com/pangloss/vim-javascript.git
 [submodule "vim-systemd"]
-    path = files/home/.config/nvim/pack/default/start/systemd
+    path = files/home/.vim/pack/default/start/systemd
     url = https://github.com/wgwoods/vim-systemd-syntax.git
 [submodule "vim-svelte"]
-    path = files/home/.config/nvim/pack/default/start/svelte
+    path = files/home/.vim/pack/default/start/svelte
     url = https://github.com/leafOfTree/vim-svelte-plugin.git
 [submodule "vim-rust"]
-    path = files/home/.config/nvim/pack/default/start/rust
+    path = files/home/.vim/pack/default/start/rust
     url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim-ruby"]
-    path = files/home/.config/nvim/pack/default/start/ruby
+    path = files/home/.vim/pack/default/start/ruby
     url = https://github.com/vim-ruby/vim-ruby.git
 [submodule "vim-python"]
-    path = files/home/.config/nvim/pack/default/start/python
+    path = files/home/.vim/pack/default/start/python
     url = https://github.com/vim-python/python-syntax.git
 [submodule "vim-pug"]
-    path = files/home/.config/nvim/pack/default/start/pug
+    path = files/home/.vim/pack/default/start/pug
     url = https://github.com/digitaltoad/vim-pug.git
 [submodule "vim-nginx"]
-    path = files/home/.config/nvim/pack/default/start/nginx
+    path = files/home/.vim/pack/default/start/nginx
     url = https://github.com/chr4/nginx.vim.git
 [submodule "vim-lua"]
-    path = files/home/.config/nvim/pack/default/start/lua
+    path = files/home/.vim/pack/default/start/lua
     url = https://github.com/tbastos/vim-lua.git
 [submodule "vim-llvm"]
-    path = files/home/.config/nvim/pack/default/start/llvm
+    path = files/home/.vim/pack/default/start/llvm
     url = https://github.com/rhysd/vim-llvm.git
 [submodule "vim-jq"]
-    path = files/home/.config/nvim/pack/default/start/jq
+    path = files/home/.vim/pack/default/start/jq
     url = https://github.com/vito-c/jq.vim.git
 [submodule "vim-haskell"]
-    path = files/home/.config/nvim/pack/default/start/haskell
+    path = files/home/.vim/pack/default/start/haskell
     url = https://github.com/neovimhaskell/haskell-vim.git
 [submodule "vim-go"]
-    path = files/home/.config/nvim/pack/default/start/go
+    path = files/home/.vim/pack/default/start/go
     url = https://github.com/fatih/vim-go.git
 [submodule "vim-haproxy"]
-    path = files/home/.config/nvim/pack/default/start/haproxy
+    path = files/home/.vim/pack/default/start/haproxy
     url = https://github.com/CH-DanReif/haproxy.vim.git
 [submodule "vim-mustache"]
-    path = files/home/.config/nvim/pack/default/start/mustache
+    path = files/home/.vim/pack/default/start/mustache
     url = https://github.com/mustache/vim-mustache-handlebars.git
 [submodule "vim-haml"]
-    path = files/home/.config/nvim/pack/default/start/haml
+    path = files/home/.vim/pack/default/start/haml
     url = https://github.com/tpope/vim-haml.git
 [submodule "vim-glsl"]
-    path = files/home/.config/nvim/pack/default/start/glsl
+    path = files/home/.vim/pack/default/start/glsl
     url = https://github.com/tikhomirov/vim-glsl.git
 [submodule "vim-git"]
-    path = files/home/.config/nvim/pack/default/start/git
+    path = files/home/.vim/pack/default/start/git
     url = https://github.com/tpope/vim-git.git
 [submodule "vim-fish"]
-    path = files/home/.config/nvim/pack/default/start/fish
+    path = files/home/.vim/pack/default/start/fish
     url = https://github.com/blankname/vim-fish.git
 [submodule "vim-erlang"]
-    path = files/home/.config/nvim/pack/default/start/erlang
+    path = files/home/.vim/pack/default/start/erlang
     url = https://github.com/vim-erlang/vim-erlang-runtime.git
 [submodule "vim-dockerfile"]
-    path = files/home/.config/nvim/pack/default/start/dockerfile
+    path = files/home/.vim/pack/default/start/dockerfile
     url = https://github.com/ekalinin/Dockerfile.vim.git
 [submodule "vim-brewfile"]
-    path = files/home/.config/nvim/pack/default/start/brewfile
+    path = files/home/.vim/pack/default/start/brewfile
     url = https://github.com/bfontaine/Brewfile.vim.git
 [submodule "vim-ocaml"]
-    path = files/home/.config/nvim/pack/default/start/ocaml
+    path = files/home/.vim/pack/default/start/ocaml
     url = https://github.com/ocaml/vim-ocaml.git
 [submodule "vim-applescript"]
-    path = files/home/.config/nvim/pack/default/start/applescript
+    path = files/home/.vim/pack/default/start/applescript
     url = https://github.com/mityu/vim-applescript.git
 [submodule "vim-cpp"]
-    path = files/home/.config/nvim/pack/default/start/cpp
+    path = files/home/.vim/pack/default/start/cpp
     url = https://github.com/vim-jp/vim-cpp.git
 [submodule "vim-csv"]
-    path = files/home/.config/nvim/pack/default/start/csv
+    path = files/home/.vim/pack/default/start/csv
     url = https://github.com/chrisbra/csv.vim.git
 [submodule "vim-latex"]
-    path = files/home/.config/nvim/pack/default/start/latex
+    path = files/home/.vim/pack/default/start/latex
     url = https://github.com/lervag/vimtex.git
 [submodule "vim-clever-f"]
-    path = files/home/.config/nvim/pack/default/start/clever-f
+    path = files/home/.vim/pack/default/start/clever-f
     url = https://github.com/rhysd/clever-f.vim.git
 [submodule "vim-matchup"]
-    path = files/home/.config/nvim/pack/default/start/matchup
+    path = files/home/.vim/pack/default/start/matchup
     url = https://github.com/andymass/vim-matchup.git
 [submodule "vim-sway"]
-    path = files/home/.config/nvim/pack/default/start/sway
+    path = files/home/.vim/pack/default/start/sway
     url = https://github.com/ajouellette/sway-vim-syntax.git
 [submodule "vim-signature"]
-    path = files/home/.config/nvim/pack/default/start/signature
+    path = files/home/.vim/pack/default/start/signature
     url = https://github.com/kshenoy/vim-signature.git
 [submodule "bash-nix-completions"]
     path = files/home/.local/share/bash/scripts/nix-completions
     url = https://github.com/hedning/nix-bash-completions.git
 [submodule "vim-sneak"]
-    path = files/home/.config/nvim/pack/default/start/sneak
+    path = files/home/.vim/pack/default/start/sneak
     url = https://github.com/justinmk/vim-sneak.git
 [submodule "vim-xit"]
-    path = files/home/.config/nvim/pack/default/start/xit
+    path = files/home/.vim/pack/default/start/xit
     url = https://github.com/ryanolsonx/vim-xit.git
 [submodule "vim-ultisnips"]
-    path = files/home/.config/nvim/pack/default/start/ultisnips
+    path = files/home/.vim/pack/default/start/ultisnips
     url = https://github.com/SirVer/ultisnips.git
 [submodule "vim-jsx"]
-    path = files/home/.config/nvim/pack/default/start/jsx
+    path = files/home/.vim/pack/default/start/jsx
     url = https://github.com/MaxMEllon/vim-jsx-pretty.git
 [submodule "vim-marko"]
-    path = files/home/.config/nvim/pack/default/start/marko
+    path = files/home/.vim/pack/default/start/marko
     url = https://github.com/rajasegar/vim-marko.git
 [submodule "vim-zig"]
-    path = files/home/.config/nvim/pack/default/start/zig
+    path = files/home/.vim/pack/default/start/zig
     url = https://github.com/ziglang/zig.vim.git
 [submodule "vim-racket"]
-    path = files/home/.config/nvim/pack/default/start/racket
+    path = files/home/.vim/pack/default/start/racket
     url = https://github.com/benknoble/vim-racket.git

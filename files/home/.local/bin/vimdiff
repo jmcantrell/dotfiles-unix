@@ -1,5 +1,0 @@
-#!/usr/bin/env sh
-
-# Start vim in diff mode.
-
-exec vim -d "$@"

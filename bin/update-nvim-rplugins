@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-set -eu
-
-echo "Generating vim rplugin manifests"
-nvim -c UpdateRemotePlugins -c q &>/dev/null

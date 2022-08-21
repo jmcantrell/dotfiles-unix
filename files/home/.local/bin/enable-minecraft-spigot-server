@@ -18,4 +18,4 @@ curl -LO --progress-bar \
 java -jar BuildTools.jar --rev "$version"
 output_file=$(grep -m1 "Saved as" BuildTools.log.txt | sed 's:^.* \.\/\(.*\)$:\1:')
 ln -sfvn "$output_file" server.jar
-echo "eula=true" >eula.txt
+printf "eula=true\n" >eula.txt

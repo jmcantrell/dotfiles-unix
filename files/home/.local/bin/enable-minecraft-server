@@ -30,4 +30,4 @@ mkdir -p "$prefix"
 cd "$prefix"
 
 curl -L --progress-bar -o server.jar "$(jq -r ".server.url" <<<"$downloads_json")"
-echo "eula=true" >eula.txt
+printf "eula=true\n" >eula.txt

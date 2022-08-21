@@ -116,7 +116,7 @@ while read -r src; do
     dst=${dst/\%b/$base}
     dst=${dst/\%e/$ext}
 
-    echo "$dst" >>"$dst_list"
+    printf "$dst\n" >>"$dst_list"
 
     num=$((num + increment))
 done <"$src_list"

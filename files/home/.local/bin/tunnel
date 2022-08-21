@@ -11,7 +11,7 @@ config_file=${TMPDIR:-/tmp}/tunnel.conf
 curl -s https://tunnel.pyjam.as/"$port" >"$config_file"
 chmod 600 "$config_file"
 
-echo "Using configuration: $config_file"
+printf "Using configuration: %s\n" "$config_file"
 
 wg-quick up "$config_file"
 

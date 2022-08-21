@@ -17,6 +17,6 @@ else
         ext=${file##*/}
         ext=${ext##*.}
         url=$(send "$file")
-        echo "$url${ext:+.$ext}"
+        printf "%s%s\n" "$url" "${ext:+.$ext}"
     done
 fi

@@ -46,7 +46,9 @@ die() {
 list_register_files() {
     if [[ -d $cache_dir ]]; then
         # Always list default register first, if it exists.
-        [[ -r $cache_dir/default ]] && echo "$cache_dir/default"
+        if [[ -r $cache_dir/default ]]; then
+            printf "%s/default\n" "$cache_dir"
+        fi
         # Skip default register and sort others naturally.
         find "$cache_dir" -type f | grep -v "/default$" | sort
     fi

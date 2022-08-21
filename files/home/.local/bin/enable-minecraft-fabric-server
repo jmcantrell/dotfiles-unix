@@ -25,5 +25,5 @@ java -jar installer.jar server -mcversion "$version" -downloadMinecraft
 
 mv server.jar vanilla.jar
 ln -sfvn fabric-server-launch.jar server.jar
-echo "serverJar=vanilla.jar" >fabric-server-launcher.properties
-echo "eula=true" >eula.txt
+printf "serverJar=vanilla.jar\n" >fabric-server-launcher.properties
+printf "eula=true\n" >eula.txt

@@ -76,7 +76,7 @@ while read -r src; do
     base=$("$algorithm"sum "$src" | awk '{print $1}')
     dst=$dir/$base$ext
 
-    echo "$dst" >>"$dst_list"
+    printf "%s\n" "$dst" >>"$dst_list"
 done <"$src_list"
 
 mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"

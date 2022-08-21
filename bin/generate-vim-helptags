@@ -4,6 +4,6 @@ set -eu
 shopt -s nullglob
 
 for dir in ~/.vim/{doc,pack/*/start/*/doc}; do
-    echo "Generating vim helptags: $dir"
+    printf "Generating vim helptags: %s\n" "$dir"
     vim -c "helptags $dir" -c q &>/dev/null
 done

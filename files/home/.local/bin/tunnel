@@ -17,7 +17,7 @@ wg-quick up "$config_file"
 
 # Wait for ctrl-c before continuing.
 (
-    trap exit SIGINT
+    trap exit INT
     read -rd '' _ </dev/tty
 )
 

@@ -17,7 +17,7 @@ if [[ -e $lock_file ]]; then
 fi
 
 touch "$lock_file"
-trap 'rm -f ${lock_file@Q}' INT TERM EXIT
+trap 'rm -f ${lock_file@Q}' EXIT
 
 "${@:?missing command}"
 

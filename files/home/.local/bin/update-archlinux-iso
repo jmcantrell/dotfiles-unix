@@ -7,7 +7,7 @@ set -eu
 output_dir=${1:-$HOME/disks}
 
 metadata_file=$(mktemp -t "${0##*/}.XXXXXXXXXX")
-trap 'rm -f ${metadata_file@Q}' INT TERM EXIT
+trap 'rm -f ${metadata_file@Q}' EXIT
 
 curl -Ls -o "$metadata_file" https://archlinux.org/releng/releases/json
 

@@ -2,4 +2,8 @@
 
 # Run the preferred text editor.
 
-exec vim "$@"
+if command -v nvim >/dev/null; then
+    exec nvim "$@"
+else
+    exec vim "$@"
+fi

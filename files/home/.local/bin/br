@@ -33,7 +33,8 @@ while getopts ":fh" option; do
 done && shift $((OPTIND - 1))
 
 temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
-trap 'rm -rf ${temp_dir@Q}' EXIT
+printf -v cleanup "rm -r %q" "$temp_dir"
+trap '$cleanup' EXIT
 
 src_list=$temp_dir/src
 dst_list=$temp_dir/dst

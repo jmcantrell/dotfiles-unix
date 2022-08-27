@@ -6,7 +6,8 @@
 set -eu
 
 versions_file=$(mktemp -t "${0##*/}.XXXXXXXXXX")
-trap 'rm -f ${versions_file@Q}' EXIT
+printf -v cleanup "rm %q" "$versions_file"
+trap '$cleanup' EXIT
 
 curl -sSL -o "$versions_file" https://launchermeta.mojang.com/mc/game/version_manifest.json
 

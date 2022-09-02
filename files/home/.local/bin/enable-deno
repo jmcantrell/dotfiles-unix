@@ -1,28 +1,33 @@
 #!/usr/bin/env bash
 
-# Initialize a Python prefix.
-# Usage: init-python [VERSION]
+# Initialize a Deno prefix.
+# Usage: enable-deno [VERSION]
 
-set -eu
-
-REPO_URL=https://github.com/denoland/deno
+set -euo pipefail
 
 die() {
     printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
     exit "${2:-1}"
 }
 
-versions() {
-    git ls-remote --tags --refs "$REPO_URL" |
-        sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
-        sort --version-sort
-}
+REPO=denoland/deno
 
-latest_version() {
-    versions | grep -vi '[a-z][0-9]$' | tail -n1
-}
+releases_file=$(mktemp -t "${0##*/}.XXXXXXXXXX")
+printf -v cleanup "rm %q" "$releases_file"
+trap '$cleanup' EXIT
 
-version=${1:-$(latest_version)}
+curl -sSL -o "$releases_file" \
+    "https://api.github.com/repos/$REPO/releases"
+
+if [[ -v 1 ]]; then
+    release_json=$(jq -er --arg version "$1" 'map(select(.tag_name == "v" + $version)) | first' "$releases_file") || die "version not found: $1"
+else
+    release_json=$(jq -r '.[0]' "$releases_file")
+fi
+
+tag=$(jq -r '.tag_name' <<<"$release_json")
+version=${tag#v}
+
 prefix=${XDG_DATA_HOME:-$HOME/.local/share}/deno/$version
 archive=${XDG_CACHE_HOME:-$HOME/.cache}/deno/deno-$version.zip
 
@@ -42,7 +47,7 @@ target=$machine-$kernel
 
 if [[ ! -f $archive ]]; then
     mkdir -p "$(dirname "$archive")"
-    url=$REPO_URL/releases/download/v$version/deno-$target.zip
+    url=https://github.com/$REPO/releases/download/$tag/deno-$target.zip
     curl -L --progress-bar -o "$archive" "$url" || die "unable to download archive -- $url"
 fi
 
@@ -50,10 +55,5 @@ if [[ -d $prefix ]]; then
     exit 0
 fi
 
-temp_dir=$(mktemp -d -t "${0##*/}.XXXXXXXXXX")
-printf -v cleanup "rm -r %q" "$temp_dir"
-trap '$cleanup' EXIT
-
-cd "$temp_dir"
 mkdir -p "$prefix"/bin
 unzip -d "$prefix"/bin -o "$archive"

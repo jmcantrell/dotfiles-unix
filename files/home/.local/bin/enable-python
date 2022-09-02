@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 # Initialize a Python prefix.
-# Usage: init-python [VERSION]
+# Usage: enable-python [VERSION]
 
-set -eu
+set -euo pipefail
 
 REPO_URL=https://github.com/python/cpython
 

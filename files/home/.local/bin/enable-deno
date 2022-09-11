@@ -46,6 +46,7 @@ esac
 target=$machine-$kernel
 
 if [[ ! -f $archive ]]; then
+    printf "Downloading Deno v%s\n" "$version"
     mkdir -p "$(dirname "$archive")"
     url=https://github.com/$REPO/releases/download/$tag/deno-$target.zip
     curl -L --progress-bar -o "$archive" "$url" || die "unable to download archive -- $url"

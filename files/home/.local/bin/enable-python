@@ -27,6 +27,7 @@ prefix=${XDG_DATA_HOME:-$HOME/.local/share}/python/$version
 archive=${XDG_CACHE_HOME:-$HOME/.cache}/python/python-$version.tar.gz
 
 if [[ ! -f $archive ]]; then
+    printf "Downloading Python v%s\n" "$version"
     mkdir -p "$(dirname "$archive")"
     url=$REPO_URL/archive/refs/tags/v${version}.tar.gz
     curl -L --progress-bar -o "$archive" "$url" || die "unable to download archive -- $url"

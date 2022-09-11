@@ -39,6 +39,7 @@ machine=$(uname --machine)
 machine=${machine/#x86_/x}
 
 if [[ ! -f $archive ]]; then
+    printf "Downloading Node.js v%s\n" "$version"
     mkdir -p "$(dirname "$archive")"
     url=https://nodejs.org/dist/$tag/node-$tag-$kernel-$machine.tar.xz
     curl -L --progress-bar -o "$archive" "$url" || die "unable to download archive -- $url"

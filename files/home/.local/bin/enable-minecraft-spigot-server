@@ -1,8 +1,23 @@
 #!/usr/bin/env bash
 
-set -eu
+# Initialize a Spigot-enabled Mincraft server for the given version.
+# Usage: enable-minecraft-spigot-server [VERSION]
 
-version=${1:-latest}
+set -euo pipefail
+
+versions_file=$(mktemp -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm %q" "$versions_file"
+trap '$cleanup' EXIT
+
+curl -sSL -o "$versions_file" https://launchermeta.mojang.com/mc/game/version_manifest.json
+
+version=${1:-$(jq -er .latest.release "$versions_file")}
+
+if ! jq -er --arg version "$version" '.versions[] | select(.id == $version)' "$versions_file" >/dev/null; then
+    printf "Invalid version: %s\n" "$version" >&2
+    exit 1
+fi
+
 prefix=${XDG_DATA_HOME:-$HOME/.local/share}/mincraft-spigot-server/$version
 
 if [[ -d $prefix ]]; then
@@ -12,10 +27,9 @@ fi
 mkdir -p "$prefix"
 cd "$prefix"
 
-curl -LO --progress-bar \
-    https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+curl -LO https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 
 java -jar BuildTools.jar --rev "$version"
 output_file=$(grep -m1 "Saved as" BuildTools.log.txt | sed 's:^.* \.\/\(.*\)$:\1:')
-ln -sfvn "$output_file" server.jar
+ln -vsfn "$output_file" server.jar
 printf "eula=true\n" >eula.txt

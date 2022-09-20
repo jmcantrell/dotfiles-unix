@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+# Create an ephemeral HTTPS tunnel to localhost.
+# Usage: tunnel-https PORT
+
+set -euo pipefail
+
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be a port number\n" >&2
+    exit 1
+fi
+
+if [[ ! $1 =~ ^[1-9][0-9]*$ ]] || (($1 < 1 || $1 > 65535)); then
+    printf "Invalid port number: %s (must be an integer between 1-65535)\n" "$1" >&2
+    exit 1
+fi
+
+port=$1
+
+umask 077
+
+config_file=$(mktemp -t "${0##*/}".XXXXXXXXXX)
+curl -s https://tunnel.pyjam.as/"$port" >"$config_file"
+
+printf "Using configuration: %q\n" "$config_file"
+
+wg-quick up "$config_file"
+
+# Wait for ctrl-c before continuing.
+(
+    trap exit INT
+    read -rd '' _ </dev/tty
+)
+
+wg-quick down "$config_file"
+rm -f "$config_file"

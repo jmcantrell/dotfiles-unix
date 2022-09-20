@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
-me=${0##*/}
 usage="Safely manage a queue of items.
 
 Usage:
-    $me FILE [ACTION]
+    ${0##*/} FILE [ACTION]
 
 Arguments:
     FILE      file in which to store queued items
@@ -18,32 +17,35 @@ Actions:
     pop       remove next item from queue and print it
     clear     remove all items from queue
 
-Items are popped from the top and added to the bottom.
-"
-
-usage() {
-    printf "%s\n" "$usage"
-    exit 0
-}
-
-die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
-    exit "${2:-1}"
-}
+Items are popped from the top and added to the bottom."
 
 while getopts ":h" option; do
     case $option in
-    h) usage ;;
-    *) die "invalid option -- $OPTARG" ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
     esac
 done && shift $((OPTIND - 1))
 
-queue=${1:?missing queue file}
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be a queue file\n" >&2
+    exit 1
+fi
+
+queue=$1
 action=${2:-list}
 
 case $action in
-list | add | pop | clear | hold) ;;
-*) die "invalid action -- $action" ;;
+list | add | pop | clear) ;;
+*)
+    printf "Invalid action: %s\n" "$action" >&2
+    exit 1
+    ;;
 esac
 
 # Ensure this invocation has exclusive access to the queue file.

@@ -2,25 +2,25 @@
 
 # Show the root git directory.
 
-set -eu
-
-die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
-    exit "${2:-1}"
-}
+set -euo pipefail
 
 path=${1:-$PWD}
 
 if [[ -f $path ]]; then
-    path=$(dirname "$path")
+    dir=$(dirname "$path")
+else
+    dir=$path
 fi
 
-while [[ -d $path && ! -e $path/.git ]]; do
-    path+=/..
+cur_dir=$dir
+
+while [[ -d $cur_dir && ! -e $cur_dir/.git ]]; do
+    cur_dir+=/..
 done
 
-if [[ ! -d $path ]]; then
-    die "no git repository found"
+if [[ ! -d $cur_dir ]]; then
+    printf "Not a git working directory: %q\n" "$dir" >&2
+    exit 1
 fi
 
-realpath "$path"
+realpath "$cur_dir"

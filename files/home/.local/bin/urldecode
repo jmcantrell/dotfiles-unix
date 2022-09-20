@@ -2,7 +2,7 @@
 
 # Decode URL-encoded arguments (or stdin lines).
 
-set -eu
+set -euo pipefail
 
 decode() {
     local arg=${1//+/ }

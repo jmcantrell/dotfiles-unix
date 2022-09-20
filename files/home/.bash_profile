@@ -1,7 +1,9 @@
 for file in ~/.{profile,bashrc}; do
-    [[ -r $file ]] || continue
-    . "$file" || printf "%s: line %s: unable to load file -- %s\n" "$0" "$LINENO" "$file" >&2
+    if [[ -f $file ]] && ! . "$file"; then
+        printf "Unable to source file: %q\n" "$file" >&2
+        return 1
+    fi
 done
 unset file
 
-# vi:ft=sh
+# vi:ft=bash

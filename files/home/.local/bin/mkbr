@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
-me=${0##*/}
 usage="Generate, confirm, and execute a bulk rename script.
 
 Usage:
-    $me [OPTIONS] FROM_LIST TO_LIST
+    ${0##*/} [OPTIONS] FROM_LIST TO_LIST
 
 Options:
     -f           use -f instead of -i for generated mv commands
@@ -20,54 +19,56 @@ A script will be generated, opened in EDITOR for review, and executed with sh.
 It's expected that the path on a line in FROM_LIST corresponds with the path on
 the same line in TO_LIST.
 
+Even though it's considered valid for a file path to contain newlines, it's
+expected that they will not be present in any path of FROM_LIST or TO_LIST as
+newlines are used to separate paths in those lists.
+
 This command will error if the number of paths in each list does not match.
 
-It will exit silently if the lists are empty.
-"
-
-usage() {
-    printf "%s\n" "$usage"
-    exit 0
-}
-
-die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
-    exit "${2:-1}"
-}
-
-get_num_lines() {
-    wc -l <"$1"
-}
+It will exit silently if the lists are empty."
 
 mv_option=i
 
 while getopts ":fh" option; do
     case $option in
     f) mv_option=f ;;
-    h) usage ;;
-    *) die "invalid option -- $OPTARG" ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
     esac
 done && shift $((OPTIND - 1))
 
-if (($# != 2)) || [[ ! -f $1 || ! -f $2 ]]; then
-    die "the first two parameters must be readable files"
+if (($# != 2)); then
+    printf "The first two parameters must be readable files\n" >&2
+    exit 1
 fi
+
+for file in "$@"; do
+    if [[ ! -f $file || ! -r $file ]]; then
+        printf "File does not exist or is not readable: %q\n" "$file" >&2
+        exit 1
+    fi
+done
 
 src_list=$1
 dst_list=$2
 
-src_num_lines=$(get_num_lines "$src_list")
-dst_num_lines=$(get_num_lines "$dst_list")
+src_num_lines=$(wc -l <"$src_list")
+dst_num_lines=$(wc -l <"$dst_list")
 
 if ((src_num_lines != dst_num_lines)); then
-    die "the number of paths does not match"
+    printf "The number of paths does not match: source=%d != destination=%d\n" "$src_num_lines" "$dst_num_lines" >&2
+    exit 1
 fi
 
-if ((src_num_lines == 0)); then
-    exit 0
-fi
+((src_num_lines == 0)) && exit 0
 
-script=$(mktemp -t "${me}.XXXXXXXXXX")
+script=$(mktemp -t "${0##*/}".XXXXXXXXXX)
 printf -v cleanup "rm %q" "$script"
 trap '$cleanup' EXIT
 
@@ -77,8 +78,8 @@ cat >"$script" <<-EOF
 EOF
 
 has_changes=0
-tmpl_mkdir="mkdir -vp -- %q\n"
-tmpl_mv="mv -v$mv_option -- %q %q\n"
+tmpl_mkdir="mkdir -vp -- %q"
+tmpl_mv="mv -v$mv_option -- %q %q"
 
 declare -A seen_dirs
 
@@ -87,9 +88,7 @@ exec 3<"$dst_list"
 while read -r src; do
     read -r dst <&3
 
-    if [[ $src == "$dst" ]]; then
-        continue
-    fi
+    [[ $src == "$dst" ]] && continue
 
     has_changes=1
 
@@ -98,12 +97,12 @@ while read -r src; do
 
     if [[ $src_dir != "$dst_dir" && ! -v seen_dirs[$dst_dir] ]]; then
         if [[ ! -d $dst_dir ]]; then
-            printf "$tmpl_mkdir" "$dst_dir" >>"$script"
+            printf "$tmpl_mkdir\n" "$dst_dir" >>"$script"
         fi
         seen_dirs[$dst_dir]=1
     fi
 
-    printf "$tmpl_mv" "$src" "$dst" >>"$script"
+    printf "$tmpl_mv\n" "$src" "$dst" >>"$script"
 done <"$src_list"
 
 if ((has_changes)); then

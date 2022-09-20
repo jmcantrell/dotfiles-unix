@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
-echo "Generating vim rplugin manifests"
+printf "Generating neovim rplugin manifests\n"
 nvim -c UpdateRemotePlugins -c q &>/dev/null

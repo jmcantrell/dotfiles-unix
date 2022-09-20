@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-set -eu
+# Grep every man page.
+
+set -euo pipefail
 
 # Split path string used by man into an array of directories.
 IFS=: read -r -d "" -a dirs < <(printf "%s:\0" "$(man -w)")

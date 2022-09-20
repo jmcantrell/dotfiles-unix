@@ -2,21 +2,17 @@
 
 # Download the latest Arch Linux ISO, if needed.
 
-set -eu
+set -euo pipefail
 
-output_dir=${1:-$HOME/disks}
+output_dir=${1:-$PWD}
 
-metadata_file=$(mktemp -t "${0##*/}.XXXXXXXXXX")
-printf -v cleanup "rm %q" "$metadata_file"
-trap '$cleanup' EXIT
+release_json=$(curl -sSL https://archlinux.org/releng/releases/json | jq -er '.releases[0]')
 
-curl -Ls -o "$metadata_file" https://archlinux.org/releng/releases/json
-
-iso_name=$(jq -r .releases[0].torrent.file_name "$metadata_file")
+iso_name=$(jq -er '.torrent.file_name' <<<"$release_json")
 iso_file=$output_dir/$iso_name
 
 if [[ ! -f $iso_file ]]; then
     mkdir -p "$output_dir"
-    magnet_uri=$(jq -r .releases[0].magnet_uri "$metadata_file")
+    magnet_uri=$(jq -er '.magnet_uri' <<<"$release_json")
     aria2c-torrent -d "$output_dir" --seed-time 0 "$magnet_uri"
 fi

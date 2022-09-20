@@ -1,16 +1,15 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 format=%d/%n%e
 start_num=1
 increment=1
 
-me=${0##*/}
 usage="Rename files as a sequence of numbers.
 
 Usage:
-    $me [OPTIONS] FILE...
+    ${0##*/} [OPTIONS] FILE...
 
 Options:
     -f           use -f instead of -i in the generated mv commands
@@ -25,18 +24,7 @@ The following placeholders are recognized in FORMAT:
     %N           total number of files
     %d           directory of FILE
     %b           basename of FILE
-    %e           extension of FILE
-"
-
-usage() {
-    printf "%s\n" "$usage"
-    exit 0
-}
-
-die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
-    exit "${2:-1}"
-}
+    %e           extension of FILE"
 
 extname() {
     awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"$1"
@@ -54,28 +42,38 @@ while getopts ":F:s:i:W:wfh" option; do
     W) width=$OPTARG ;;
     w) auto_width=1 ;;
     f) mkbr_options+=(-f) ;;
-    h) usage ;;
-    *) die "invalid option -- $OPTARG" ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
     esac
 done && shift $((OPTIND - 1))
 
 if [[ $format != *%n* ]]; then
-    die "format must contain '%n'"
+    printf "Invalid format: %q (must contain %%n)\n" "$format" >&2
+    exit 1
 fi
 
 if [[ -v width && $width == *[!0-9]* ]]; then
-    die "width must be a positive integer"
+    printf "Invalid width: %s (must be a positive integer)\n" "$width">&2
+    exit 1
 fi
 
 if [[ $start_num == *[!0-9]* ]]; then
-    die "start number must be a positive integer"
+    printf "Invalid start number: %s (must be a positive integer)\n" "$start_num" >&2
+    exit 1
 fi
 
 if [[ $increment == *[!0-9]* ]]; then
-    die "increment must be a positive integer"
+    printf "Invalid increment: %s (must be a positive integer)\n" "$increment" >&2
+    exit 1
 fi
 
-temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
 printf -v cleanup "rm -r %q" "$temp_dir"
 trap '$cleanup' EXIT
 
@@ -85,6 +83,12 @@ dst_list=$temp_dir/dst
 if (($# == 0)); then
     cat >"$src_list"
 else
+    for path in "$@"; do
+        if [[ $path == *$'\n'* ]]; then
+            printf "Invalid path: %q (contains newline)\n" "$path" >&2
+            exit 1
+        fi
+    done
     printf "%s\n" "$@" >"$src_list"
 fi
 
@@ -97,15 +101,12 @@ if ((auto_width)); then
     width=${#end_num}
 fi
 
-while read -r src; do
+while IFS= read -r src; do
     if [[ -v width ]]; then
-        printf -v num_padded "%0${width}d" "$num"
+        printf -v num_padded "%0*d" "$width" "$num"
     else
         num_padded=$num
     fi
-
-    src=$1
-    shift
 
     dir=$(dirname "$src")
     ext=$(extname "$src")
@@ -117,7 +118,7 @@ while read -r src; do
     dst=${dst/\%b/$base}
     dst=${dst/\%e/$ext}
 
-    printf "$dst\n" >>"$dst_list"
+    printf "%s\n" "$dst" >>"$dst_list"
 
     num=$((num + increment))
 done <"$src_list"

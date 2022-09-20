@@ -1,38 +1,32 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
-me=${0##*/}
 usage="Rename files using your preferred editor.
 
 Usage:
-    $me [OPTIONS] FILE...
+    ${0##*/} [OPTIONS] FILE...
 
 Options:
-    -f    use -f instead of -i for generated mv commands
-"
-
-usage() {
-    printf "%s\n" "$usage"
-    exit 0
-}
-
-die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
-    exit "${2:-1}"
-}
+    -f    use -f instead of -i for generated mv commands"
 
 mkbr_options=()
 
 while getopts ":fh" option; do
     case $option in
     f) mkbr_options+=(-f) ;;
-    h) usage ;;
-    *) die "invalid option -- $OPTARG" ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
     esac
 done && shift $((OPTIND - 1))
 
-temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
 printf -v cleanup "rm -r %q" "$temp_dir"
 trap '$cleanup' EXIT
 
@@ -42,6 +36,12 @@ dst_list=$temp_dir/dst
 if (($# == 0)); then
     cat >"$src_list"
 else
+    for path in "$@"; do
+        if [[ $path == *$'\n'* ]]; then
+            printf "Invalid path: %q (contains newline)\n" "$path" >&2
+            exit 1
+        fi
+    done
     printf "%s\n" "$@" >"$src_list"
 fi
 

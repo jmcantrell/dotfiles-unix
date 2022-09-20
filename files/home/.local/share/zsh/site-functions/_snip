@@ -1,0 +1,18 @@
+#compdef snip
+
+local state state_descr context line opt_args
+local data_dir=${XDG_DATA_HOME:-$HOME/.local/share}/snip
+
+_arguments -S \
+    "(- 1)"-h"[show the help text]" \
+    "-D[set register directory]:register directory:_files -/" \
+    "(-)::action:(list path read write append edit delete)" \
+    "(-)::snippet:->snippet" \
+    && return 0
+
+(( $+opt_args[-D] )) && data_dir=$opt_args[-D]
+
+if [[ $state == snippet ]]; then
+    local -a data_files=($data_dir/**(N.))
+    (($#data_files)) && _values 'snippets' ${data_files[@]#$data_dir/}
+fi

@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
-# Show a 16x16 grid of foreground/background color combinations.
+# Show a 16x16 grid of the terminal's foreground/background color combinations.
 # Usage: color16 [TEXT]
 
-# If TEXT is not given, it defaults to "0".
+set -euo pipefail
 
-set -eu
-
-sample=${1:-0}
+sample=${1:-Aa}
 width=${#sample}
 min_width=2
 ((width < min_width)) && width=$min_width
@@ -31,7 +29,7 @@ printf "\n"
 for fgn in {0..15}; do
     printf " %*s" "$min_width" "$fgn"
     for bgn in {0..15}; do
-        printf " %s %-*s" "${fg[$fgn]}${bg[$bgn]}" $width "$sample"
+        printf " %s %-*s" "${fg[$fgn]}${bg[$bgn]}" "$width" "$sample"
     done
-    printf "%s\n" "$reset"
+    printf " %s\n" "$reset"
 done

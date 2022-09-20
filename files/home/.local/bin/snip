@@ -1,104 +1,103 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
+shopt -s nullglob globstar
 
-config_dir=${XDG_CONFIG_HOME:-$HOME/.config}/snip
+data_dir=${XDG_DATA_HOME:-$HOME/.local/share}/snip
 
-me=${0##*/}
 usage="Manage text snippets.
 
 Usage:
-    $me [OPTIONS] ACTION [NAME]
+    ${0##*/} -h
+    ${0##*/} [OPTIONS] list
+    ${0##*/} [OPTIONS] path|read|write|append|edit|delete NAME
 
 Options:
-    -C DIRECTORY    directory in which to store snippets
-                    (default: $config_dir)
+    -D DIRECTORY    directory in which to store snippets
+                    default: ${data_dir@Q}
 
 Arguments:
     ACTION          perform action on snippet
     NAME            snippet on which to perform action
 
 Actions:
-    list            print snippet names to stdout
+    list            print all snippet names to stdout
     path            print snippet path to stdout
-    read            dump snippet to stdout
-    write           create snippet from stdin
-    edit            open snippet in editor
+    read            print snippet content to stdout
+    write           set snippet content from stdin
+    append          add to snippet content from stdin
     delete          delete snippet
-"
-
-usage() {
-    printf "%s\n" "$usage"
-    exit 0
-}
-
-die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
-    exit "${2:-1}"
-}
-
-snippet_file() {
-    printf "%s/%s" "$config_dir" "${1:?missing snippet name}"
-}
-
-snippet_file_required() {
-    local file
-    file=$(snippet_file "$1")
-
-    if [[ ! -f $file ]]; then
-        die "snippet file does not exist -- $file"
-    fi
-
-    printf "%s\n" "$file"
-}
+    edit            open snippet in editor"
 
 do_list() {
-    if [[ -d $config_dir ]]; then
-        find "$config_dir" -type f -printf "%P\n"
-    fi
+    local path
+    for path in "$data_dir"/**; do
+        if [[ -f $path ]]; then
+            printf "%s\n" "${path#"$data_dir/"}"
+        fi
+    done
 }
 
 do_path() {
-    snippet_file "$1"
+    if [[ ! -f $1 ]]; then
+        return 1
+    fi
+    printf "%s" "$1"
+}
+
+do_append() {
+    mkdir -p "$(dirname "$1")"
+    cat >>"$1"
 }
 
 do_write() {
-    local file
-    file=$(snippet_file "$1")
-    mkdir -p "$(dirname "$file")"
-    cat >"$file"
+    rm -f "$1"
+    do_append "$1"
 }
 
 do_read() {
-    local file
-    file=$(snippet_file_required "$1")
-    cat "$file"
+    [[ -f $1 ]] || return 1
+    cat "$1"
 }
 
 do_edit() {
-    exec ${EDITOR:-vim} "$(snippet_file "$1")"
+    mkdir -p "$(dirname "$1")"
+    ${EDITOR:-vim} "$1"
 }
 
 do_delete() {
-    local file
-    file=$(snippet_file_required "$1")
-    rm -f "$file"
+    rm -v "$1"
 }
 
-while getopts ":C:h" option; do
+umask 077
+
+while getopts ":D:h" option; do
     case $option in
-    C) config_dir=$OPTARG ;;
-    h) usage ;;
-    *) die "invalid option -- $OPTARG" ;;
+    D) data_dir=$OPTARG ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG"
+        exit 1
+        ;;
     esac
 done && shift $((OPTIND - 1))
 
-action=${1:?missing action}
-shift
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be an action\n" >&2
+    exit 1
+fi
+
+action=$1
 
 case $action in
-list | path | read | write | edit | delete) ;;
-*) die "invalid action -- $action" ;;
+list | path | read | write | append | delete | edit) ;;
+*)
+    printf "Invalid action: %s\n" "$action" >&2
+    exit 1
+    ;;
 esac
 
 if [[ $action == list ]]; then
@@ -106,7 +105,23 @@ if [[ $action == list ]]; then
     exit 0
 fi
 
-snippet_name=${1:?missing snippet name}
-shift
+if [[ ! -v 2 ]]; then
+    printf "The second argument must be a snippet name\n" >&2
+    exit 1
+fi
 
-do_"$action" "$snippet_name"
+snippet=$data_dir/$2
+
+if [[ $snippet == *$'\n'* ]]; then
+    printf "Invalid snippet path: %q (contains newline)\n" "$snippet" >&2
+    exit 1
+fi
+
+do_"$action" "$snippet"
+
+# Remove any orphaned directory nesting.
+if [[ -d $data_dir ]]; then
+    case $action in
+    delete | edit) find "$data_dir/" -mindepth 1 -type d -empty -delete ;;
+    esac
+fi

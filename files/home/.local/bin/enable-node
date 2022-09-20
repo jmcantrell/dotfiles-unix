@@ -5,54 +5,48 @@
 
 set -euo pipefail
 
-die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
-    exit "${2:-1}"
-}
+REPO_URL=https://github.com/nodejs/node
 
-REPO=nodejs/node
-
-temp_dir=$(mktemp -d -t "${0##*/}.XXXXXXXXXX")
-printf -v cleanup "rm -r %q" "$temp_dir"
+versions_file=$(mktemp -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm %q" "$versions_file"
 trap '$cleanup' EXIT
 
-releases_file=$temp_dir/releases.json
+git ls-remote --tags --refs "$REPO_URL" |
+    sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
+    sort -r --version-sort >"$versions_file"
 
-curl -sSL -o "$releases_file" \
-    "https://api.github.com/repos/$REPO/releases"
-
-if [[ -v 1 ]]; then
-    release_json=$(jq -er --arg version "$1" 'map(select(.tag_name == "v" + $version)) | first' "$releases_file") || die "version not found: $1"
+if [[ ! -v 1 ]]; then
+    version=$(grep -vi -m1 '[a-z]' "$versions_file")
+elif ! grep -q "^$1$" "$versions_file"; then
+    printf "Invalid version: %s\n" "$1" >&2
+    exit 1
 else
-    release_json=$(jq -r '.[0]' "$releases_file")
+    version=$1
 fi
 
-tag=$(jq -r '.tag_name' <<<"$release_json")
-version=${tag#v}
+tag=v$version
 
 prefix=${XDG_DATA_HOME:-$HOME/.local/share}/node/$version
-archive=${XDG_CACHE_HOME:-$HOME/.cache}/node/node-$version.tar.xz
+archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/node/node-$version.tar.xz
 
 kernel=$(uname --kernel-name)
 kernel=${kernel,,}
 machine=$(uname --machine)
 machine=${machine/#x86_/x}
 
-if [[ ! -f $archive ]]; then
-    printf "Downloading Node.js v%s\n" "$version" >&2
-    mkdir -p "$(dirname "$archive")"
-    url=https://nodejs.org/dist/$tag/node-$tag-$kernel-$machine.tar.xz
-    curl -L --progress-bar -o "$archive" "$url" || die "unable to download archive -- $url"
+if [[ ! -f $archive_file ]]; then
+    archive_url=https://nodejs.org/dist/$tag/node-$tag-$kernel-$machine.tar.xz
+    printf "Downloading Node.js v%s: %s\n" "$version" "$archive_url"
+    mkdir -p "$(dirname "$archive_file")"
+    curl -L -o "$archive_file" "$archive_url"
 fi
 
 if [[ -d $prefix ]]; then
     exit 0
 fi
 
-cd "$temp_dir"
-tar -xf "$archive"
-mkdir -p "$(dirname "$prefix")"
-mv "node-v${version}-${kernel}-${machine}" "$prefix"
+mkdir -p "$prefix"
+tar -vxf "$archive_file" -C "$prefix" --strip-components=1
 
 export PATH=$prefix/bin:$PATH
 

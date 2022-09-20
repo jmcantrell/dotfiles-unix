@@ -4,7 +4,7 @@
 # Usage: pastebin /path/to/file...
 #        command-with-output | pastebin
 
-set -eu
+set -euo pipefail
 
 send() {
     curl -sSL --data-binary @"$1" https://paste.rs

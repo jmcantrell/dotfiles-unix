@@ -1,30 +1,18 @@
 #!/usr/bin/env bash
 
-set -eu
+set -euo pipefail
 
 algorithms=(md5 sha{1,224,256,384,512} b2)
 
-me=${0##*/}
 usage="Rename files to hashes based on contents.
 
 Usage:
-    $me [OPTIONS] ALGORITHM FILE...
+    ${0##*/} [OPTIONS] ALGORITHM FILE...
 
 Options:
     -f    use -f instead of -i in the generated mv commands
 
-Where ALGORITHM is one of: ${algorithms[*]}
-"
-
-usage() {
-    printf "%s\n" "$usage"
-    exit 0
-}
-
-die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
-    exit "${2:-1}"
-}
+Where ALGORITHM is one of: ${algorithms[*]}"
 
 extname() {
     awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"$1"
@@ -35,28 +23,33 @@ mkbr_options=()
 while getopts ":fh" option; do
     case $option in
     f) mkbr_options+=(-f) ;;
-    h) usage ;;
-    *) die "invalid option -- $OPTARG" ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
     esac
 done && shift $((OPTIND - 1))
 
 if [[ ! -v 1 ]]; then
-    die "missing algorithm"
+    printf "The first argument must be a valid algorithm\n" >&2
+    exit 1
 fi
 
-for possible_algorithm in "${algorithms[@]}"; do
-    if [[ $possible_algorithm == "$1" ]]; then
-        algorithm=$possible_algorithm
-        shift
-        break
-    fi
-done
-
-if [[ ! -v algorithm ]]; then
-    die "invalid digest algorithm -- $1"
+if ! printf "%s\n" "${algorithms[@]}" | grep -q "^$1$"; then
+    printf "Invalid algorithm: %s\n" "$1" >&2
+    printf "Recognized algorithms: %s\n" "${algorithms[*]}" >&2
+    exit 1
 fi
 
-temp_dir=$(mktemp -d -t "${me}.XXXXXXXXXX")
+algorithm=$1
+
+shift
+
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
 printf -v cleanup "rm -r %q" "$temp_dir"
 trap '$cleanup' EXIT
 
@@ -66,12 +59,16 @@ dst_list=$temp_dir/dst
 if (($# == 0)); then
     cat >"$src_list"
 else
+    for path in "$@"; do
+        if [[ $path == *$'\n'* ]]; then
+            printf "Invalid path: %q (contains newline)\n" "$path" >&2
+            exit 1
+        fi
+    done
     printf "%s\n" "$@" >"$src_list"
 fi
 
 while read -r src; do
-    [[ -f $src && -r $src ]] || continue
-
     dir=$(dirname "$src")
     ext=$(extname "$src")
     base=$("$algorithm"sum "$src" | awk '{print $1}')

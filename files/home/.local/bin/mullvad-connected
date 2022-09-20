@@ -1,3 +1,5 @@
 #!/usr/bin/env bash
 
-[[ $(curl -sSL https://am.i.mullvad.net/json | jq .mullvad_exit_ip) == true ]]
+set -euo pipefail
+
+curl -sSL https://am.i.mullvad.net/json | jq -e .mullvad_exit_ip >/dev/null

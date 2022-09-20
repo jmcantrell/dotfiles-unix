@@ -7,56 +7,54 @@ set -euo pipefail
 
 REPO_URL=https://github.com/python/cpython
 
-die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
-    exit "${2:-1}"
-}
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm -r %q" "$temp_dir"
+trap '$cleanup' EXIT
 
-versions() {
-    git ls-remote --tags --refs "$REPO_URL" |
-        sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
-        sort --version-sort
-}
+versions_file=$temp_dir/versions
 
-latest_version() {
-    versions | grep -vi '[a-z][0-9]$' | tail -n1
-}
+git ls-remote --tags --refs "$REPO_URL" |
+    sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
+    sort -r --version-sort >"$versions_file"
 
-version=${1:-$(latest_version)}
+if [[ ! -v 1 ]]; then
+    version=$(grep -vi -m1 '[a-z]' "$versions_file")
+elif ! grep -q "^$1$" "$versions_file"; then
+    printf "Invalid version: %s\n" "$1" >&2
+    exit 1
+else
+    version=$1
+fi
+
 prefix=${XDG_DATA_HOME:-$HOME/.local/share}/python/$version
-archive=${XDG_CACHE_HOME:-$HOME/.cache}/python/python-$version.tar.gz
+archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/python/python-$version.tar.gz
 
-if [[ ! -f $archive ]]; then
-    printf "Downloading Python v%s\n" "$version" >&2
-    mkdir -p "$(dirname "$archive")"
-    url=$REPO_URL/archive/refs/tags/v${version}.tar.gz
-    curl -L --progress-bar -o "$archive" "$url" || die "unable to download archive -- $url"
+if [[ ! -f $archive_file ]]; then
+    archive_url=$REPO_URL/archive/refs/tags/v${version}.tar.gz
+    printf "Downloading Python v%s: %s\n" "$version" "$archive_url"
+    mkdir -p "$(dirname "$archive_file")"
+    curl -L -o "$archive_file" "$archive_url"
 fi
 
 if [[ -d $prefix ]]; then
     exit 0
 fi
 
-temp_dir=$(mktemp -d -t "${0##*/}.XXXXXXXXXX")
-printf -v cleanup "rm -r %q" "$temp_dir"
-trap '$cleanup' EXIT
-
 cd "$temp_dir"
-tar -xf "$archive"
-cd cpython-"$version"
+
+tar -xf "$archive_file" --strip-components=1
 
 ./configure --prefix="$prefix" --enable-optimizations
 make --jobs="$(nproc)" install
 
 export PATH=$prefix/bin:$PATH
 
-major=${version%%.*}
+major_version=${version%%.*}
 
 for name in pip idle pydoc python; do
-    ln -sfn "$prefix/bin/$name$major" "$prefix/bin/$name"
+    ln -vsfn "$prefix/bin/$name$major_version" "$prefix/bin/$name"
 done
-
-ln -sfn "$prefix/bin/python$major"-config "$prefix"/bin/python-config
+ln -vsfn "$prefix/bin/python$major_version"-config "$prefix"/bin/python-config
 
 pip install --upgrade pip
 

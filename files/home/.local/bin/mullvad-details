@@ -2,47 +2,8 @@
 
 # Print mullvad server details.
 
-set -eu
+set -euo pipefail
 
-declare -A entries=(
-    [Type]=.mullvad_server_type
-    [Address]=.ip
-    [Host]=.mullvad_exit_ip_hostname
-    [Blacklisted]=.blacklisted.blacklisted
-    [Country]=.country
-    [City]=.city
-    [Longitude]=.longitude
-    [Latitude]=.latitude
-    [Owner]=.organization
-)
-
-if ! json=$(curl https://am.i.mullvad.net/json 2>/dev/null) || [[ -z $json ]]; then
-    printf "Status: unknown\n" >&2
-    exit 1
-fi
-
-is() {
-    jq -e "$@" <<<"$json" &>/dev/null
-}
-
-get() {
-    jq -r "$@" <<<"$json"
-}
-
-entry() {
-    local name=$1
-    shift
-    printf "%s:\t%s\n" "$name" "$*"
-}
-
-if ! is '.mullvad_exit_ip'; then
-    printf "Status: disconnected\n" >&2
-    exit 1
-fi
-
-{
-    entry Status connected
-    for key in "${!entries[@]}"; do
-        entry "$key" "$(get "${entries[$key]}")"
-    done
-} | column -t -s $'\t'
+json=$(curl -sSL https://am.i.mullvad.net/json) || exit 1
+jq . <<<"$json"
+jq -e .mullvad_exit_ip <<<"$json" >/dev/null

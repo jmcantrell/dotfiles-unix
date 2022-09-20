@@ -5,31 +5,29 @@
 
 set -euo pipefail
 
-die() {
-    printf "%s: line %s: %s\n" "$0" "${BASH_LINENO[0]}" "$1" >&2
-    exit "${2:-1}"
-}
+REPO_URL=https://github.com/denoland/deno
 
-REPO=denoland/deno
-
-releases_file=$(mktemp -t "${0##*/}.XXXXXXXXXX")
-printf -v cleanup "rm %q" "$releases_file"
+versions_file=$(mktemp -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm %q" "$versions_file"
 trap '$cleanup' EXIT
 
-curl -sSL -o "$releases_file" \
-    "https://api.github.com/repos/$REPO/releases"
+git ls-remote --tags --refs "$REPO_URL" |
+    sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
+    sort -r --version-sort >"$versions_file"
 
-if [[ -v 1 ]]; then
-    release_json=$(jq -er --arg version "$1" 'map(select(.tag_name == "v" + $version)) | first' "$releases_file") || die "version not found: $1"
+if [[ ! -v 1 ]]; then
+    version=$(grep -vi -m1 '[a-z]' "$versions_file")
+elif ! grep -q "^$1$" "$versions_file"; then
+    printf "Invalid version: %s\n" "$1" >&2
+    exit 1
 else
-    release_json=$(jq -r '.[0]' "$releases_file")
+    version=$1
 fi
 
-tag=$(jq -r '.tag_name' <<<"$release_json")
-version=${tag#v}
+tag=v$version
 
 prefix=${XDG_DATA_HOME:-$HOME/.local/share}/deno/$version
-archive=${XDG_CACHE_HOME:-$HOME/.cache}/deno/deno-$version.zip
+archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/deno/deno-$version.zip
 
 kernel=$(uname --kernel-name)
 machine=$(uname --machine)
@@ -45,11 +43,11 @@ esac
 
 target=$machine-$kernel
 
-if [[ ! -f $archive ]]; then
-    printf "Downloading Deno v%s\n" "$version" >&2
-    mkdir -p "$(dirname "$archive")"
-    url=https://github.com/$REPO/releases/download/$tag/deno-$target.zip
-    curl -L --progress-bar -o "$archive" "$url" || die "unable to download archive -- $url"
+if [[ ! -f $archive_file ]]; then
+    archive_url=$REPO_URL/releases/download/$tag/deno-$target.zip
+    printf "Downloading Deno v%s: %s\n" "$version" "$archive_url"
+    mkdir -p "$(dirname "$archive_file")"
+    curl -L -o "$archive_file" "$archive_url"
 fi
 
 if [[ -d $prefix ]]; then
@@ -57,4 +55,4 @@ if [[ -d $prefix ]]; then
 fi
 
 mkdir -p "$prefix"/bin
-unzip -d "$prefix"/bin -o "$archive"
+unzip -d "$prefix"/bin -o "$archive_file"

@@ -10,12 +10,12 @@ tool_version() {
     for file in ."$tool"-version "$@"; do
         if [[ -f $file ]]; then
             cat "$file"
-            return
+            return 0
         fi
     done
 
     if [[ -f .tool-versions ]]; then
-        grep "^$tool\b" .tool-versions | awk '{print $2}'
+        grep -m1 "^$tool\b" .tool-versions | awk '{print $2}' || return 1
     fi
 }
 

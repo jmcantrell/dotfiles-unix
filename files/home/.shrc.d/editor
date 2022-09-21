@@ -1,10 +1,10 @@
-alias e='editor'
+alias e=editor
 
 # Edit files with elevated privileges.
-alias E='sudoedit'
+alias E=sudoedit
 
 # Edit files piped to stdin.
-alias ein='editor-stdin'
+alias ein=editor-stdin
 
 # Edit program(s) in $PATH.
 ew() {

@@ -4,9 +4,15 @@
 # If no files are given, it behaves exactly like mkdir -p.
 # Usage: mkmv DIRECTORY [FILE...]
 
-set -eu
+set -euo pipefail
 
-dir=${1:?missing directory}
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be a directory\n" >&2
+    exit 1
+fi
+
+dir=$1
+
 shift
 
 mkdir -p "$dir"

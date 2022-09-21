@@ -2,7 +2,7 @@
 
 # Export all gnupg data to a directory.
 
-set -eu
+set -euo pipefail
 
 dir=${1:-$PWD}
 
@@ -10,7 +10,7 @@ mkdir -p "$dir"
 
 gpg --export-ownertrust >"$dir"/ownertrust.txt
 
-gpg-secret-keys | while read -r id; do
+while read -r id; do
     gpg -a --export "$id" >"$dir/$id.pub"
     gpg -a --export-secret-keys "$id" >"$dir/$id.key"
-done
+done < <(gpg-secret-keys)

@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be a port number\n" >&2
+    exit 1
+fi
+
+if [[ $1 =~ [^0-9] ]] || (($1 < 1 || $1 > 65535)); then
+    printf "Invalid port number: %s (must be an integer between 1-65535)\n" "$1" >&2
+    exit 1
+fi
+
+port=$1
+
+cmd=(python -m smtpd -n -d -c DebuggingServer localhost:"$port")
+
+if ((port < 1024)); then
+    cmd=(sudo "${cmd[@]}")
+fi
+
+exec "${cmd[@]}"

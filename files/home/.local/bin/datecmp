@@ -8,10 +8,21 @@
 # The left/right timestamp parameters can be any string that `date` recognizes
 # as a time specification.
 
-set -eu
+set -euo pipefail
 
-timestamp_lhs=${1:?missing left timestamp}
-timestamp_rhs=${2:?missing right timestamp}
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be the left timestamp\n" >&2
+    exit 1
+fi
+
+timestamp_lhs=$1
+
+if [[ ! -v 2 ]]; then
+    printf "The second argument must be the right timestamp\n" >&2
+    exit 1
+fi
+
+timestamp_rhs=$2
 
 seconds_since_epoch() {
     date --utc --date="$1" +%s

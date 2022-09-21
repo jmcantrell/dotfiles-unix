@@ -1,3 +1,9 @@
-. ~/.local/share/zsh/scripts/syntax-highlighting/zsh-syntax-highlighting.zsh
+file=$HOME/.local/share/zsh/scripts/syntax-highlighting/zsh-syntax-highlighting.zsh
+
+if ! . "$file"; then
+    printf "Unable to source file: %q\n" "$file" >&2
+fi
+
+unset file
 
 # vi:ft=zsh

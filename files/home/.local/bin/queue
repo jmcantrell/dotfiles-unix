@@ -5,7 +5,10 @@ set -euo pipefail
 usage="Safely manage a queue of items.
 
 Usage:
-    ${0##*/} FILE [ACTION]
+    ${0##*/} [OPTIONS] FILE [ACTION]
+
+Options:
+    -h        show this help text and exit
 
 Arguments:
     FILE      file in which to store queued items

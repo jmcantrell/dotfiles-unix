@@ -2,7 +2,8 @@
 
 # Import gnupg data from a directory.
 
-set -eu
+set -euo pipefail
+shopt -s nullglob
 
 dir=${1:-$PWD}
 

@@ -1,18 +1,67 @@
 #!/usr/bin/env bash
 
-# Create a new virtualbox guest.
-# Usage: mkvbox "Linux" linux.iso
-
-set -eu
-
-name=${1:?missing machine name}
-isofile=${2:?missing ISO file}
+set -euo pipefail
 
 ostype=${ostype:-Linux_64}
-memory=${memory:-4096}
+memory=${memory:-4}
 size=${size:-20}
 cpus=${cpus:-2}
 firmware=${firmware:-bios}
+
+usage="Create a new VirtualBox guest.
+
+Usage:
+    ${0##*/} [OPTIONS] NAME ISO_FILE
+
+Options:
+    -h           show this help text and exit
+
+    -o TYPE      specify operating system type
+                 (default: $ostype)
+
+    -m SIZE      specify memory size in gigabytes
+                 (default: $memory)
+
+    -s SIZE      specify main drive size in gigabytes
+                 (default: $size)
+
+    -c NUMBER    specify number of CPUs
+                 (default: $cpus)
+
+    -f TYPE      specify boot firmware type
+                 (default: $firmware)"
+
+while getopts ":o:m:s:c:f:h" option; do
+    case $option in
+    o) ostype=$OPTARG ;;
+    m) memory=$OPTARG ;;
+    s) size=$OPTARG ;;
+    c) cpus=$OPTARG ;;
+    f) firmware=$OPTARG ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be a machine name\n" >&2
+    exit 1
+fi
+
+name=$1
+
+if [[ ! -v 2 ]]; then
+    printf "The second argument must be an ISO file\n" >&2
+    exit 1
+fi
+
+iso_file=$2
 
 vmsdir=$(
     VBoxManage list systemproperties |
@@ -30,7 +79,7 @@ VBoxManage createvm \
     --name "$name" --ostype "$ostype" --register
 
 VBoxManage modifyvm "$name" \
-    --memory "$memory" --clipboard bidirectional \
+    --memory $((memory * 1024)) --clipboard bidirectional \
     --boot1 dvd --boot2 disk --boot3 none --boot4 none \
     --ioapic on --firmware "$firmware" --rtcuseutc on \
     --cpus "$cpus" --pae on --hwvirtex on \
@@ -40,10 +89,10 @@ VBoxManage modifyvm "$name" \
     --nic1 bridged --bridgeadapter1 "$bridgedif" \
     --defaultfrontend headless
 
-vdifile=$vmsdir/$name.vdi
+vdi_file=$vmsdir/$name.vdi
 
 VBoxManage createhd \
-    --filename "$vdifile" --size $((size * 1024))
+    --filename "$vdi_file" --size $((size * 1024))
 
 VBoxManage storagectl "$name" \
     --name "SATA Controller" \
@@ -52,7 +101,7 @@ VBoxManage storagectl "$name" \
 VBoxManage storageattach "$name" \
     --storagectl "SATA Controller" \
     --port 0 --device 0 --type hdd \
-    --medium "$vdifile"
+    --medium "$vdi_file"
 
 VBoxManage storagectl "$name" \
     --name "IDE Controller" --add ide
@@ -60,6 +109,6 @@ VBoxManage storagectl "$name" \
 VBoxManage storageattach "$name" \
     --storagectl "IDE Controller" \
     --port 0 --device 0 --type dvddrive \
-    --medium "$isofile"
+    --medium "$iso_file"
 
 VBoxManage snapshot "$name" take live

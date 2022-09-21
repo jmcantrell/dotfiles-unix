@@ -2,7 +2,7 @@
 
 # Install a rust toolchain and some tooling.
 
-set -eu
+set -euo pipefail
 
 if command -v rustup >/dev/null; then
     rustup update

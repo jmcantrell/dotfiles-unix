@@ -15,11 +15,30 @@
 # Get every UTC minute in the next hour in ISO-8601 format:
 # daterange now "now +1 hour" "+1 minute" --utc --iso-8601=minute
 
-set -eu
+set -euo pipefail
 
-timestamp_start=${1:?missing starting timestamp}
-timestamp_end=${2:?missing ending timestamp}
-increment=${3:?missing increment}
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be the starting timestamp\n" >&2
+    exit 1
+fi
+
+timestamp_start=$1
+
+if [[ ! -v 2 ]]; then
+    printf "The second argument must be the ending timestamp\n" >&2
+    exit 1
+fi
+
+timestamp_end=$2
+
+if [[ ! -v 3 ]]; then
+    printf "The third argument must be an increment\n" >&2
+    printf "See date(1) for more details\n" >&2
+    exit 1
+fi
+
+increment=$3
+
 shift 3
 
 normalize_timestamp() {

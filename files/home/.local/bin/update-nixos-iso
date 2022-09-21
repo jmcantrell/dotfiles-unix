@@ -2,7 +2,7 @@
 
 # Download the latest NixOS ISO, if needed.
 
-set -eu
+set -euo pipefail
 
 output_dir=${1:-$HOME/disks}
 

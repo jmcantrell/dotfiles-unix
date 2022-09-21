@@ -2,7 +2,7 @@
 
 # Download the latest Tails ISO, if needed.
 
-set -eu
+set -euo pipefail
 
 output_dir=${1:-$HOME/disks}
 base_uri=https://tails.boum.org

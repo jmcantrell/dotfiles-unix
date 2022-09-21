@@ -97,9 +97,6 @@
 [submodule "vim-direnv"]
 	path = files/home/.config/nvim/pack/default/start/direnv
     url = https://github.com/direnv/direnv.vim.git
-[submodule "vim-nix"]
-	path = files/home/.config/nvim/pack/default/start/nix
-    url = https://github.com/LnL7/vim-nix.git
 [submodule "vim-toml"]
 	path = files/home/.config/nvim/pack/default/start/toml
     url = https://github.com/cespare/vim-toml.git
@@ -196,9 +193,6 @@
 [submodule "vim-signature"]
 	path = files/home/.config/nvim/pack/default/start/signature
     url = https://github.com/kshenoy/vim-signature.git
-[submodule "bash-nix-completions"]
-    path = files/home/.local/share/bash/scripts/nix-completions
-    url = https://github.com/hedning/nix-bash-completions.git
 [submodule "vim-sneak"]
 	path = files/home/.config/nvim/pack/default/start/sneak
     url = https://github.com/justinmk/vim-sneak.git

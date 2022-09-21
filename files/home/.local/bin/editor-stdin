@@ -1,8 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # Edit files passed over stdin.
 # Example: find . -type f | editor-stdin
-
-set -eu
 
 exec xargs --no-run-if-empty --open-tty editor "$@"

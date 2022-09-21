@@ -10,6 +10,7 @@ Usage:
     ${0##*/} [OPTIONS] ALGORITHM FILE...
 
 Options:
+    -h    show this help text and exit
     -f    use -f instead of -i in the generated mv commands
 
 Where ALGORITHM is one of: ${algorithms[*]}"

@@ -3,9 +3,14 @@
 # Output the SASL public key for a weechat IRC server.
 # Usage: weechat-pubkey-sasl SERVER_NAME
 
-set -eu
+set -euo pipefail
 
-name=${1:?missing server name}
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be a server name\n" >&2
+    exit 1
+fi
+
+name=$1
 pem=${XDG_CONFIG_HOME:-$HOME/.config}/weechat/$name.pem
 
 openssl ec -noout -text -conv_form compressed -in "$pem" |

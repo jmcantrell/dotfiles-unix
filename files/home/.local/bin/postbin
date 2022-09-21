@@ -3,7 +3,7 @@
 # Post files/urls to a shareable URL.
 # Usage: postbin ITEM...
 
-set -eu
+set -euo pipefail
 
 for src in "$@"; do
     if [[ $src == *://* ]]; then

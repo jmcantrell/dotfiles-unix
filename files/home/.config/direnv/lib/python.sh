@@ -1,9 +1,8 @@
 use_python() {
     local version
-    version=${1:-$(tool_version python)}
 
-    if [[ -z $version ]]; then
-        log_error "Version for Python is missing"
+    if ! version=${1:-$(tool_version python)} || [[ -z $version ]]; then
+        log_error "Unable to find Python version specification"
         return 1
     fi
 

@@ -8,13 +8,14 @@ data_dir=${XDG_DATA_HOME:-$HOME/.local/share}/snip
 usage="Manage text snippets.
 
 Usage:
-    ${0##*/} -h
     ${0##*/} [OPTIONS] list
     ${0##*/} [OPTIONS] path|read|write|append|edit|delete NAME
 
 Options:
+    -h              show this help text and exit
+
     -D DIRECTORY    directory in which to store snippets
-                    default: ${data_dir@Q}
+                    (default: ${data_dir@Q})
 
 Arguments:
     ACTION          perform action on snippet

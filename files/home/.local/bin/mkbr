@@ -8,6 +8,7 @@ Usage:
     ${0##*/} [OPTIONS] FROM_LIST TO_LIST
 
 Options:
+    -h           show this help text and exit
     -f           use -f instead of -i for generated mv commands
 
 Arguments:

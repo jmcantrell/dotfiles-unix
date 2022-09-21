@@ -1,4 +1,4 @@
-alias tx='transmission-remote'
+alias tx=transmission-remote
 
 # List IDs of the finished torrents.
 tx_done_ids() {

@@ -12,6 +12,7 @@ Usage:
     ${0##*/} [OPTIONS] FILE...
 
 Options:
+    -h           show this help text and exit
     -f           use -f instead of -i in the generated mv commands
     -w           equalize width by padding with leading zeroes
     -W NUMBER    pad each number to an exact width with leading zeroes

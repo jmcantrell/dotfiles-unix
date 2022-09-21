@@ -3,10 +3,21 @@
 # Execute a command in a given directory.
 # Usage: ind DIRECTORY COMMAND [ARGUMENT...]
 
-set -eu
+set -euo pipefail
 
-dir=${1:?missing directory}
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be a directory\n" >&2
+    exit 1
+fi
+
+dir=$1
+
 shift
 
+if (($# == 0)); then
+    printf "The second argument must be a command\n" >&2
+    exit 1
+fi
+
 cd "$dir"
-exec "${@:?missing command}"
+exec "$@"

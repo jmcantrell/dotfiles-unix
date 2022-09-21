@@ -3,9 +3,14 @@
 # Generate a SASL client key for a weechat IRC server.
 # Usage: weechat-genkey-sasl SERVER_NAME
 
-set -eu
+set -euo pipefail
 
-name=${1:?missing server name}
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be a server name\n" >&2
+    exit 1
+fi
+
+name=$1
 pem=${XDG_CONFIG_HOME:-$HOME/.config}/weechat/$name.pem
 
 mkdir -p "$(dirname "$pem")"

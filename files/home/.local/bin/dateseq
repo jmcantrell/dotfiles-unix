@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Return a sequence of dates.
-# Usage: dateseq TIMESTAMP INCREMENT COUNT [ARG...]
+# Usage: dateseq TIMESTAMP INCREMENT COUNT [ARGUMENT...]
 
 # The timestamp and increment parameters can be any string that `date`
 # recognizes as a time specification:
@@ -15,11 +15,35 @@
 # Get the UTC dates in ISO 8601 format for the first three months of 2001:
 # dateseq 2001-01-01 "+1 month" 3 --utc --iso-8601
 
-set -eu
+set -euo pipefail
 
-timestamp=${1:?missing initial timestamp}
-increment=${2:?missing increment}
-count=${3:?missing count}
+if [[ ! -v 1 ]]; then
+    printf "The first argument must be a timestamp\n" >&2
+    exit 1
+fi
+
+timestamp=$1
+
+if [[ ! -v 2 ]]; then
+    printf "The second argument must be an increment\n" >&2
+    printf "See date(1) for more details\n" >&2
+    exit 1
+fi
+
+increment=$2
+
+if [[ ! -v 3 ]]; then
+    printf "The third argument must be a positive integer\n" >&2
+    exit 1
+fi
+
+if [[ $3 =~ [^0-9] ]] || (($3 < 1)); then
+    printf "Invalid count: %s (must be a positive integer)\n" "$3" >&2
+    exit 1
+fi
+
+count=$3
+
 shift 3
 
 normalize_timestamp() {

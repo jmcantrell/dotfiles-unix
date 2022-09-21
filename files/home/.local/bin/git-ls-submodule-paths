@@ -2,11 +2,13 @@
 
 # List the submodule paths in this repository.
 
-set -eu
+set -euo pipefail
 
 config_file=$PWD/.gitmodules
 
-[[ -f $config_file ]] || exit 0
+if [[ ! -f $config_file ]]; then
+    exit 0
+fi
 
 git config --file "$config_file" --name-only --get-regex "\.path$" |
     xargs -r -I{} git config --file "$config_file" --get "{}"

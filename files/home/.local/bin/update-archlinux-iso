@@ -6,9 +6,9 @@ set -euo pipefail
 
 output_dir=${1:-$PWD}
 
-release_json=$(curl -sSL https://archlinux.org/releng/releases/json | jq -er '.releases[0]')
+release_json=$(curl -sSL https://archlinux.org/releng/releases/json | jq -er .releases[0])
 
-iso_name=$(jq -er '.torrent.file_name' <<<"$release_json")
+iso_name=$(jq -er .torrent.file_name <<<"$release_json")
 iso_file=$output_dir/$iso_name
 
 if [[ ! -f $iso_file ]]; then

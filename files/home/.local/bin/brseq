@@ -31,9 +31,8 @@ extname() {
     awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"$1"
 }
 
-declare -a mkbr_options
-
 auto_width=0
+mkbr_options=()
 
 while getopts ":F:s:i:W:wfh" option; do
     case $option in

@@ -5,12 +5,7 @@
 
 set -euo pipefail
 
-if [[ ! -v 1 ]]; then
-    printf "The first argument must be a directory\n" >&2
-    exit 1
-fi
-
-dir=$1
+dir=${1:?missing directory}
 
 shift
 

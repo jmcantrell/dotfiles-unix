@@ -86,12 +86,7 @@ while getopts ":D:h" option; do
     esac
 done && shift $((OPTIND - 1))
 
-if [[ ! -v 1 ]]; then
-    printf "The first argument must be an action\n" >&2
-    exit 1
-fi
-
-action=$1
+action=${1:?missing action}
 
 case $action in
 list | path | read | write | append | delete | edit) ;;
@@ -106,12 +101,7 @@ if [[ $action == list ]]; then
     exit 0
 fi
 
-if [[ ! -v 2 ]]; then
-    printf "The second argument must be a snippet name\n" >&2
-    exit 1
-fi
-
-snippet=$data_dir/$2
+snippet=$data_dir/${2:?missing snippet name}
 
 if [[ $snippet == *$'\n'* ]]; then
     printf "Invalid snippet path: %q (contains newline)\n" "$snippet" >&2

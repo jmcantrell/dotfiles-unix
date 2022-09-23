@@ -15,13 +15,11 @@ git ls-remote --tags --refs "$REPO_URL" |
     sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
     sort -r --version-sort >"$versions_file"
 
-if [[ ! -v 1 ]]; then
-    version=$(grep -vi -m1 '[a-z]' "$versions_file")
-elif ! grep -q "^$1$" "$versions_file"; then
-    printf "Invalid version: %s\n" "$1" >&2
+version=${1:-$(grep -vi -m1 '[a-z]' "$versions_file")}
+
+if ! grep -q "^$version$" "$versions_file"; then
+    printf "Invalid version: %s\n" "$version" >&2
     exit 1
-else
-    version=$1
 fi
 
 tag=v$version

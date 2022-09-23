@@ -5,12 +5,7 @@
 
 set -euo pipefail
 
-if [[ ! -v 1 ]]; then
-    printf "The first argument must be a server name\n" >&2
-    exit 1
-fi
-
-name=$1
+name=${1:?missing server name}
 pem=${XDG_CONFIG_HOME:-$HOME/.config}/weechat/$name.pem
 
 mkdir -p "$(dirname "$pem")"

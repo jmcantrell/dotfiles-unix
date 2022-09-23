@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Print a list of timestamps spanning the two given timestamps.
-# Usage: daterange START END INCREMENT [ARG...]
+# Usage: daterange START END INCREMENT [ARGUMENT...]
 
 # The start/end timestamp and increment parameters can be any string that
 # `date` recognizes as a time specification:
@@ -17,27 +17,9 @@
 
 set -euo pipefail
 
-if [[ ! -v 1 ]]; then
-    printf "The first argument must be the starting timestamp\n" >&2
-    exit 1
-fi
-
-timestamp_start=$1
-
-if [[ ! -v 2 ]]; then
-    printf "The second argument must be the ending timestamp\n" >&2
-    exit 1
-fi
-
-timestamp_end=$2
-
-if [[ ! -v 3 ]]; then
-    printf "The third argument must be an increment\n" >&2
-    printf "See date(1) for more details\n" >&2
-    exit 1
-fi
-
-increment=$3
+timestamp_start=${1:?missing starting timestamp}
+timestamp_end=${2:?missing ending timestamp}
+increment=${3:?missing increment}
 
 shift 3
 

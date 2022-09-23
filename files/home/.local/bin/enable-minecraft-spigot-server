@@ -9,7 +9,8 @@ versions_file=$(mktemp -t "${0##*/}".XXXXXXXXXX)
 printf -v cleanup "rm %q" "$versions_file"
 trap '$cleanup' EXIT
 
-curl -sSL -o "$versions_file" https://launchermeta.mojang.com/mc/game/version_manifest.json
+curl -sSL -o "$versions_file" \
+    https://launchermeta.mojang.com/mc/game/version_manifest.json
 
 version=${1:-$(jq -er .latest.release "$versions_file")}
 

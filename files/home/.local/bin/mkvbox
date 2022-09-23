@@ -49,19 +49,8 @@ while getopts ":o:m:s:c:f:h" option; do
     esac
 done && shift $((OPTIND - 1))
 
-if [[ ! -v 1 ]]; then
-    printf "The first argument must be a machine name\n" >&2
-    exit 1
-fi
-
-name=$1
-
-if [[ ! -v 2 ]]; then
-    printf "The second argument must be an ISO file\n" >&2
-    exit 1
-fi
-
-iso_file=$2
+name=${1:?missing machine name}
+iso_file=${2:?missing iso file}
 
 vmsdir=$(
     VBoxManage list systemproperties |

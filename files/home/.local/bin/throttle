@@ -5,31 +5,10 @@
 
 set -euo pipefail
 
-if [[ ! -v 1 ]]; then
-    printf "The first argument must be a command identifier\n" >&2
-    exit 1
-fi
-
-if [[ ! -v 2 ]]; then
-    printf "The second argument must be a delay specification\n" >&2
-    exit 1
-fi
-
-if [[ ! $2 =~ ^[0-9.]+(s|m|h|d)?$ ]]; then
-    printf "Invalid delay specification: %s\n" "$2" >&2
-    printf "See sleep(1) for more information" >&2
-    exit 1
-fi
-
-id=$1
-delay=$2
+id=${1:?missing command id}
+delay=${2:?missing delay}
 
 shift 2
-
-if [[ ! -v 1 ]]; then
-    printf "The remaining arguments must be a command\n" >&2
-    exit 1
-fi
 
 lock_file=$XDG_RUNTIME_DIR/${0##*/}-$id.lock
 
@@ -41,6 +20,6 @@ printf -v cleanup "rm %q" "$lock_file"
 trap '$cleanup' EXIT
 touch "$lock_file"
 
-"$@"
+"${@:?missing command}"
 
 sleep "$delay"

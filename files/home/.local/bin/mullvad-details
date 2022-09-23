@@ -4,6 +4,6 @@
 
 set -euo pipefail
 
-json=$(curl -sSL https://am.i.mullvad.net/json) || exit 1
+json=$(curl -sSL https://am.i.mullvad.net/json)
 jq . <<<"$json"
 jq -e .mullvad_exit_ip <<<"$json" >/dev/null

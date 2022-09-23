@@ -44,20 +44,8 @@ while getopts ":fh" option; do
     esac
 done && shift $((OPTIND - 1))
 
-if (($# != 2)); then
-    printf "The first two parameters must be readable files\n" >&2
-    exit 1
-fi
-
-for file in "$@"; do
-    if [[ ! -f $file || ! -r $file ]]; then
-        printf "File does not exist or is not readable: %q\n" "$file" >&2
-        exit 1
-    fi
-done
-
-src_list=$1
-dst_list=$2
+src_list=${1:?missing source list}
+dst_list=${2:?missing destination list}
 
 src_num_lines=$(wc -l <"$src_list")
 dst_num_lines=$(wc -l <"$dst_list")
@@ -89,7 +77,9 @@ exec 3<"$dst_list"
 while read -r src; do
     read -r dst <&3
 
-    [[ $src == "$dst" ]] && continue
+    if [[ $src == "$dst" ]]; then
+        continue
+    fi
 
     has_changes=1
 

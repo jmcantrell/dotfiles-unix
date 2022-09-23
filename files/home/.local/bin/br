@@ -5,11 +5,13 @@ set -euo pipefail
 usage="Rename files using your preferred editor.
 
 Usage:
-    ${0##*/} [OPTIONS] FILE...
+    ${0##*/} [OPTIONS] [FILE...]
 
 Options:
     -h    show this help text and exit
-    -f    use -f instead of -i for generated mv commands"
+    -f    use -f instead of -i for generated mv commands
+
+If no FILEs are given as arguments, they will be read from stdin."
 
 mkbr_options=()
 

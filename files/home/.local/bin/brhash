@@ -7,13 +7,15 @@ algorithms=(md5 sha{1,224,256,384,512} b2)
 usage="Rename files to hashes based on contents.
 
 Usage:
-    ${0##*/} [OPTIONS] ALGORITHM FILE...
+    ${0##*/} [OPTIONS] ALGORITHM [FILE...]
 
 Options:
     -h    show this help text and exit
     -f    use -f instead of -i in the generated mv commands
 
-Where ALGORITHM is one of: ${algorithms[*]}"
+Where ALGORITHM is one of: ${algorithms[*]}
+
+If no FILEs are given as arguments, they will be read from stdin."
 
 extname() {
     awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"$1"

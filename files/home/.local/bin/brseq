@@ -9,7 +9,7 @@ increment=1
 usage="Rename files as a sequence of numbers.
 
 Usage:
-    ${0##*/} [OPTIONS] FILE...
+    ${0##*/} [OPTIONS] [FILE...]
 
 Options:
     -h           show this help text and exit
@@ -25,7 +25,9 @@ The following placeholders are recognized in FORMAT:
     %N           total number of files
     %d           directory of FILE
     %b           basename of FILE
-    %e           extension of FILE"
+    %e           extension of FILE
+
+If no FILEs are given as arguments, they will be read from stdin."
 
 extname() {
     awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"$1"
@@ -58,17 +60,17 @@ if [[ $format != *%n* ]]; then
     exit 1
 fi
 
-if [[ -v width && $width == *[!0-9]* ]]; then
-    printf "Invalid width: %s (must be a positive integer)\n" "$width">&2
+if [[ -v width && ! $width =~ [1-9][0-9]* ]]; then
+    printf "Invalid width: %s (must be a positive integer)\n" "$width" >&2
     exit 1
 fi
 
-if [[ $start_num == *[!0-9]* ]]; then
-    printf "Invalid start number: %s (must be a positive integer)\n" "$start_num" >&2
+if [[ $start_num =~ [^0-9] ]]; then
+    printf "Invalid start number: %s (must be an integer)\n" "$start_num" >&2
     exit 1
 fi
 
-if [[ $increment == *[!0-9]* ]]; then
+if [[ ! $increment =~ [1-9][0-9]* ]]; then
     printf "Invalid increment: %s (must be a positive integer)\n" "$increment" >&2
     exit 1
 fi

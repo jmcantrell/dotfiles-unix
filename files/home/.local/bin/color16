@@ -8,7 +8,9 @@ set -euo pipefail
 sample=${1:-Aa}
 width=${#sample}
 min_width=2
-((width < min_width)) && width=$min_width
+if ((width < min_width)); then
+    width=$min_width
+fi
 
 reset=$(tput sgr0)
 

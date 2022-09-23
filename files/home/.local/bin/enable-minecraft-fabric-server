@@ -28,7 +28,10 @@ mkdir -p "$prefix"
 cd "$prefix"
 
 installer_url=$(curl -sSL https://meta.fabricmc.net/v2/versions/installer | jq -er .[0].url)
+
+printf "Downloading Fabric installer\n"
 curl -L -o installer.jar "$installer_url"
+
 java -jar installer.jar server -mcversion "$version" -downloadMinecraft
 
 mv server.jar vanilla.jar

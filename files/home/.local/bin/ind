@@ -9,10 +9,5 @@ dir=${1:?missing directory}
 
 shift
 
-if (($# == 0)); then
-    printf "The second argument must be a command\n" >&2
-    exit 1
-fi
-
 cd "$dir"
-exec "$@"
+exec "${@:?missing command}"

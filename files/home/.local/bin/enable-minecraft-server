@@ -9,7 +9,8 @@ versions_file=$(mktemp -t "${0##*/}".XXXXXXXXXX)
 printf -v cleanup "rm %q" "$versions_file"
 trap '$cleanup' EXIT
 
-curl -sSL -o "$versions_file" https://launchermeta.mojang.com/mc/game/version_manifest.json
+curl -sSL -o "$versions_file" \
+    https://launchermeta.mojang.com/mc/game/version_manifest.json
 
 version=${1:-$(jq -er .latest.release "$versions_file")}
 
@@ -30,5 +31,9 @@ downloads_json=$(curl -sSL "$downloads_url" | jq -er .downloads)
 mkdir -p "$prefix"
 cd "$prefix"
 
-curl -L -o server.jar "$(jq -er .server.url <<<"$downloads_json")"
+server_url=$(jq -er .server.url <<<"$downloads_json")
+
+printf "Downloading Minecraft server v%s: %s\n" "$version" "$server_url"
+curl -L -o server.jar "$server_url"
+
 printf "eula=true\n" >eula.txt

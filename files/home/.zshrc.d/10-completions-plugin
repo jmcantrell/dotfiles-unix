@@ -1,6 +1,6 @@
 file=$HOME/.local/share/zsh/scripts/completions/zsh-completions.plugin.zsh
 
-if ! . "$file"; then
+if ! source "$file"; then
     printf "Unable to source file: %q\n" "$file" >&2
 fi
 

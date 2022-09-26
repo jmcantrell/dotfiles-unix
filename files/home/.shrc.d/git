@@ -3,7 +3,8 @@ export GIT_PAGER="${PAGER:-less} -FRX"
 
 alias git='noglob git'
 
-alias g='git'
+alias g=git
+
 alias gm='g submodule'
 
 # Run command for each submodule.
@@ -136,7 +137,9 @@ alias grh='gr --hard'
 
 # Change the directory to the nearest git directory.
 cdg() {
-    cd "$(git root "$@")" || return 0
+    local dir
+    dir=$(git root "$@") || return 1
+    cd "$dir" || return 1
 }
 
 # vi:ft=sh

@@ -1,10 +1,6 @@
-# Use POSIX output and include file system type.
 alias df='df --portability --print-type'
 
-# Display human-readable sizes.
 alias dfh='df --human-readable'
-
-# Display various size units.
 alias dfb='df --block-size=1'  # bytes
 alias dfk='df --block-size=1K' # kilobytes
 alias dfm='df --block-size=1M' # megabytes

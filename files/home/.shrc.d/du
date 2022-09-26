@@ -1,7 +1,4 @@
-# Display human-readable sizes.
 alias duh='du --human-readable'
-
-# Display various size units.
 alias dub='du --block-size=1'  # bytes
 alias duk='du --block-size=1K' # kilobytes
 alias dum='du --block-size=1M' # megabytes

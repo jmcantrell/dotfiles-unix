@@ -1,9 +1,14 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # Run the preferred text editor.
 
-if command -v nvim >/dev/null; then
-    exec nvim "$@"
-else
-    exec vim "$@"
-fi
+editors=(nvim vim vi)
+
+for name in "${editors[@]}"; do
+    if command -v "$name" >/dev/null; then
+        exec "$name" "$@"
+    fi
+done
+
+printf "None of the preferred editors are found: ${editors[*]}\n" >&2
+exit 1

@@ -41,7 +41,6 @@ algorithm=${1:?missing algorithm}
 
 if ! printf "%s\n" "${algorithms[@]}" | grep -q "^$algorithm$"; then
     printf "Invalid algorithm: %s\n" "$algorithm" >&2
-    printf "Recognized algorithms: %s\n" "${algorithms[*]}" >&2
     exit 1
 fi
 

@@ -5,35 +5,33 @@
 
 set -euo pipefail
 
-REPO_URL=https://github.com/nodejs/node
+REPO=nodejs/node
+KERNEL=$(uname --kernel-name)
+MACHINE=$(uname --machine)
 
-versions_file=$(mktemp -t "${0##*/}".XXXXXXXXXX)
-printf -v cleanup "rm %q" "$versions_file"
-trap '$cleanup' EXIT
+if [[ -v 1 ]]; then
+    release_selector=tags/v$1
+else
+    release_selector=latest
+fi
 
-git ls-remote --tags --refs "$REPO_URL" |
-    sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
-    sort -r --version-sort >"$versions_file"
+release_json=$(curl -sSL "https://api.github.com/repos/$REPO/releases/$release_selector")
 
-version=${1:-$(grep -vi -m1 '[a-z]' "$versions_file")}
-
-if ! grep -q "^$version$" "$versions_file"; then
-    printf "Invalid version: %s\n" "$version" >&2
+if ! tag=$(jq -er .tag_name <<<"$release_json"); then
+    printf "No release found\n" >&2
     exit 1
 fi
+
+version=${tag#v}
 
 tag=v$version
 
 prefix=${XDG_DATA_HOME:-$HOME/.local/share}/node/$version
 archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/node/node-$version.tar.xz
 
-kernel=$(uname --kernel-name)
-kernel=${kernel,,}
-machine=$(uname --machine)
-machine=${machine/#x86_/x}
-
 if [[ ! -f $archive_file ]]; then
-    archive_url=https://nodejs.org/dist/$tag/node-$tag-$kernel-$machine.tar.xz
+    target=${KERNEL,,}-${MACHINE/#x86_/x}
+    archive_url=https://nodejs.org/dist/$tag/node-$tag-$target.tar.xz
     printf "Downloading Node.js v%s: %s\n" "$version" "$archive_url"
     mkdir -p "$(dirname "$archive_file")"
     curl -L -o "$archive_file" "$archive_url"

@@ -30,8 +30,7 @@ prefix=${XDG_DATA_HOME:-$HOME/.local/share}/node/$version
 archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/node/node-$version.tar.xz
 
 if [[ ! -f $archive_file ]]; then
-    target=${KERNEL,,}-${MACHINE/#x86_/x}
-    archive_url=https://nodejs.org/dist/$tag/node-$tag-$target.tar.xz
+    archive_url=https://nodejs.org/dist/$tag/node-$tag-${KERNEL,,}-${MACHINE/#x86_/x}.tar.xz
     printf "Downloading Node.js v%s: %s\n" "$version" "$archive_url"
     mkdir -p "$(dirname "$archive_file")"
     curl -L -o "$archive_file" "$archive_url"

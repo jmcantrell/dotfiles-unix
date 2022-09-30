@@ -37,8 +37,7 @@ if [[ ! -f $archive_file ]]; then
     arm*) machine=${MACHINE/arm/aarch} ;;
     esac
 
-    target=$machine-$kernel
-    archive_url=$(jq -er --arg name "deno-$target.zip" '.assets[] | select(.name == $name) | .browser_download_url' <<<"$release_json")
+    archive_url=$(jq -er --arg name "deno-$machine-$kernel.zip" '.assets[] | select(.name == $name).browser_download_url' <<<"$release_json")
 
     printf "Downloading Deno v%s: %s\n" "$version" "$archive_url"
     mkdir -p "$(dirname "$archive_file")"

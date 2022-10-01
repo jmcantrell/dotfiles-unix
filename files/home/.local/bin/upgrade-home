@@ -7,7 +7,7 @@ enable-ghcup
 enable-python
 enable-deno
 enable-node
-enable-pass
+enable-secrets
 
 cd ~/.dotfiles
 ./scripts/upgrade

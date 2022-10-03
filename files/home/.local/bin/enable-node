@@ -37,6 +37,7 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ -d $prefix ]]; then
+    printf "Node.js v%s is already installed at: %q\n" "$version" "$prefix"
     exit 0
 fi
 
@@ -52,3 +53,5 @@ packages_file=${NODE_DEFAULT_PACKAGES:-$HOME/.default-node-packages}
 if [[ -f $packages_file ]]; then
     xargs -r npm install --global <"$packages_file"
 fi
+
+printf "Node.js v%s is now installed at: %q\n" "$version" "$prefix"

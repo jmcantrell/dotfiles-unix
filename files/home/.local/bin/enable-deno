@@ -45,8 +45,11 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ -d $prefix ]]; then
+    printf "Deno v%s is already installed at: %q\n" "$version" "$prefix"
     exit 0
 fi
 
 mkdir -p "$prefix"/bin
 unzip -d "$prefix"/bin -o "$archive_file"
+
+printf "Deno v%s is now installed at: %q\n" "$version" "$prefix"

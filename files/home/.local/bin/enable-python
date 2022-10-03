@@ -35,6 +35,7 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ -d $prefix ]]; then
+    printf "Python v%s is already installed at: %q\n" "$version" "$prefix"
     exit 0
 fi
 
@@ -61,3 +62,5 @@ packages_file=${PYTHON_DEFAULT_PACKAGES:-$HOME/.default-python-packages}
 if [[ -f $packages_file ]]; then
     xargs -r pip install --upgrade <"$packages_file"
 fi
+
+printf "Python v%s is now installed at: %q\n" "$version" "$prefix"

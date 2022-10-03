@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+shopt -s nullglob globstar
+
+usage="Find files matching a given mime type.
+
+Usage:
+    ${0##*/} [OPTIONS] PATTERN [PATH...]
+
+Options:
+    -h         show this help text and exit
+    -z         separate results with a null instead of a newline
+
+Arguments:
+    PATTERN    only output files whose mime-type matches the regular expression PATTERN
+    PATH       test PATH (or all files under PATH) against PATTERN (default: '.')"
+
+result_sep='\n'
+
+while getopts ":rzh" option; do
+    case $option in
+    z) result_sep='\0' ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+desired_mime_type=${1:?missing mime type}
+shift
+
+output_if_match() {
+    local file=$1 this_mime_type
+    this_mime_type=$(file --brief --mime-type "$file")
+
+    if [[ $this_mime_type =~ $desired_mime_type ]]; then
+        printf "%s$result_sep" "$file"
+    fi
+}
+
+for arg in "${@:-$PWD}"; do
+    if [[ -d $arg ]]; then
+        for file in "$arg"/**; do
+            if [[ -f $file ]]; then
+                output_if_match "$file"
+            fi
+        done
+    elif [[ -f $arg ]]; then
+        output_if_match "$arg"
+    fi
+done

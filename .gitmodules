@@ -214,3 +214,6 @@
 [submodule "vim-racket"]
 	path = files/home/.config/nvim/pack/default/start/racket
     url = https://github.com/benknoble/vim-racket.git
+[submodule "vim-nftables"]
+	path = files/home/.config/nvim/pack/default/start/nftables
+	url = https://github.com/nfnty/vim-nftables.git

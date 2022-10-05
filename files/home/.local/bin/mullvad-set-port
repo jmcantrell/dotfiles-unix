@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+port=${1:?missing port number}
+
+shrc_file=$HOME/.shrc.d/mullvad
+nftables_file=/etc/nftables.d/mullvad.nft
+
+mkdir -p "$(dirname "$shrc_file")"
+
+cat >"$shrc_file" <<EOF
+export MULLVAD_PORT=$port
+
+# vi:ft=sh
+EOF
+
+sudo mkdir -p "$(dirname "$nftables_file")"
+
+sudo tee "$nftables_file" >/dev/null <<EOF
+table inet filter {
+    chain input {
+        tcp dport $port accept
+    }
+}
+
+# vi:ft=nftables
+EOF
+
+interface=wg-mullvad
+
+if [[ -d /sys/class/net/$interface ]]; then
+    was_connected=1
+else
+    was_connected=0
+fi
+
+((was_connected)) && wg-quick down "$interface"
+
+sudo systemctl start nftables.service
+
+((was_connected)) && wg-quick up "$interface"

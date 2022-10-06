@@ -33,9 +33,7 @@ if [[ ! -f $archive_file ]]; then
     Linux) kernel=unknown-linux-gnu ;;
     esac
 
-    case $MACHINE in
-    arm*) machine=${MACHINE/arm/aarch} ;;
-    esac
+    machine=${MACHINE/arm/aarch}
 
     archive_url=$(jq -er --arg name "deno-$machine-$kernel.zip" '.assets[] | select(.name == $name).browser_download_url' <<<"$release_json")
 

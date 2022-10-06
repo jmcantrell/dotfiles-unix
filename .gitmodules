@@ -199,9 +199,6 @@
 [submodule "vim-xit"]
 	path = files/home/.config/nvim/pack/default/start/xit
     url = https://github.com/ryanolsonx/vim-xit.git
-[submodule "vim-ultisnips"]
-	path = files/home/.config/nvim/pack/default/start/ultisnips
-    url = https://github.com/SirVer/ultisnips.git
 [submodule "vim-jsx"]
 	path = files/home/.config/nvim/pack/default/start/jsx
     url = https://github.com/MaxMEllon/vim-jsx-pretty.git

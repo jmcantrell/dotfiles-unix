@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage="Rename files using a regular expression.
+
+Usage:
+    ${0##*/} [OPTIONS] PATTERN REPLACEMENT [FILE...]
+
+Options:
+    -h    show this help text and exit
+    -f    use -f instead of -i in the generated mv commands
+    -b    only operate on the basename of each path
+
+If no FILEs are given as arguments, they will be read from stdin."
+
+basename_only=0
+mkbr_options=()
+
+while getopts ":bfh" option; do
+    case $option in
+    b) basename_only=1 ;;
+    f) mkbr_options+=(-f) ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+pattern=${1:?missing pattern}
+replacement=${2:?missing replacement}
+
+shift 2
+
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm -r %q" "$temp_dir"
+trap '$cleanup' EXIT
+
+src_list=$temp_dir/src
+dst_list=$temp_dir/dst
+
+if (($# == 0)); then
+    cat >"$src_list"
+else
+    for path in "$@"; do
+        if [[ $path == *$'\n'* ]]; then
+            printf "Invalid path: %q (contains newline)\n" "$path" >&2
+            exit 1
+        fi
+    done
+    printf "%s\n" "$@" >"$src_list"
+fi
+
+while read -r src; do
+    if ((basename_only)); then
+        text_before=$(basename "$src")
+        dir=$(dirname "$src")
+    else
+        text_before=$src
+    fi
+
+    if [[ ! $text_before =~ $pattern ]]; then
+        printf "Path does not match pattern: %q\n" "$src" >&2
+        exit 1
+    fi
+
+    text_after=$replacement
+
+    for ((i=0; i < ${#BASH_REMATCH[@]}; i++)); do
+        text_after=${text_after//\$\{$i\}/${BASH_REMATCH[$i]}}
+    done
+
+    if ((basename_only)); then
+        dst=$dir/$text_after
+    else
+        dst=$text_after
+    fi
+
+    if [[ -z $dst ]]; then
+        printf "Path resulted in empty replacement: %q\n" "$src" >&2
+        exit 1
+    fi
+
+    printf "%s\n" "$dst" >>"$dst_list"
+done <"$src_list"
+
+mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"

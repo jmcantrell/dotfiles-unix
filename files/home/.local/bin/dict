@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-# Lookup a definition on dict.org.
-
-set -euo pipefail
-
-curl -s dict.org/d:"${*:?missing word}" | "${PAGER:-less}"

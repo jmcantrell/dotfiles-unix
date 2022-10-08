@@ -1,31 +1,10 @@
 #!/usr/bin/env bash
 
+# Paste lines to a shareable URL.
+# Usage: pastebin /path/to/file
+#        command | pastebin
+
 set -euo pipefail
-
-usage="Paste text to a shareable URL.
-
-Usage:
-    pastebin [OPTIONS] [FILE]
-
-Options:
-    -h         show this help text and exit
-    -t TYPE    explicitly set file type to TYPE"
-
-unset ext
-
-while getopts ":t:h" option; do
-    case $option in
-    t) ext=$OPTARG ;;
-    h)
-        printf "%s\n" "$usage"
-        exit 0
-        ;;
-    *)
-        printf "Invalid option: %s\n" "$OPTARG" >&2
-        exit 1
-        ;;
-    esac
-done && shift $((OPTIND - 1))
 
 file=${1:-/dev/stdin}
 

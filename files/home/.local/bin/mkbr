@@ -9,6 +9,7 @@ Usage:
 
 Options:
     -h           show this help text and exit
+    -n           only show what renames would be done
     -f           use -f instead of -i for generated mv commands
 
 Arguments:
@@ -28,10 +29,12 @@ This command will error if the number of paths in each list does not match.
 
 It will exit silently if the lists are empty."
 
+dry_run=0
 mv_option=i
 
-while getopts ":fh" option; do
+while getopts ":nfh" option; do
     case $option in
+    n) dry_run=1 ;;
     f) mv_option=f ;;
     h)
         printf "%s\n" "$usage"
@@ -97,6 +100,10 @@ while read -r src; do
 done <"$src_list"
 
 if ((has_changes)); then
-    ${EDITOR:-vim} "$script"
-    sh "$script"
+    if ((dry_run)); then
+        grep -v '^#' "$script"
+    else
+        ${EDITOR:-vim} "$script"
+        sh "$script"
+    fi
 fi

@@ -9,14 +9,16 @@ Usage:
 
 Options:
     -h    show this help text and exit
+    -n    only show what renames would be done
     -f    use -f instead of -i for generated mv commands
 
 If no FILEs are given as arguments, they will be read from stdin."
 
 mkbr_options=()
 
-while getopts ":fh" option; do
+while getopts ":nfh" option; do
     case $option in
+    n) mkbr_options+=(-n) ;;
     f) mkbr_options+=(-f) ;;
     h)
         printf "%s\n" "$usage"

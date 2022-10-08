@@ -9,17 +9,19 @@ Usage:
 
 Options:
     -h    show this help text and exit
-    -f    use -f instead of -i in the generated mv commands
+    -n    only show what renames would be done
     -b    only operate on the basename of each path
+    -f    use -f instead of -i in the generated mv commands
 
 If no FILEs are given as arguments, they will be read from stdin."
 
 basename_only=0
 mkbr_options=()
 
-while getopts ":bfh" option; do
+while getopts ":bnfh" option; do
     case $option in
     b) basename_only=1 ;;
+    n) mkbr_options+=(-n) ;;
     f) mkbr_options+=(-f) ;;
     h)
         printf "%s\n" "$usage"

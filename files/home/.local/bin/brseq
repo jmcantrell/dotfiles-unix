@@ -13,6 +13,7 @@ Usage:
 
 Options:
     -h           show this help text and exit
+    -n           only show what renames would be done
     -f           use -f instead of -i in the generated mv commands
     -w           equalize width by padding with leading zeroes
     -W NUMBER    pad each number to an exact width with leading zeroes
@@ -36,13 +37,14 @@ extname() {
 auto_width=0
 mkbr_options=()
 
-while getopts ":F:s:i:W:wfh" option; do
+while getopts ":F:s:i:W:wnfh" option; do
     case $option in
     F) format=$OPTARG ;;
     s) start_num=$OPTARG ;;
     i) increment=$OPTARG ;;
     W) width=$OPTARG ;;
     w) auto_width=1 ;;
+    n) mkbr_options+=(-n) ;;
     f) mkbr_options+=(-f) ;;
     h)
         printf "%s\n" "$usage"

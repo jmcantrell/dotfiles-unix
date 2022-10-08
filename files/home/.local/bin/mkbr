@@ -77,7 +77,7 @@ exec 3<"$dst_list"
 while read -r src; do
     read -r dst <&3
 
-    if [[ $src == "$dst" ]]; then
+    if [[ $src == "$dst" || -z $src || -z $dst ]]; then
         continue
     fi
 

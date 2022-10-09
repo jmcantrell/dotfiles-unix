@@ -5,11 +5,8 @@
 *.swp
 *.swo
 
-# binary data
+# binary files
 *.bin
-
-# temporary files
-temp/
 
 # merge artifacts
 *.orig
@@ -18,23 +15,8 @@ temp/
 *_LOCAL_*
 *_REMOTE_*
 
-# patch files
-*.diff
-
 # apple metadata
 .DS_Store
-
-# todo files
-TODO
-*.todo
-
-# environment files
-.envrc
-.direnv/
-.tool-versions
-
-# personal repo storage
-.mine/
 
 # trash directories
 .Trash-*/

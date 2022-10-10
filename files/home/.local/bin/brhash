@@ -13,6 +13,7 @@ Options:
     -h    show this help text and exit
     -n    only show what renames would be done
     -f    use -f instead of -i in the generated mv commands
+    -z    files given over stdin will be separated by nulls (instead of newlines)
 
 Where ALGORITHM is one of: ${algorithms[*]}
 
@@ -23,11 +24,13 @@ extname() {
 }
 
 mkbr_options=()
+read_options=()
 
-while getopts ":nfh" option; do
+while getopts ":nfzh" option; do
     case $option in
     n) mkbr_options+=(-n) ;;
     f) mkbr_options+=(-f) ;;
+    z) read_options+=(-d '') ;;
     h)
         printf "%s\n" "$usage"
         exit 0
@@ -56,24 +59,20 @@ src_list=$temp_dir/src
 dst_list=$temp_dir/dst
 
 if (($# == 0)); then
-    cat >"$src_list"
+    readarray -t "${read_options[@]}" paths
 else
-    for path in "$@"; do
-        if [[ $path == *$'\n'* ]]; then
-            printf "Invalid path: %q (contains newline)\n" "$path" >&2
-            exit 1
-        fi
-    done
-    printf "%s\n" "$@" >"$src_list"
+    paths=("$@")
 fi
 
-while read -r src; do
+printf "%s\0" "${paths[@]}" >"$src_list"
+
+while IFS= read -r -d '' src; do
     dir=$(dirname "$src")
     ext=$(extname "$src")
-    base=$("$algorithm"sum "$src" | awk '{print $1}')
+    base=$("$algorithm"sum <"$src" | cut -d' ' -f1)
     dst=$dir/$base$ext
 
-    printf "%s\n" "$dst" >>"$dst_list"
+    printf "%s\0" "$dst" >>"$dst_list"
 done <"$src_list"
 
-mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"
+mkbrsh -z "${mkbr_options[@]}" "$src_list" "$dst_list"

@@ -11,15 +11,18 @@ Options:
     -h    show this help text and exit
     -n    only show what renames would be done
     -f    use -f instead of -i for generated mv commands
+    -z    files given over stdin will be separated by nulls (instead of newlines)
 
 If no FILEs are given as arguments, they will be read from stdin."
 
 mkbr_options=()
+read_options=()
 
-while getopts ":nfh" option; do
+while getopts ":nfzh" option; do
     case $option in
     n) mkbr_options+=(-n) ;;
     f) mkbr_options+=(-f) ;;
+    z) read_options+=(-d '') ;;
     h)
         printf "%s\n" "$usage"
         exit 0
@@ -37,21 +40,28 @@ trap '$cleanup' EXIT
 
 src_list=$temp_dir/src
 dst_list=$temp_dir/dst
+tmp_list=$temp_dir/tmp
 
 if (($# == 0)); then
-    cat >"$src_list"
+    readarray -t "${read_options[@]}" paths
 else
-    for path in "$@"; do
-        if [[ $path == *$'\n'* ]]; then
-            printf "Invalid path: %q (contains newline)\n" "$path" >&2
-            exit 1
-        fi
-    done
-    printf "%s\n" "$@" >"$src_list"
+    paths=("$@")
 fi
 
-cp "$src_list" "$dst_list"
+printf "%s\0" "${paths[@]}" >"$src_list"
 
-${EDITOR:-vim} "$dst_list"
+# The only characters that have special meaning for this context are newlines,
+# so replace them with their backslash-escaped representation.
+for path in "${paths[@]}"; do
+    printf "%s\n" "${path//$'\n'/\\n}" >>"$tmp_list"
+done
 
-mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"
+${EDITOR:-vim} "$tmp_list"
+
+# Since newlines had to be escaped to allow editing, change them back to their
+# raw unescaped form.
+while IFS= read -r quoted_path; do
+    printf "%s\0" "${quoted_path//\\n/$'\n'}" >>"$dst_list"
+done <"$tmp_list"
+
+mkbrsh -z "${mkbr_options[@]}" "$src_list" "$dst_list"

@@ -15,6 +15,7 @@ Options:
     -h           show this help text and exit
     -n           only show what renames would be done
     -f           use -f instead of -i in the generated mv commands
+    -z           files given over stdin will be separated by nulls (instead of newlines)
     -w           equalize width by padding with leading zeroes
     -W NUMBER    pad each number to an exact width with leading zeroes
     -s NUMBER    starting number (default: $start_num)
@@ -36,8 +37,9 @@ extname() {
 
 auto_width=0
 mkbr_options=()
+read_options=()
 
-while getopts ":F:s:i:W:wnfh" option; do
+while getopts ":F:s:i:W:wnfzh" option; do
     case $option in
     F) format=$OPTARG ;;
     s) start_num=$OPTARG ;;
@@ -46,6 +48,7 @@ while getopts ":F:s:i:W:wnfh" option; do
     w) auto_width=1 ;;
     n) mkbr_options+=(-n) ;;
     f) mkbr_options+=(-f) ;;
+    z) read_options+=(-d '') ;;
     h)
         printf "%s\n" "$usage"
         exit 0
@@ -85,27 +88,22 @@ src_list=$temp_dir/src
 dst_list=$temp_dir/dst
 
 if (($# == 0)); then
-    cat >"$src_list"
+    readarray -t "${read_options[@]}" paths
 else
-    for path in "$@"; do
-        if [[ $path == *$'\n'* ]]; then
-            printf "Invalid path: %q (contains newline)\n" "$path" >&2
-            exit 1
-        fi
-    done
-    printf "%s\n" "$@" >"$src_list"
+    paths=("$@")
 fi
+
+printf "%s\0" "${paths[@]}" >"$src_list"
 
 num=$start_num
 format=${format/\%N/$#}
-num_lines=$(wc -l <"$src_list")
-end_num=$((start_num + num_lines - 1))
+end_num=$((start_num + ${#paths[@]} - 1))
 
 if ((auto_width)); then
     width=${#end_num}
 fi
 
-while IFS= read -r src; do
+while IFS= read -r -d '' src; do
     if [[ -v width ]]; then
         printf -v num_padded "%0*d" "$width" "$num"
     else
@@ -117,14 +115,14 @@ while IFS= read -r src; do
     base=$(basename "$src" "$ext")
 
     dst=$format
-    dst=${dst/\%n/$num_padded}
-    dst=${dst/\%d/$dir}
-    dst=${dst/\%b/$base}
-    dst=${dst/\%e/$ext}
+    dst=${dst//\%n/$num_padded}
+    dst=${dst//\%d/$dir}
+    dst=${dst//\%b/$base}
+    dst=${dst//\%e/$ext}
 
-    printf "%s\n" "$dst" >>"$dst_list"
+    printf "%s\0" "$dst" >>"$dst_list"
 
     num=$((num + increment))
 done <"$src_list"
 
-mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"
+mkbrsh -z "${mkbr_options[@]}" "$src_list" "$dst_list"

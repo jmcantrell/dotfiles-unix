@@ -11,6 +11,7 @@ Options:
     -h           show this help text and exit
     -n           only show what renames would be done
     -f           use -f instead of -i for generated mv commands
+    -z           paths in lists are separated by nulls (instead of newlines)
 
 Arguments:
     FROM_LIST    file containing the original paths (one per line)
@@ -21,21 +22,19 @@ A script will be generated, opened in EDITOR for review, and executed with sh.
 It's expected that the path on a line in FROM_LIST corresponds with the path on
 the same line in TO_LIST.
 
-Even though it's considered valid for a file path to contain newlines, it's
-expected that they will not be present in any path of FROM_LIST or TO_LIST as
-newlines are used to separate paths in those lists.
-
 This command will error if the number of paths in each list does not match.
 
 It will exit silently if the lists are empty."
 
 dry_run=0
 mv_option=i
+use_nulls=0
 
-while getopts ":nfh" option; do
+while getopts ":nfzh" option; do
     case $option in
     n) dry_run=1 ;;
     f) mv_option=f ;;
+    z) use_nulls=1 ;;
     h)
         printf "%s\n" "$usage"
         exit 0
@@ -47,11 +46,17 @@ while getopts ":nfh" option; do
     esac
 done && shift $((OPTIND - 1))
 
+num_lines() {
+    local options=()
+    ((use_nulls)) && options+=(-z)
+    grep "${options[@]}" -c '.*' "$@"
+}
+
 src_list=${1:?missing source list}
 dst_list=${2:?missing destination list}
 
-src_num_lines=$(wc -l <"$src_list")
-dst_num_lines=$(wc -l <"$dst_list")
+src_num_lines=$(num_lines "$src_list")
+dst_num_lines=$(num_lines "$dst_list")
 
 if ((src_num_lines != dst_num_lines)); then
     printf "The number of paths does not match: source=%d != destination=%d\n" "$src_num_lines" "$dst_num_lines" >&2
@@ -73,12 +78,15 @@ has_changes=0
 tmpl_mkdir="mkdir -vp -- %q"
 tmpl_mv="mv -v$mv_option -- %q %q"
 
+read_options=()
+((use_nulls)) && read_options+=(-d '')
+
 declare -A seen_dirs
 
 exec 3<"$dst_list"
 
-while read -r src; do
-    read -r dst <&3
+while IFS= read -r "${read_options[@]}" src; do
+    IFS= read -r "${read_options[@]}" dst <&3
 
     if [[ $src == "$dst" || -z $src || -z $dst ]]; then
         continue

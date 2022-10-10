@@ -12,17 +12,20 @@ Options:
     -n    only show what renames would be done
     -b    only operate on the basename of each path
     -f    use -f instead of -i in the generated mv commands
+    -z    files given over stdin will be separated by nulls (instead of newlines)
 
 If no FILEs are given as arguments, they will be read from stdin."
 
 basename_only=0
 mkbr_options=()
+read_options=()
 
-while getopts ":bnfh" option; do
+while getopts ":bnfzh" option; do
     case $option in
     b) basename_only=1 ;;
     n) mkbr_options+=(-n) ;;
     f) mkbr_options+=(-f) ;;
+    z) read_options+=(-d '') ;;
     h)
         printf "%s\n" "$usage"
         exit 0
@@ -47,18 +50,14 @@ src_list=$temp_dir/src
 dst_list=$temp_dir/dst
 
 if (($# == 0)); then
-    cat >"$src_list"
+    readarray -t "${read_options[@]}" paths
 else
-    for path in "$@"; do
-        if [[ $path == *$'\n'* ]]; then
-            printf "Invalid path: %q (contains newline)\n" "$path" >&2
-            exit 1
-        fi
-    done
-    printf "%s\n" "$@" >"$src_list"
+    paths=("$@")
 fi
 
-while read -r src; do
+printf "%s\0" "${paths[@]}" >"$src_list"
+
+while IFS= read -r -d '' src; do
     if ((basename_only)); then
         text_before=$(basename "$src")
         dir=$(dirname "$src")
@@ -88,7 +87,7 @@ while read -r src; do
         exit 1
     fi
 
-    printf "%s\n" "$dst" >>"$dst_list"
+    printf "%s\0" "$dst" >>"$dst_list"
 done <"$src_list"
 
-mkbr "${mkbr_options[@]}" "$src_list" "$dst_list"
+mkbrsh -z "${mkbr_options[@]}" "$src_list" "$dst_list"

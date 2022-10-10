@@ -5,14 +5,14 @@
 
 set -euo pipefail
 
-for src in "$@"; do
-    if [[ $src == *://* ]]; then
-        action="url"
-        target=$src
-    else
-        action="file"
-        target=@$src
-    fi
+src=${1:?missing file/url}
 
-    curl -F "$action=$target" https://0x0.st
-done
+if [[ $src == *://* && $src != file://* ]]; then
+    action="url"
+    target=$src
+else
+    action="file"
+    target=@${src#file://}
+fi
+
+curl -F "$action=$target" https://0x0.st

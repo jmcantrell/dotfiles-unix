@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-exec mkvbox -o ArchLinux_64 "$@"

@@ -4,11 +4,47 @@
 
 set -euo pipefail
 
-config_file=$PWD/.gitmodules
+usage="List the submodule paths in a repository.
+
+Usage:
+    ${0##*/} [OPTIONS] [DIRECTORY]
+
+Options:
+    -h    show this help message and exit
+    -z    separate results with a null instead of a newline
+
+Arguments:
+    DIRECTORY    look at the submodules in repository DIRECTORY
+                 (default: '.')"
+
+field_sep=$'\n'
+
+while getopts ":zh" option; do
+    case $option in
+    z) field_sep=$'\0' ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+repo_dir=${1:-$PWD}
+
+config_file=$repo_dir/.gitmodules
 
 if [[ ! -f $config_file ]]; then
     exit 0
 fi
 
-git config --file "$config_file" --name-only --get-regex "\.path$" |
-    xargs -r -I{} git config --file "$config_file" --get "{}"
+field_fmt="$repo_dir/%s$field_sep"
+
+while IFS= read -r -d '' path_key; do
+    while IFS= read -r -d '' relative_path; do
+        printf "$field_fmt" "$relative_path"
+    done < <(git config -z --file "$config_file" --get "$path_key")
+done < <(git config -z --file "$config_file" --name-only --get-regex "\.path$")

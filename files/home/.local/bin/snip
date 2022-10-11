@@ -9,7 +9,7 @@ usage="Manage text snippets.
 
 Usage:
     ${0##*/} [OPTIONS] list
-    ${0##*/} [OPTIONS] path|read|write|append|edit|delete NAME
+    ${0##*/} [OPTIONS] path|read|write|edit|delete NAME
 
 Options:
     -h              show this help text and exit
@@ -26,7 +26,6 @@ Actions:
     path            print snippet path to stdout
     read            print snippet content to stdout
     write           set snippet content from stdin
-    append          add to snippet content from stdin
     delete          delete snippet
     edit            open snippet in editor"
 
@@ -46,14 +45,9 @@ do_path() {
     printf "%s" "$1"
 }
 
-do_append() {
-    mkdir -p "$(dirname "$1")"
-    cat >>"$1"
-}
-
 do_write() {
-    rm -f "$1"
-    do_append "$1"
+    mkdir -p "$(dirname "$1")"
+    cat >"$1"
 }
 
 do_read() {
@@ -89,7 +83,7 @@ done && shift $((OPTIND - 1))
 action=${1:?missing action}
 
 case $action in
-list | path | read | write | append | delete | edit) ;;
+list | path | read | write | delete | edit) ;;
 *)
     printf "Invalid action: %s\n" "$action" >&2
     exit 1

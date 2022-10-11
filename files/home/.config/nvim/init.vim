@@ -136,8 +136,8 @@ nmap <leader>e :e <c-r>=expand('%:h').'/'<cr>
 " Switch buffer.
 nmap <leader>b :b<space>
 
-" Open help.
-nmap <leader>h :h<space>
+" Open help in the current window instead of a split.
+command! -nargs=1 -complete=help Help help <args> | silent only
 
 " Switch to last buffer.
 nmap <leader><leader> :b#<cr>

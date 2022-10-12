@@ -11,6 +11,7 @@
 " Changes from original script:
 "    * respects <bang>
 "    * creates no mappings
+"    * accepts a count (e.g. :2BD)
 "    * provides a command instead of a plug
 "    * uses script variables instead of globals
 "    * uses win_gotoid instead of normal command
@@ -20,42 +21,51 @@ if exists("loaded_bd")
 endif
 let loaded_bd = 1
 
-command! -bang BD call s:BD(<bang>0, 0)
-
-function! s:BD(bang, stage)
-    if a:stage == 0
-        let s:bd_bufnr = bufnr("%")
-        let s:bd_winid = win_getid()
-        let s:bd_empty_bufnr = 0
-
-        let s:bd_num_buffers = 0
-        for i in range(1, bufnr("$"))
-            if buflisted(i) && getbufvar(i, "&modifiable")
-                let s:bd_num_buffers += 1
-            endif
-        endfor
-
-        if !&modified || a:bang
-            windo call s:BD(a:bang, a:stage + 1)
-            call win_gotoid(s:bd_winid)
+function s:count_buffers()
+    let result = 0
+    for i in range(1, bufnr("$"))
+        if buflisted(i) && getbufvar(i, "&modifiable")
+            let result += 1
         endif
+    endfor
+    return result
+endfunction
 
-        execute "bd".(a:bang ? "!" : "")." ".s:bd_bufnr
+function s:select_alt_buffer(primary_bufnr)
+    if bufnr("%") != a:primary_bufnr
+        return
+    endif
 
-        unlet s:bd_bufnr s:bd_winid
+    if s:num_buffers <= 1
+        if s:empty_bufnr == 0
+            enew!
+            let s:empty_bufnr = bufnr("%")
+        else
+            execute "b! ".s:empty_bufnr
+        endif
     else
-        if bufnr("%") == s:bd_bufnr
-            let alt_bufnr = bufnr("#")
-            if s:bd_num_buffers <= 1 && s:bd_empty_bufnr != 0
-                execute "b! ".s:bd_empty_bufnr
-            elseif s:bd_num_buffers <= 1 && s:bd_empty_bufnr == 0
-                enew!
-                let s:bd_empty_bufnr = bufnr("%")
-            elseif alt_bufnr > 0 && buflisted(alt_bufnr) && alt_bufnr != s:bd_bufnr
-                b! #
-            else
-                bp!
-            endif
+        let alt_bufnr = bufnr("#")
+        if alt_bufnr > 0 && buflisted(alt_bufnr) && alt_bufnr != a:primary_bufnr
+            b! #
+        else
+            bp!
         endif
     endif
 endfunction
+
+function! s:BD(bang, count)
+    let primary_bufnr = a:count == 0 ? bufnr("%") : a:count
+
+    let s:num_buffers = s:count_buffers()
+
+    if !&modified || a:bang
+        let s:empty_bufnr = 0
+        let primary_winid = win_getid()
+        windo call s:select_alt_buffer(primary_bufnr)
+        call win_gotoid(primary_winid)
+    endif
+
+    execute "bd".(a:bang ? "!" : "")." ".primary_bufnr
+endfunction
+
+command! -bang -count BD call s:BD(<bang>0, <count>)

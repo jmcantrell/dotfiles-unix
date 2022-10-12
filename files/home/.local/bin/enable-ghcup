@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+export PATH=$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH
+
 if command -v ghcup >/dev/null; then
     ghcup upgrade
 else
@@ -15,4 +17,5 @@ export PATH=$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH
 
 for package in cabal ghc stack hls; do
     ghcup install "$package" latest
+    ghcup set "$package" latest
 done

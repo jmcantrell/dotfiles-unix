@@ -4,6 +4,8 @@
 
 set -euo pipefail
 
+export PATH=$HOME/.cargo/bin:$PATH
+
 if command -v rustup >/dev/null; then
     rustup update
 else
@@ -23,9 +25,3 @@ rustup completions zsh cargo >_cargo
 mkcd ~/.local/share/bash-completion/completions
 rustup completions bash >rustup
 rustup completions bash cargo >cargo
-
-export PATH=$HOME/.cargo/bin:$PATH
-
-rustup target add wasm32-unknown-unknown
-rustup component add rust-src rls clippy
-cargo install cargo-{get,edit,generate,play,vet}

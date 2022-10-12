@@ -9,13 +9,27 @@ REPO=nodejs/node
 KERNEL=$(uname --kernel-name)
 MACHINE=$(uname --machine)
 
-if [[ -v 1 ]]; then
-    release_selector=tags/v$1
-else
-    release_selector=latest
-fi
+tags_ordered_by_version() {
+    git ls-remote --tags --refs "https://github.com/$REPO" |
+        sed -n "s:^.*tags/\(\S*\).*$:\1:p" |
+        sort -r --version-sort
+}
 
-release_json=$(curl -sSL "https://api.github.com/repos/$REPO/releases/$release_selector")
+curl_release_json() {
+    curl -sSL "https://api.github.com/repos/$REPO/releases/tags/$1"
+}
+
+find_latest_release_json() {
+    while read -r tag; do
+        curl_release_json "$tag" && return
+    done < <(tags_ordered_by_version)
+}
+
+if [[ ! -v 1 ]]; then
+    release_json=$(find_latest_release_json)
+else
+    release_json=$(curl_release_json v"$1")
+fi
 
 if ! tag=$(jq -er .tag_name <<<"$release_json"); then
     printf "No release found\n" >&2
@@ -23,8 +37,6 @@ if ! tag=$(jq -er .tag_name <<<"$release_json"); then
 fi
 
 version=${tag#v}
-
-tag=v$version
 
 prefix=${XDG_DATA_HOME:-$HOME/.local/share}/node/$version
 archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/node/node-$version.tar.xz
@@ -42,7 +54,7 @@ if [[ -d $prefix ]]; then
 fi
 
 mkdir -p "$prefix"
-tar -vxf "$archive_file" -C "$prefix" --strip-components=1
+tar -xf "$archive_file" -C "$prefix" --strip-components=1
 
 export PATH=$prefix/bin:$PATH
 

@@ -1,6 +1,34 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
-# Edit files passed over stdin.
-# Example: find . -type f | editor-stdin
+set -euo pipefail
 
-exec xargs --no-run-if-empty --open-tty editor "$@"
+usage="Edit files passed over stdin.
+
+Usage:
+    ${0##*/} [OPTIONS] [ARGUMENT...]
+
+Options:
+    -h    show this help text and exit
+    -z    files are delimited by nulls instead of newlines
+
+Any arguments given will be passed on to the editor."
+
+read_options=()
+
+while getopts ":zh" option; do
+    case $option in
+    z) read_options+=(-d '') ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+IFS= readarray -t "${read_options[@]}" paths
+
+exec editor "$@" "${paths[@]}"

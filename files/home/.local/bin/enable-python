@@ -11,15 +11,10 @@ temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
 printf -v cleanup "rm -r %q" "$temp_dir"
 trap '$cleanup' EXIT
 
-versions_file=$temp_dir/versions
+version=${1:?missing version}
+ref=refs/tags/v$version
 
-git ls-remote --tags --refs "$REPO_URL" |
-    sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
-    sort -r --version-sort >"$versions_file"
-
-version=${1:-$(grep -vi -m1 '[a-z]' "$versions_file")}
-
-if ! grep -q "^$version$" "$versions_file"; then
+if ! git ls-remote --tags --refs --exit-code "$REPO_URL" "$ref" >/dev/null; then
     printf "Invalid version: %s\n" "$version" >&2
     exit 1
 fi
@@ -28,7 +23,7 @@ prefix=${XDG_DATA_HOME:-$HOME/.local/share}/python/$version
 archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/python/python-$version.tar.gz
 
 if [[ ! -f $archive_file ]]; then
-    archive_url=$REPO_URL/archive/refs/tags/v${version}.tar.gz
+    archive_url=$REPO_URL/archive/$ref.tar.gz
     printf "Downloading Python v%s: %s\n" "$version" "$archive_url"
     mkdir -p "$(dirname "$archive_file")"
     curl -L -o "$archive_file" "$archive_url"

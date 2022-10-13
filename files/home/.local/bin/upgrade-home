@@ -2,11 +2,6 @@
 
 set -euo pipefail
 
-enable-rustup
-enable-ghcup
-enable-python
-enable-deno
-enable-node
 enable-secrets
 
 cd ~/.dotfiles

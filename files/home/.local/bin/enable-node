@@ -9,34 +9,20 @@ REPO=nodejs/node
 KERNEL=$(uname --kernel-name)
 MACHINE=$(uname --machine)
 
-tags_ordered_by_version() {
-    git ls-remote --tags --refs "https://github.com/$REPO" |
-        sed -n "s:^.*tags/\(\S*\).*$:\1:p" |
-        sort -r --version-sort
-}
+version=${1:?missing version}
+tag=v$version
 
-curl_release_json() {
-    curl -sSL "https://api.github.com/repos/$REPO/releases/tags/$1"
-}
-
-find_latest_release_json() {
-    while read -r tag; do
-        curl_release_json "$tag" && return
-    done < <(tags_ordered_by_version)
-}
-
-if [[ ! -v 1 ]]; then
-    release_json=$(find_latest_release_json)
-else
-    release_json=$(curl_release_json v"$1")
-fi
-
-if ! tag=$(jq -er .tag_name <<<"$release_json"); then
-    printf "No release found\n" >&2
+if ! git ls-remote --tags --refs --exit-code "https://github.com/$REPO" "refs/tags/$tag" >/dev/null; then
+    printf "Invalid version: %s\n" "$version" >&2
     exit 1
 fi
 
-version=${tag#v}
+release_json=$(curl -sSL "https://api.github.com/repos/$REPO/releases/tags/$tag")
+
+if ! jq -er .tag_name <<<"$release_json" >/dev/null; then
+    printf "No release for version: %s\n" "$version" >&2
+    exit 1
+fi
 
 prefix=${XDG_DATA_HOME:-$HOME/.local/share}/node/$version
 archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/node/node-$version.tar.xz

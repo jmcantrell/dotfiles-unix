@@ -1,55 +1,128 @@
 #!/usr/bin/env bash
 
-# Initialize a Node.js prefix.
-# Usage: enable-node [VERSION]
-
 set -euo pipefail
 
-REPO=nodejs/node
-KERNEL=$(uname --kernel-name)
-MACHINE=$(uname --machine)
+archives_dir=${NODE_ARCHIVES:-${XDG_CACHE_HOME:-$HOME/.cache}/node}
+versions_dir=${NODE_VERSIONS:-${XDG_DATA_HOME:-$HOME/.local/share}/node}
+packages_file=${NODE_PACKAGES:-${XDG_CONFIG_HOME:-$HOME/.config}/node/packages}
 
-version=${1:?missing version}
-tag=v$version
+usage="Install a version of Node.js.
 
-if ! git ls-remote --tags --refs --exit-code "https://github.com/$REPO" "refs/tags/$tag" >/dev/null; then
-    printf "Invalid version: %s\n" "$version" >&2
-    exit 1
-fi
+Usage:
+    ${0##*/} [OPTIONS] [VERSION]
 
-release_json=$(curl -sSL "https://api.github.com/repos/$REPO/releases/tags/$tag")
+Options:
+    -h               show this help message and exit
 
-if ! jq -er .tag_name <<<"$release_json" >/dev/null; then
-    printf "No release for version: %s\n" "$version" >&2
-    exit 1
-fi
+    -d               set the requested version as the default
 
-prefix=${XDG_DATA_HOME:-$HOME/.local/share}/node/$version
-archive_file=${XDG_CACHE_HOME:-$HOME/.cache}/node/node-$version.tar.xz
+    -D DIRECTORY     store versions in DIRECTORY
+                     (default: ${versions_dir@Q})
+
+    -A DIRECTORY     store archives in DIRECTORY
+                     (default: ${archives_dir@Q})
+
+    -P FILE          install packages listed in FILE
+                     (default: ${packages_file@Q})
+
+Arguments:
+    VERSION          install VERSION
+                     (e.g. '18.11.0', 'latest', or 'system')
+
+Environment:
+    NODE_VERSIONS    store versions in this directory (same as -D
+    NODE_ARCHIVES    store archives in this directory (same as -A)
+    NODE_PACKAGES    install packages listed in this file (same as -P)"
+
+set_as_default=0
+
+while getopts ":dD:A:P:h" option; do
+    case $option in
+    d) set_as_default=1 ;;
+    D) versions_dir=$OPTARG ;;
+    A) archives_dir=$OPTARG ;;
+    P) packages_file=$OPTARG ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+repo=nodejs/node
+kernel=$(uname --kernel-name)
+machine=$(uname --machine)
+
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm -rf %q" "$temp_dir"
+trap '$cleanup' EXIT
+
+versions_file=$temp_dir/versions
+git ls-remote --tags --refs "https://github.com/$repo" |
+    sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
+    sort -r --version-sort >"$versions_file"
+
+version=${1:-latest}
+
+curl_release_json() {
+    curl -sSL "https://api.github.com/repos/$repo/releases/tags/v$1"
+}
+
+case $version in
+system)
+    version=$(/usr/bin/node --version | cut -c2-)
+    release_json=$(curl_release_json "$version")
+    ;;
+latest)
+    while read -r version; do
+        release_json=$(curl_release_json "$version")
+        if jq -er .tag_name <<<"$release_json" >/dev/null; then
+            break
+        else
+            continue
+        fi
+    done < <(head -n3 "$versions_file")
+    ;;
+*)
+    if ! grep -q "^$version$" "$versions_file"; then
+        printf "Invalid version: %s\n" "$version" >&2
+        exit 1
+    fi
+    release_json=$(curl_release_json "$version")
+    ;;
+esac
+
+version_dir=$versions_dir/$version
+archive_file=$archives_dir/node-$version.tar.xz
 
 if [[ ! -f $archive_file ]]; then
-    archive_url=https://nodejs.org/dist/$tag/node-$tag-${KERNEL,,}-${MACHINE/#x86_/x}.tar.xz
+    archive_url=https://nodejs.org/dist/v$version/node-v$version-${kernel,,}-${machine/#x86_/x}.tar.xz
     printf "Downloading Node.js v%s: %s\n" "$version" "$archive_url"
     mkdir -p "$(dirname "$archive_file")"
     curl -L -o "$archive_file" "$archive_url"
 fi
 
-if [[ -d $prefix ]]; then
-    printf "Node.js v%s is already installed at: %q\n" "$version" "$prefix"
-    exit 0
+if [[ ! -d $version_dir ]]; then
+    mkdir -p "$version_dir"
+    tar -xf "$archive_file" -C "$version_dir" --strip-components=1
+
+    export PATH=$version_dir/bin:$PATH
+
+    npm install --global npm
+
+    if [[ -f $packages_file ]]; then
+        xargs -r npm install --global <"$packages_file"
+    fi
+
+    printf "Node.js v%s is now installed at: %q\n" "$version" "$version_dir"
+else
+    printf "Node.js v%s is already installed at: %q\n" "$version" "$version_dir"
 fi
 
-mkdir -p "$prefix"
-tar -xf "$archive_file" -C "$prefix" --strip-components=1
-
-export PATH=$prefix/bin:$PATH
-
-npm install --global npm
-
-packages_file=${NODE_DEFAULT_PACKAGES:-$HOME/.default-node-packages}
-
-if [[ -f $packages_file ]]; then
-    xargs -r npm install --global <"$packages_file"
+if ((set_as_default)); then
+    ln -vsfn "$version_dir" "$versions_dir"/default
 fi
-
-printf "Node.js v%s is now installed at: %q\n" "$version" "$prefix"

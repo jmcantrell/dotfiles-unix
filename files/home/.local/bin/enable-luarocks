@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+archives_dir=${LUAROCKS_ARCHIVES:-${XDG_CACHE_HOME:-$HOME/.cache}/luarocks}
+
+usage="Install LuaRocks into a Lua prefix.
+
+Usage:
+    ${0##*/} [OPTIONS] PREFIX [VERSION]
+
+Options:
+    -h        show this help text and exit
+
+Arguments:
+    PREFIX    the Lua prefix in which to install LuaRocks
+
+    VERSION   the version of LuaRocks to install
+              (e.g. '3.9.1', 'latest', or 'system')"
+
+while getopts ":A:h" option; do
+    case $option in
+    A) archives_dir=$OPTARG ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm -rf %q" "$temp_dir"
+trap '$cleanup' EXIT
+
+repo=luarocks/luarocks
+
+versions_file=$temp_dir/versions
+git ls-remote --tags --refs "https://github.com/$repo" |
+    sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
+    sort -r --version-sort >"$versions_file"
+
+prefix=${1:?missing lua prefix}
+version=${2:-latest}
+
+cd "$temp_dir"
+
+case $version in
+system) version=$(/usr/bin/luarocks --version | head -n1 | cut -d' ' -f2) ;;
+latest) version=$(grep -v -m1 '[^0-9.]' "$versions_file") ;;
+*)
+    if ! grep -q "^$version$" "$versions_file"; then
+        printf "Invalid version: %s\n" "$version" >&2
+        exit 1
+    fi
+    ;;
+esac
+
+archive_file=$archives_dir/luarocks-$version.tar.gz
+
+if [[ ! -f $archive_file ]]; then
+    archive_url=https://github.com/$repo/archive/refs/tags/v$version.tar.gz
+    printf "Downloading LuaRocks v%s: %s\n" "$version" "$archive_url"
+    mkdir -p "$(dirname "$archive_file")"
+    curl -L -o "$archive_file" "$archive_url"
+fi
+
+cd "$temp_dir"
+
+tar -xf "$archive_file" --strip-components=1
+
+./configure \
+    --prefix="$prefix" \
+    --with-lua-bin="$prefix"/bin \
+    --with-lua-include="$prefix"/include \
+    --force-config
+
+make bootstrap

@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-archives_dir=${PYTHON_ARCHIVES:-${XDG_CACHE_HOME:-$HOME/.cache}/python}
-versions_dir=${PYTHON_VERSIONS:-${XDG_DATA_HOME:-$HOME/.local/share}/python}
-packages_file=${PYTHON_PACKAGES:-${XDG_CONFIG_HOME:-$HOME/.config}/python/packages}
+archives_dir=${LUA_ARCHIVES:-${XDG_CACHE_HOME:-$HOME/.cache}/lua}
+versions_dir=${LUA_VERSIONS:-${XDG_DATA_HOME:-$HOME/.local/share}/lua}
+packages_file=${LUA_PACKAGES:-${XDG_CONFIG_HOME:-$HOME/.config}/lua/packages}
 
-usage="Install a version of Python.
+usage="Install a version of Lua.
 
 Usage:
     ${0##*/} [OPTIONS] [VERSION]
@@ -30,9 +30,9 @@ Arguments:
                        (e.g. '3.10.8', 'latest', or 'system')
 
 Environment:
-    PYTHON_VERSIONS    store versions in this directory (same as -D
-    PYTHON_ARCHIVES    store archives in this directory (same as -A)
-    PYTHON_PACKAGES    install packages listed in this file (same as -P)"
+    LUA_VERSIONS    store versions in this directory (same as -D
+    LUA_ARCHIVES    store archives in this directory (same as -A)
+    LUA_PACKAGES    install packages listed in this file (same as -P)"
 
 set_as_default=0
 
@@ -53,7 +53,7 @@ while getopts ":dD:A:P:h" option; do
     esac
 done && shift $((OPTIND - 1))
 
-repo=python/cpython
+repo=lua/lua
 
 temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
 printf -v cleanup "rm -rf %q" "$temp_dir"
@@ -67,7 +67,7 @@ git ls-remote --tags --refs "https://github.com/$repo" |
 version=${1:-latest}
 
 case $version in
-system) version=$(/usr/bin/python --version | cut -d' ' -f2) ;;
+system) version=$(/usr/bin/lua --version | cut -d' ' -f2) ;;
 latest) version=$(grep -v -m1 '[^0-9.]' "$versions_file") ;;
 *)
     if ! grep -q "^$version$" "$versions_file"; then
@@ -78,11 +78,11 @@ latest) version=$(grep -v -m1 '[^0-9.]' "$versions_file") ;;
 esac
 
 version_dir=$versions_dir/$version
-archive_file=$archives_dir/python-$version.tar.gz
+archive_file=$archives_dir/lua-$version.tar.gz
 
 if [[ ! -f $archive_file ]]; then
-    archive_url=https://github.com/$repo/archive/refs/tags/v$version.tar.gz
-    printf "Downloading Python v%s: %s\n" "$version" "$archive_url"
+    archive_url=http://lua.org/ftp/lua-$version.tar.gz
+    printf "Downloading Lua v%s: %s\n" "$version" "$archive_url"
     mkdir -p "$(dirname "$archive_file")"
     curl -L -o "$archive_file" "$archive_url"
 fi
@@ -92,27 +92,24 @@ if [[ ! -d $version_dir ]]; then
 
     tar -xf "$archive_file" --strip-components=1
 
-    ./configure --prefix="$version_dir" --enable-optimizations
-    make --jobs="$(nproc)" install
+    sed -i "/^INSTALL_TOP=/s:=.*:= ${version_dir//:/\\:}:" Makefile
+
+    make --jobs="$(nproc)"
+    make install
+
+    enable-luarocks "$version_dir"
 
     export PATH=$version_dir/bin:$PATH
 
-    major_version=${version%%.*}
-
-    for name in pip idle pydoc python; do
-        ln -vsfn "$version_dir/bin/$name$major_version" "$version_dir/bin/$name"
-    done
-    ln -vsfn "$version_dir/bin/python$major_version"-config "$version_dir"/bin/python-config
-
-    pip install --upgrade pip
-
     if [[ -f $packages_file ]]; then
-        xargs -r pip install <"$packages_file"
+        while read -r package; do
+            luarocks install "$package"
+        done
     fi
 
-    printf "Python v%s is now installed at: %q\n" "$version" "$version_dir"
+    printf "Lua v%s is now installed at: %q\n" "$version" "$version_dir"
 else
-    printf "Python v%s is already installed at: %q\n" "$version" "$version_dir"
+    printf "Lua v%s is already installed at: %q\n" "$version" "$version_dir"
 fi
 
 if ((set_as_default)); then

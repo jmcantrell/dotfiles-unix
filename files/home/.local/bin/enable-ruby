@@ -2,11 +2,11 @@
 
 set -euo pipefail
 
-archives_dir=${PYTHON_ARCHIVES:-${XDG_CACHE_HOME:-$HOME/.cache}/python}
-versions_dir=${PYTHON_VERSIONS:-${XDG_DATA_HOME:-$HOME/.local/share}/python}
-packages_file=${PYTHON_PACKAGES:-${XDG_CONFIG_HOME:-$HOME/.config}/python/packages}
+archives_dir=${RUBY_ARCHIVES:-${XDG_CACHE_HOME:-$HOME/.cache}/ruby}
+versions_dir=${RUBY_VERSIONS:-${XDG_DATA_HOME:-$HOME/.local/share}/ruby}
+packages_file=${RUBY_PACKAGES:-${XDG_CONFIG_HOME:-$HOME/.config}/ruby/packages}
 
-usage="Install a version of Python.
+usage="Install a version of Ruby.
 
 Usage:
     ${0##*/} [OPTIONS] [VERSION]
@@ -27,12 +27,12 @@ Options:
 
 Arguments:
     VERSION            install VERSION
-                       (e.g. '3.10.8', 'latest', or 'system')
+                       (e.g. '3.0.4', 'latest', or 'system')
 
 Environment:
-    PYTHON_VERSIONS    store versions in this directory (same as -D
-    PYTHON_ARCHIVES    store archives in this directory (same as -A)
-    PYTHON_PACKAGES    install packages listed in this file (same as -P)"
+    RUBY_VERSIONS    store versions in this directory (same as -D
+    RUBY_ARCHIVES    store archives in this directory (same as -A)
+    RUBY_PACKAGES    install packages listed in this file (same as -P)"
 
 set_as_default=0
 
@@ -53,7 +53,7 @@ while getopts ":dD:A:P:h" option; do
     esac
 done && shift $((OPTIND - 1))
 
-repo=python/cpython
+repo=ruby/ruby
 
 temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
 printf -v cleanup "rm -rf %q" "$temp_dir"
@@ -62,12 +62,13 @@ trap '$cleanup' EXIT
 versions_file=$temp_dir/versions
 git ls-remote --tags --refs "https://github.com/$repo" |
     sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
+    sed -e 's/_/./' -e 's/_/./' -e 's/_/-/g' |
     sort -r --version-sort >"$versions_file"
 
 version=${1:-latest}
 
 case $version in
-system) version=$(/usr/bin/python --version | cut -d' ' -f2) ;;
+system) version=$(/usr/bin/ruby --version | cut -d' ' -f2 | sed 's/[^0-9.].*//') ;;
 latest) version=$(grep -v -m1 '[^0-9.]' "$versions_file") ;;
 *)
     if ! grep -q "^$version$" "$versions_file"; then
@@ -78,11 +79,14 @@ latest) version=$(grep -v -m1 '[^0-9.]' "$versions_file") ;;
 esac
 
 version_dir=$versions_dir/$version
-archive_file=$archives_dir/python-$version.tar.gz
+archive_file=$archives_dir/ruby-$version.tar.gz
 
 if [[ ! -f $archive_file ]]; then
-    archive_url=https://github.com/$repo/archive/refs/tags/v$version.tar.gz
-    printf "Downloading Python v%s: %s\n" "$version" "$archive_url"
+    tag=${version/./_}
+    tag=${tag/./_}
+    tag=v${tag//-/_}
+    archive_url=https://github.com/$repo/archive/refs/tags/$tag.tar.gz
+    printf "Downloading Ruby v%s: %s\n" "$version" "$archive_url"
     mkdir -p "$(dirname "$archive_file")"
     curl -L -o "$archive_file" "$archive_url"
 fi
@@ -92,27 +96,21 @@ if [[ ! -d $version_dir ]]; then
 
     tar -xf "$archive_file" --strip-components=1
 
-    ./configure --prefix="$version_dir" --enable-optimizations
+    ./autogen.sh
+    ./configure --prefix="$version_dir"
     make --jobs="$(nproc)" install
 
     export PATH=$version_dir/bin:$PATH
 
-    major_version=${version%%.*}
-
-    for name in pip idle pydoc python; do
-        ln -vsfn "$version_dir/bin/$name$major_version" "$version_dir/bin/$name"
-    done
-    ln -vsfn "$version_dir/bin/python$major_version"-config "$version_dir"/bin/python-config
-
-    pip install --upgrade pip
+    gem update --system
 
     if [[ -f $packages_file ]]; then
-        xargs -r pip install <"$packages_file"
+        xargs -r gem install <"$packages_file"
     fi
 
-    printf "Python v%s is now installed at: %q\n" "$version" "$version_dir"
+    printf "Ruby v%s is now installed at: %q\n" "$version" "$version_dir"
 else
-    printf "Python v%s is already installed at: %q\n" "$version" "$version_dir"
+    printf "Ruby v%s is already installed at: %q\n" "$version" "$version_dir"
 fi
 
 if ((set_as_default)); then

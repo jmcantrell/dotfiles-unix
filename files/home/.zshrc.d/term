@@ -10,7 +10,7 @@ precmd_functions+=_mark_prompt
 
 # Set the terminal title.
 _set_title() {
-    print -Pn '\e]2;zsh ${PWD/$HOME/~} $1 \a'
+    print -Pn "\e]2;zsh %y %~ ${(V)1//\%/\%\%}\a"
 }
 precmd_functions+=_set_title  # before each prompt
 preexec_functions+=_set_title # before command executes

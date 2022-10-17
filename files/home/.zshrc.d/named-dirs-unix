@@ -1,3 +1,4 @@
 create_named_directory dotfiles ~/.dotfiles .
+create_named_directory secrets ~/.local/share/secrets s
 
 # vi:ft=zsh

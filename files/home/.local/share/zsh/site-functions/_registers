@@ -1,0 +1,16 @@
+#compdef registers
+
+local state state_descr context line
+
+_arguments -S \
+    "(- 1)"-h"[show the help text]" \
+    "(-)::action:(read write append clear)" \
+    "(-)::register:->register" \
+    && return 0
+
+if [[ $state == register ]]; then
+    local __registers=(${TMPDIR:/tmp}/registers.$USER-*(N.:t))
+    (($#__registers)) || __registers+=(default)
+    _values 'registers' $__registers
+fi
+

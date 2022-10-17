@@ -7,3 +7,4 @@ disable=SC2220 # no * case for getopts
 disable=SC2016 # expressions in single quotes
 disable=SC2024 # redirections with sudo
 disable=SC2094 # read/write same file
+disable=SC2093 # continue after exec

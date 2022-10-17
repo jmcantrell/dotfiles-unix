@@ -1,3 +1,3 @@
-export PAGER=less
+export PAGER=pager
 
 # vi:ft=sh

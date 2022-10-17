@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+shopt -s nullglob globstar
+
+usage="Manage data stored in registers.
+
+Usage:
+    ${0##*/} [OPTIONS] ACTION [REGISTER]
+
+Options:
+    -h          show this help text and exit
+
+Arguments:
+    ACTION      perform ACTION on register
+
+    REGISTER    store data in REGISTER
+                (default: 'default', cannot contain '/' or '\n')
+
+Actions:
+    read        output register content to stdout
+    write       set register content from stdin
+    append      add to register content from stdin
+    clear       clear data from register"
+
+do_read() {
+    if [[ -f $1 ]]; then
+        cat "$1"
+    fi
+}
+
+do_write() {
+    do_clear "$1"
+    do_append "$1"
+}
+
+do_append() {
+    mkdir -p "$(dirname "$1")"
+    cat >>"$1"
+}
+
+do_clear() {
+    rm -f "$1"
+}
+
+umask 077
+
+while getopts ":h" option; do
+    case $option in
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG"
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+action=${1:?missing action}
+
+case $action in
+read | write | append | clear) ;;
+*)
+    printf "Invalid action: %s\n" "$action" >&2
+    exit 1
+    ;;
+esac
+
+register=${TMPDIR:-/tmp}/${0##*/}.$USER-${2:-default}
+
+do_"$action" "$register"

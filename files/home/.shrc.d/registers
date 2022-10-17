@@ -1,0 +1,6 @@
+alias ry='registers write'
+alias ra='registers append'
+alias rp='registers read'
+alias rc='registers clear'
+
+# vi:ft=sh

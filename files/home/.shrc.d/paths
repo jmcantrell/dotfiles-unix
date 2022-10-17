@@ -1,0 +1,31 @@
+alias py='paths set'
+alias pY='paths -z set'
+
+alias pa='paths add'
+alias pA='paths -z add'
+
+alias pp='paths get'
+alias pP='paths -z get'
+
+alias pr='paths remove'
+alias pR='paths -z remove'
+
+alias pc='paths clear'
+
+pcp() {
+    paths -z get | xargs -r cp -vi -t "${1:-$PWD}"
+}
+
+pmv() {
+    paths -z get | xargs -r mv -vi -t "${1:-$PWD}"
+}
+
+pln() {
+    paths -z get | xargs -r ln -vsri -t "${1:-$PWD}" 
+}
+
+pe() {
+    paths -z get | editor-stdin
+}
+
+# vi:ft=sh

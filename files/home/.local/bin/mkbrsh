@@ -109,7 +109,7 @@ done <"$src_list"
 
 if ((has_changes)); then
     if ((dry_run)); then
-        grep -v '^#' "$script"
+        grep -v '^\s*#' "$script"
     else
         ${EDITOR:-vim} "$script"
         sh "$script"

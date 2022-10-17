@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Run some kind of vi-like editor.
+
+editors=(nvim vim vi)
+
+for name in "${editors[@]}"; do
+    if command -v "$name" >/dev/null; then
+        exec "$name" "$@"
+    fi
+done
+
+printf "None of the preferred editors are found: ${editors[*]}\n" >&2
+exit 1

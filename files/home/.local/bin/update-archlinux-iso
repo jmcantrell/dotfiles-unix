@@ -13,6 +13,6 @@ iso_file=$output_dir/$iso_name
 
 if [[ ! -f $iso_file ]]; then
     mkdir -p "$output_dir"
-    magnet_uri=$(jq -er '.magnet_uri' <<<"$release_json")
+    magnet_uri=$(jq -er .magnet_uri <<<"$release_json")
     aria2c-torrent -d "$output_dir" --seed-time 0 "$magnet_uri"
 fi

@@ -10,16 +10,24 @@ Usage:
 
 Options:
     -h         show this help text and exit
+    -r         recurse into directories
+    -L         dereference symlinks before getting mime type
+    -f FILE    read files to test from FILE
     -z         separate results with a null instead of a newline
 
 Arguments:
     PATTERN    only output files whose mime-type matches the regular expression PATTERN
     PATH       test PATH (or all files under PATH) against PATTERN (default: '.')"
 
+recursive=0
+file_options=()
 result_sep='\n'
 
-while getopts ":rzh" option; do
+while getopts ":rzLf:h" option; do
     case $option in
+    r) recursive=1 ;;
+    L) file_options+=(-L) ;;
+    f) test_files+=("$OPTARG") ;;
     z) result_sep='\0' ;;
     h)
         printf "%s\n" "$usage"
@@ -37,21 +45,25 @@ shift
 
 output_if_match() {
     local file=$1 this_mime_type
-    this_mime_type=$(file --brief --mime-type "$file")
+    this_mime_type=$(file --brief --mime-type "${file_options[@]}" "$file")
 
     if [[ $this_mime_type =~ $desired_mime_type ]]; then
         printf "%s$result_sep" "$file"
     fi
 }
 
-for arg in "${@:-$PWD}"; do
-    if [[ -d $arg ]]; then
-        for file in "$arg"/**; do
-            if [[ -f $file ]]; then
-                output_if_match "$file"
-            fi
-        done
-    elif [[ -f $arg ]]; then
-        output_if_match "$arg"
+handle_path() {
+    local root=$1
+    if [[ -e $root ]]; then
+        output_if_match "$root"
     fi
+    if [[ -d $root ]] && ((recursive)); then
+        for path in "$root"/**; do
+            handle_path "$path"
+        done
+    fi
+}
+
+for path in "${@:-$PWD}"; do
+    handle_path "$path"
 done

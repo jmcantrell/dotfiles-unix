@@ -1,7 +1,7 @@
-#compdef snip
+#compdef snippets
 
 local state state_descr context line opt_args
-local data_dir=${XDG_DATA_HOME:-$HOME/.local/share}/snip
+local data_dir=${XDG_DATA_HOME:-$HOME/.local/share}/snippets
 
 _arguments -S \
     "(- 1)"-h"[show the help text]" \

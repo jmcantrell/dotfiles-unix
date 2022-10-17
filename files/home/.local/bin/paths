@@ -1,0 +1,116 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+shopt -s nullglob globstar
+
+usage="Manage lists of paths.
+
+Usage:
+    ${0##*/} [OPTIONS] get|clear
+    ${0##*/} [OPTIONS] set|add|remove [PATH...]
+
+Options:
+    -h          show this help text and exit
+    -n NAME     paths are stored in list NAME (default: 'default')
+    -z          input/output is delimited by nulls instead of newlines
+
+Arguments:
+    PATH        perform action for PATH
+                (if no PATH is given, paths will be read from stdin)
+
+Actions:
+    get         output path list to stdout
+    set         set contents of path list
+    add         add paths to list
+    remove      remove paths from list
+    clear       clear path list
+
+Lists are guaranteed to contain unique paths in insertion order.
+If paths are added that already exist, they will be removed first."
+
+do_get() {
+    local list=$1
+    if [[ -f $list ]]; then
+        while IFS= read -r -d '' path; do
+            printf "%s$write_delimiter" "$path"
+        done <"$list"
+    fi
+}
+
+do_set() {
+    local list=$1
+    shift
+    printf "%s\0" "$@" >"$list"
+}
+
+do_add() {
+    local list=$1
+    shift
+    do_remove "$list" "$@"
+    printf "%s\0" "$@" >>"$list"
+}
+
+do_remove() {
+    local list=$1
+    shift
+    if [[ -f $list ]]; then
+        grep -zvx -f <(printf "%s\0" "$@") "$list" | sponge "$list"
+    fi
+}
+
+do_clear() {
+    rm -f "$1"
+}
+
+name=default
+read_options=()
+write_delimiter=$'\n'
+
+umask 077
+
+while getopts ":n:zh" option; do
+    case $option in
+    n) name=$OPTARG ;;
+    z)
+        read_options+=(-d '')
+        write_delimiter=$'\0'
+        ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG"
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+action=${1:?missing action}
+
+shift
+
+case $action in
+get | set | add | remove | clear) ;;
+*)
+    printf "Invalid action: %s\n" "$action" >&2
+    exit 1
+    ;;
+esac
+
+list=${TMPDIR:-/tmp}/${0##*/}.$USER-$name
+
+case $action in
+get | clear)
+    do_"$action" "$list"
+    exit 0
+    ;;
+esac
+
+if (($# == 0)); then
+    IFS= readarray -t "${read_options[@]}" paths
+else
+    paths=("$@")
+fi
+
+do_"$action" "$list" "${paths[@]}"

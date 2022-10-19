@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
-shopt -s nullglob
-
-for dir in ~/.vim/{doc,pack/*/start/*/doc}; do
-    printf "Generating vim helptags: %q\n" "$dir"
-    vim -c "helptags $dir" -c q &>/dev/null
-done
+printf "Generating vim helptags\n"
+exec vim -c "helptags ALL" -c q &>/dev/null

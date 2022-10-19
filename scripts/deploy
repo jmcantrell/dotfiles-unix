@@ -2,10 +2,11 @@
 
 set -euo pipefail
 
+printf "Stowing package: %q\n" "$PWD/files/home"
 stow --no-folding --dir ./files --target ~ --restow home
 
 # Pretend neovim is vim.
-ln -sfrn ~/.config/nvim ~/.vim
-ln -sfrn ~/.config/nvim/init.vim ~/.vimrc
+ln -vsfrn ~/.config/nvim ~/.vim
+ln -vsfrn ~/.config/nvim/init.vim ~/.vimrc
 
 ./scripts/build

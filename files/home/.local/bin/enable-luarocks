@@ -25,6 +25,10 @@ while getopts ":A:h" option; do
         printf "%s\n" "$usage"
         exit 0
         ;;
+    :)
+        printf "Option missing argument: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
     *)
         printf "Invalid option: %s\n" "$OPTARG" >&2
         exit 1

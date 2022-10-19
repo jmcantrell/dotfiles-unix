@@ -69,6 +69,10 @@ if [[ $ext =~ ^(docx?)$ ]]; then
     exec catdoc -- "$target"
 fi
 
+if [[ $ext =~ ^(ppt?)$ ]]; then
+    exec catppt -- "$target"
+fi
+
 if [[ $ext =~ ^xlsx?$ ]]; then
     exec xls2csv -- "$target"
 fi

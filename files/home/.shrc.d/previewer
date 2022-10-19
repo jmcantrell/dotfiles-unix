@@ -1,0 +1,10 @@
+alias p=previewer
+alias pp='with-pager previewer'
+
+# View images sized as wide as the current terminal.
+pi() {
+    [[ -v SWAYSOCK ]] || return 1
+    img2sixel -w "$(sway-window | jq .rect.width)" "$@"
+}
+
+# vi:ft=sh

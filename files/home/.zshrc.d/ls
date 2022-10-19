@@ -24,16 +24,4 @@ alias lal='lsl .*(@)' # include hidden
 alias lsL='ls *(-@)'
 alias laL='lsL .*(-@)' # include hidden
 
-# Show newer files.
-alias lsn='ls -lt *(.om[1,10])'
-alias lan='lsn .*(.om[1,10])' # include hidden
-
-# Show older files.
-alias lso='ls -lrt *(.om[1,10])'
-alias lao='lso .*(.om[1,10])' # include hidden
-
-# Show bigger files.
-alias lsb='ls -lS *(.OL[1,10])'
-alias lab='lsb .*(.OL[1,10])' # include hidden
-
 # vi:ft=zsh

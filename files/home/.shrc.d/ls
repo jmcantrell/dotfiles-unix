@@ -1,6 +1,8 @@
-alias ls='ls --human-readable --classify --group-directories-first --color=auto'
-alias ll='ls -l'  # long listing
-alias la='ls -a'  # listing with hidden
-alias lla='ll -a' # long listing with hidden
+alias ls='ls --escape --human-readable --classify --group-directories-first --color=auto'
+alias ll='ls -l'   # long listing
+alias la='ls -A'   # listing with hidden
+alias lla='ll -A'  # long listing with hidden
+alias llt='ls -lt' # long listing (newest first)
+alias lls='ls -lS' # long listing (biggest first)
 
 # vi:ft=sh

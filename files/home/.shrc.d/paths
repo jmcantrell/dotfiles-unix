@@ -24,6 +24,10 @@ pln() {
     paths -z get | xargs -r ln -vsri -t "${1:-$PWD}" 
 }
 
+prm() {
+    paths -z get | xargs -r rm -vri
+}
+
 pe() {
     paths -z get | editor-stdin
 }

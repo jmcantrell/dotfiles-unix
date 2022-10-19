@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage="Show a preview of the given file.
+
+Usage:
+    ${0##*/} [OPTIONS] FILE
+
+Options:
+    -h           show this help text and exit
+    -l NUMBER    highlight line NUMBER (if supported)
+
+Arguments:
+    FILE         the file to preview"
+
+unset line_number
+
+while getopts ":l:h" option; do
+    case $option in
+    l) line_number=$OPTARG ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    :)
+        printf "Option missing argument: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+target=${1:?missing file/URL}
+
+if [[ $target == file://* ]]; then
+    target=${target#file://}
+    target=${target//+/ }
+    target=${target//%/\\x}
+    printf -v target "%b" "$target"
+fi
+
+mime_type=$(file --dereference --brief --mime-type "$target")
+
+filename=$(basename "$target")
+ext=${filename##*.}
+ext=${ext,,}
+
+if [[ $ext =~ ^(7z|ace|ar|arc|bz2?|cab|cpio|cpt|deb|dgc|dmg|gz|jar|msi|pkg|rar|shar|tar|tgz|xar|xpi|xz|zip|zst)$ ]]; then
+    exec als -- "$target"
+fi
+
+if [[ $ext == torrent ]]; then
+    exec transmission-show -- "$target"
+fi
+
+if [[ $ext == pdf || $mime_type == application/pdf ]]; then
+    exec pdftotext -l 10 -nopgbrk -q -- "$target" -
+fi
+
+if [[ $ext =~ ^(od[spt]|sxw)$ ]]; then
+    exec odt2txt -- "$target"
+fi
+
+if [[ $ext =~ ^(docx?)$ ]]; then
+    exec catdoc -- "$target"
+fi
+
+if [[ $ext =~ ^xlsx?$ ]]; then
+    exec xls2csv -- "$target"
+fi
+
+if [[ $ext == json || $mime_type == application/json ]]; then
+    exec jq --color-output . -- "$target"
+fi
+
+if [[ $mime_type =~ ^(image|audio|video)/ ]]; then
+    exec mediainfo -- "$target"
+fi
+
+if [[ $ext =~ ^(mk?d|markdown)$ ]]; then
+    exec mdcat --no-pager -- "$target"
+fi
+
+if [[ $mime_type =~ ^text/ ]]; then
+    exec bat --color always --paging never ${line_number:+--highlight-line $line_number} -- "$target"
+fi

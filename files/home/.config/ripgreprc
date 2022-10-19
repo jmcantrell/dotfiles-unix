@@ -1,7 +1,5 @@
 --hidden
 --follow
 --smart-case
---type-add
-js:*.{js,mjs,cjs,jsx}
 --glob
 !.git

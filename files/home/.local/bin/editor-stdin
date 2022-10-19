@@ -5,13 +5,11 @@ set -euo pipefail
 usage="Edit files passed over stdin.
 
 Usage:
-    ${0##*/} [OPTIONS] [ARGUMENT...]
+    ${0##*/} [OPTIONS]
 
 Options:
     -h    show this help text and exit
-    -z    files are delimited by nulls instead of newlines
-
-Any arguments given will be passed on to the editor."
+    -z    files are delimited by nulls instead of newlines."
 
 read_options=()
 
@@ -31,4 +29,4 @@ done && shift $((OPTIND - 1))
 
 IFS= readarray -t "${read_options[@]}" paths
 
-exec editor "$@" "${paths[@]}"
+exec editor "${paths[@]}" </dev/tty

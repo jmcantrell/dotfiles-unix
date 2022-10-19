@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+results_file=$(mktemp -t "${0##*/}.XXXXXXXXXX")
+printf -v cleanup "rm %q" "$results_file"
+trap '$cleanup' EXIT
+
+sk --ansi -i -d: \
+    --cmd 'rg --color=always --line-number --column "{}"' \
+    --preview 'preview -l {2} {1}' --preview-window '+{2}-/2' \
+    "$@" >"$results_file"
+
+editor -q "$results_file"

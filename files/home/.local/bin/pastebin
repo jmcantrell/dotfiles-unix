@@ -10,9 +10,7 @@ file=${1:-/dev/stdin}
 
 url=$(curl -sSL --data-binary @"$file" https://paste.rs)
 
-if [[ ! -v ext ]]; then
-    ext=${file##*/}
-    ext=${ext##*.}
-fi
+base=$(basename "$file")
+[[ ${base##.} == *.* ]] && ext=${base##*.}
 
 printf "%s%s\n" "$url" "${ext:+.$ext}"

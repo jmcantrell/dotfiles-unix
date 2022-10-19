@@ -56,18 +56,11 @@ output_if_match() {
     fi
 }
 
-handle_path() {
-    local root=$1
-    if [[ -e $root ]]; then
-        output_if_match "$root"
-    fi
+for root in "${@:-$PWD}"; do
+    output_if_match "$root"
     if [[ -d $root ]] && ((recursive)); then
         for path in "$root"/**; do
-            handle_path "$path"
+            output_if_match "$path"
         done
     fi
-}
-
-for path in "${@:-$PWD}"; do
-    handle_path "$path"
 done

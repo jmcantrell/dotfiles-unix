@@ -2,23 +2,23 @@
 
 set -euo pipefail
 
-usage="Show a preview of the given file.
+usage="Show a preview of the given path.
 
 Usage:
-    ${0##*/} [OPTIONS] FILE
+    ${0##*/} [OPTIONS] PATH
 
 Options:
-    -h           show this help text and exit
-    -l NUMBER    highlight line NUMBER (if supported)
+    -h             show this help text and exit
+    -g LOCATION    go to a specific location (if supported)
 
 Arguments:
-    FILE         the file to preview"
+    PATH           the file/directory/URL to preview"
 
-unset line_number
+unset goto
 
-while getopts ":l:h" option; do
+while getopts ":g:h" option; do
     case $option in
-    l) line_number=$OPTARG ;;
+    g) goto=$OPTARG ;;
     h)
         printf "%s\n" "$usage"
         exit 0
@@ -34,61 +34,88 @@ while getopts ":l:h" option; do
     esac
 done && shift $((OPTIND - 1))
 
-target=${1:?missing file/URL}
+is_positive_int() {
+    local value=$1
+    [[ $value =~ ^[0-9]+$ ]] && ((value > 0))
+}
 
-if [[ $target == file://* ]]; then
-    target=${target#file://}
-    target=${target//+/ }
-    target=${target//%/\\x}
-    printf -v target "%b" "$target"
+ensure_positive_int() {
+    local value=${1:-${2:-1}}
+    if ! is_positive_int "$value"; then
+        printf "Invalid value: %s (must be a positive integer)\n" "$value" >&2
+        exit 1
+    fi
+    printf "%s" "$value"
+}
+
+path=${1:?missing file/URL}
+
+if [[ $path == file://* ]]; then
+    path=${path#file://}
+    path=${path//+/ }
+    path=${path//%/\\x}
+    printf -v path "%b" "$path"
 fi
 
-mime_type=$(file --dereference --brief --mime-type "$target")
+if [[ $path == *://* ]]; then
+    exec curl --silent --show-error --location --head "$path"
+fi
 
-filename=$(basename "$target")
+if [[ -d $path ]]; then
+    exec ls -l -- "$path"
+fi
+
+mime_type=$(file --dereference --brief --mime-type "$path")
+
+filename=$(basename "$path")
 ext=${filename##*.}
 ext=${ext,,}
 
 if [[ $ext =~ ^(7z|ace|ar|arc|bz2?|cab|cpio|cpt|deb|dgc|dmg|gz|jar|msi|pkg|rar|shar|tar|tgz|xar|xpi|xz|zip|zst)$ ]]; then
-    exec als -- "$target"
+    exec als -- "$path"
 fi
 
 if [[ $ext == torrent ]]; then
-    exec transmission-show -- "$target"
+    exec transmission-show -- "$path"
 fi
 
 if [[ $ext == pdf || $mime_type == application/pdf ]]; then
-    exec pdftotext -l 10 -nopgbrk -q -- "$target" -
+    exec pdftotext -l 10 -nopgbrk -q -- "$path" -
 fi
 
 if [[ $ext =~ ^(od[spt]|sxw)$ ]]; then
-    exec odt2txt -- "$target"
+    exec odt2txt -- "$path"
 fi
 
 if [[ $ext =~ ^(docx?)$ ]]; then
-    exec catdoc -- "$target"
+    exec catdoc -- "$path"
 fi
 
 if [[ $ext =~ ^(ppt?)$ ]]; then
-    exec catppt -- "$target"
+    exec catppt -- "$path"
 fi
 
 if [[ $ext =~ ^xlsx?$ ]]; then
-    exec xls2csv -- "$target"
+    exec xls2csv -- "$path"
 fi
 
 if [[ $ext == json || $mime_type == application/json ]]; then
-    exec jq --color-output . -- "$target"
+    exec jq --color-output . -- "$path"
 fi
 
 if [[ $mime_type =~ ^(image|audio|video)/ ]]; then
-    exec mediainfo -- "$target"
+    exec mediainfo -- "$path"
 fi
 
 if [[ $ext =~ ^(mk?d|markdown)$ ]]; then
-    exec mdcat --no-pager -- "$target"
+    exec mdcat --no-pager -- "$path"
 fi
 
 if [[ $mime_type =~ ^text/ ]]; then
-    exec bat --color always --paging never ${line_number:+--highlight-line $line_number} -- "$target"
+    exec bat --color=always --paging=never \
+        ${goto:+--highlight-line="$(ensure_positive_int "$goto")"} \
+        -- "$path"
 fi
+
+printf "Unrecognized path: %q\n" "$path" >&2
+exit 9

@@ -12,7 +12,6 @@ Options:
     -h         show this help text and exit
     -r         recurse into directories
     -L         dereference symlinks before getting mime type
-    -f FILE    read files to test from FILE
     -z         separate results with a null instead of a newline
 
 Arguments:
@@ -27,7 +26,6 @@ while getopts ":rzLf:h" option; do
     case $option in
     r) recursive=1 ;;
     L) file_options+=(-L) ;;
-    f) test_files+=("$OPTARG") ;;
     z) result_sep='\0' ;;
     h)
         printf "%s\n" "$usage"

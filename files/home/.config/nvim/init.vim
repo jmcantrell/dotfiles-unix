@@ -136,9 +136,6 @@ nmap <leader>e :e <c-r>=expand('%:h').'/'<cr>
 " Switch buffer.
 nmap <leader>b :b<space>
 
-" Open help in the current window instead of a split.
-command! -nargs=1 -complete=help Help help <args> | silent only
-
 " Switch to last buffer.
 nmap <leader><leader> :b#<cr>
 
@@ -220,6 +217,10 @@ nmap <c-j> i<c-j>
 
 " Write file with sudo.
 command! -bar W :w !sudo tee % >/dev/null<cr>
+
+" Help commands that open in their own window.
+command -nargs=1 -complete=help Help help <args> | silent only
+command -nargs=1 HelpGrep execute "helpgrep" <q-args> | silent only
 
 " Detect file type if name changes.
 autocmd BufFilePost * filetype detect

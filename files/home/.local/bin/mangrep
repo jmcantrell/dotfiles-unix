@@ -4,8 +4,54 @@
 
 set -euo pipefail
 
+usage="Search the complete text of all man pages.
+
+Usage:
+    ${0##*/} [OPTIONS] [ARGUMENT...]
+
+Options:
+    -h         show this help text and exit
+    -s NAME    narrow search to section NAME (can be used multiple times)
+
+Arguments:
+    ARGUMENT    argument to pass on to zgrep"
+
+section_options=()
+
+while getopts ":s:h" option; do
+    case $option in
+    s) section_options+=(-o -name "*.$OPTARG.?*") ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    :)
+        printf "Option missing argument: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
 # Split path string used by man into an array of directories.
 IFS=: read -r -d "" -a dirs < <(printf "%s:\0" "$(man -w)")
 
+dirs_that_exist=()
+
+for dir in "${dirs[@]}"; do
+    if [[ -d $dir ]]; then
+        dirs_that_exist+=("$dir")
+    fi
+done
+
+find_options=()
+
+if ((${#section_options[@]} > 0)); then
+    find_options+=(\( "${section_options[@]:1}" \))
+fi
+
 # Search all the (possibly compressed) man pages in those directories.
-find "${dirs[@]}" -type f -print0 | xargs -r0 zgrep -l -m1 "$@"
+find "${dirs_that_exist[@]}" -type f "${find_options[@]}" -print0 | xargs -r0 zgrep -l -m1 "$@"

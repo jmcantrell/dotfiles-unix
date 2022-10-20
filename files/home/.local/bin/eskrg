@@ -9,7 +9,7 @@ trap '$cleanup' EXIT
 sk --ansi --interactive --delimiter=: --multi \
     --bind='ctrl-a:select-all' \
     --cmd='rg --color=always --line-number --column "{}"' \
-    --preview='previewer -l {2} {1}' --preview-window '+{2}-/2' \
+    --preview='previewer -g {2} {1}' --preview-window '+{2}-/2' \
     "$@" >"$results_file"
 
 editor -q "$results_file"

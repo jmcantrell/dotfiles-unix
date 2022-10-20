@@ -35,8 +35,26 @@ PS1+='${vcs_info_msg_0_:+ $vcs_info_msg_0_}'
 
 PS1+=$'\n'
 
-# hostname (if not in tmux)
-[[ -v TMUX ]] || PS1+='%m '
+# hostname (only in certain cases)
+if [[ -v SSH_CLIENT || ! ( -v TMUX || -v WAYLAND_DISPLAY || -v DISPLAY ) ]]; then
+    PS1+='%m '
+fi
+
+# nested shell indicator
+
+entry_shlvl=1
+
+if [[ -v WAYLAND_DISPLAY || -v DISPLAY ]]; then
+    ((entry_shlvl++))
+fi
+
+if [[ -v TMUX ]]; then
+    ((entry_shlvl++))
+fi
+
+if ((SHLVL > entry_shlvl)); then
+    PS1+='> '
+fi
 
 # user privilege indicator
 PS1+='%# '

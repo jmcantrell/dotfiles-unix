@@ -5,6 +5,7 @@ set -euo pipefail
 format=%d/%n%e
 start_num=1
 increment=1
+ext_max_depth=-1
 
 usage="Rename files as a sequence of numbers.
 
@@ -13,14 +14,21 @@ Usage:
 
 Options:
     -h           show this help text and exit
+
     -n           only show what renames would be done
     -f           use -f instead of -i in the generated mv commands
-    -z           files given over stdin will be separated by nulls (instead of newlines)
+    -z           stdin will be separated by nulls instead of newlines
+
     -w           equalize width by padding with leading zeroes
     -W NUMBER    pad each number to an exact width with leading zeroes
+
     -s NUMBER    starting number (default: $start_num)
     -i NUMBER    increment (default: $increment)
+
     -F FORMAT    file path format (default: $format)
+
+    -e NUMBER    use a maximum of NUMBER extensions from each file for %e
+                 (default: $ext_max_depth i.e. all extensions)
 
 The following placeholders are recognized in FORMAT:
     %n           number of FILE (required)
@@ -32,20 +40,36 @@ The following placeholders are recognized in FORMAT:
 If no FILEs are given as arguments, they will be read from stdin."
 
 extname() {
-    awk 'match($0, /(\.[[:alnum:]]+)+$/) { print substr($0, RSTART, RLENGTH) }' <<<"$1"
+    local base=${1##*/}
+    local max_depth=${2:--1}
+
+    local tokens
+    IFS=. read -ra tokens <<<"$base"
+
+    if ((max_depth < 0)); then
+        max_depth=$((${#tokens[@]} - 1))
+    fi
+
+    local depth ext=
+    for ((depth = 1; depth <= max_depth; depth++)); do
+        ext=.${tokens[-$depth]}$ext
+    done
+
+    printf "%s\n" "$ext"
 }
 
 auto_width=0
 mkbr_options=()
 read_options=()
 
-while getopts ":F:s:i:W:wnfzh" option; do
+while getopts ":W:wF:s:i:e:nfzh" option; do
     case $option in
+    W) width=$OPTARG ;;
+    w) auto_width=1 ;;
     F) format=$OPTARG ;;
     s) start_num=$OPTARG ;;
     i) increment=$OPTARG ;;
-    W) width=$OPTARG ;;
-    w) auto_width=1 ;;
+    e) ext_max_depth=$OPTARG ;;
     n) mkbr_options+=(-n) ;;
     f) mkbr_options+=(-f) ;;
     z) read_options+=(-d '') ;;
@@ -115,7 +139,7 @@ while IFS= read -r -d '' src; do
     fi
 
     dir=$(dirname "$src")
-    ext=$(extname "$src")
+    ext=$(extname "$src" "$ext_max_depth")
     base=$(basename "$src" "$ext")
 
     dst=$format

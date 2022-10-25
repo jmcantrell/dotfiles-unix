@@ -96,7 +96,7 @@ if [[ ! -d $version_dir ]]; then
 
     tar -xf "$archive_file" --strip-components=1
 
-    ./configure --prefix="$version_dir" --enable-optimizations
+    ./configure --prefix="$version_dir"
     make --jobs="$(nproc)" install
 
     export PATH=$version_dir/bin:$PATH

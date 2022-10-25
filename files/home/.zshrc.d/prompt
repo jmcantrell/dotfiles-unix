@@ -40,22 +40,6 @@ if [[ -v SSH_CLIENT || ! ( -v TMUX || -v WAYLAND_DISPLAY || -v DISPLAY ) ]]; the
     PS1+='%m '
 fi
 
-# nested shell indicator
-
-entry_shlvl=1
-
-if [[ -v WAYLAND_DISPLAY || -v DISPLAY ]]; then
-    ((entry_shlvl++))
-fi
-
-if [[ -v TMUX ]]; then
-    ((entry_shlvl++))
-fi
-
-if ((SHLVL > entry_shlvl)); then
-    PS1+='> '
-fi
-
 # user privilege indicator
 PS1+='%# '
 

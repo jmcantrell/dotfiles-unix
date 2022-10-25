@@ -6,4 +6,6 @@ set -euo pipefail
 
 json=$(curl -sSL https://am.i.mullvad.net/json)
 jq . <<<"$json"
+
+# Exit status is an indicator of connection status.
 jq -e .mullvad_exit_ip <<<"$json" >/dev/null

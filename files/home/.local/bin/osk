@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+path=$(findsk "$@")
+exec opener "$path"

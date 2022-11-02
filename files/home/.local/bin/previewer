@@ -111,7 +111,7 @@ if [[ $ext =~ ^(mk?d|markdown)$ ]]; then
     exec mdcat --no-pager -- "$path"
 fi
 
-if [[ $mime_type =~ ^text/ ]]; then
+if [[ $mime_type =~ ^text/ || $mime_type == application/x-subrip ]]; then
     exec bat --color=always --paging=never \
         ${goto:+--highlight-line="$(ensure_positive_int "$goto")"} \
         -- "$path"

@@ -1,6 +1,3 @@
-# Show all processes for every user.
-alias pa='ps -eo "pid,%cpu,%mem,size,tty,stat,user,command"'
-
 # Show all processes owned by a user (default: this user).
 pu() {
     ps -u "${1:-$USER}" -o "pid,%cpu,%mem,size,tty,stat,command"

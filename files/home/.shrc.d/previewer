@@ -1,5 +1,4 @@
 alias p=previewer
-alias pp='with-pager previewer'
 
 # View images sized as wide as the current terminal.
 pi() {

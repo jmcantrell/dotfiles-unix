@@ -1,20 +1,25 @@
 #compdef registers
 
-local state state_descr context line opt_args
+local curcontext=$curcontext context state state_descr line opt_args
 
-_arguments -s -S -A "-*" : \
+_arguments -C -s -S -A "-*" : \
     "(- : *)-h[show the help text]" \
-    '(-h)::action:((
+    '1::action:((
         "read:output register content to stdout"
         "write:set register content from stdin"
         "append:add to register content from stdin"
         "clear:clear data from register"
     ))' \
-    "(-h)::register:->register" \
+    "*:: :->action" \
     && return
 
-if [[ $state == register ]]; then
+case $state in
+action)
+    service=$words[1]
+    curcontext=${curcontext%:*}-$service
+
     local register_dir=${TMPDIR:/tmp}/registers.$USER
     local -a register_files=($register_dir/**(N.))
     _values 'registers' default ${register_files#$register_dir/}
-fi
+    ;;
+esac

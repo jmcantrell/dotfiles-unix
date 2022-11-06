@@ -1,38 +1,34 @@
 #compdef paths
 
-_paths() {
-    local curcontext=$curcontext context state state_descr line opt_args
+local curcontext=$curcontext context state state_descr line opt_args
 
-    _arguments -C -s -S -A "-*" : \
-        "(- : *)-h[show the help text]" \
-        "(-h)-n[set path list]:path list:->path_list" \
-        "(-h)-z[input/output delimited by nulls]" \
-        '(-h)1:action:((
-            "get:output path list"
-            "set:set contents of path list"
-            "add:add paths to list"
-            "remove:remove paths from list"
-            "clear:clear path list"
-        ))' \
-        '(-h)*:: :->action' \
-        && return
+_arguments -C -s -S -A "-*" : \
+    "(- : *)-h[show the help text]" \
+    "-n[set path list]:path list:->path_list" \
+    "-z[input/output delimited by nulls]" \
+    '1:action:((
+        "get:output path list"
+        "set:set contents of path list"
+        "add:add paths to list"
+        "remove:remove paths from list"
+        "clear:clear path list"
+    ))' \
+    '*:: :->action' \
+    && return
 
+case $state in
+path_list)
+    local list_dir=${TMPDIR:-/tmp}/paths.$USER
+    local -a list_files=($list_dir/**(N.))
+    _values 'path lists' default ${list_files#$list_dir/}
+    ;;
+action)
     service=$words[1]
-    curcontext=${curcontext%:*}-$service:
+    curcontext=${curcontext%:*}-$service
 
-    case $state in
-    action)
-        case $service in
-        get|clear) _nothing ;;
-        set|add|remove) _files ;;
-        esac
-        ;;
-    path_list)
-        local list_dir=${TMPDIR:-/tmp}/paths.$USER
-        local -a list_files=($list_dir/**(N.))
-        _values 'path lists' default ${list_files#$list_dir/}
-        ;;
+    case $service in
+    get|clear) _nothing ;;
+    set|add|remove) _files ;;
     esac
-}
-
-_paths "$@"
+    ;;
+esac

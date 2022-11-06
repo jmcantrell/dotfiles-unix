@@ -1,38 +1,39 @@
 #compdef snippets
 
-_snippets() {
-    local curcontext=$curcontext context state state_descr line opt_args
+local curcontext=$curcontext context state state_descr line opt_args
 
-    _arguments -C -s -S -A "-*" : \
-        "(- : *)-h[show the help text]" \
-        "(-h)-D[set register directory]:register directory:_files -/" \
-        '(-h)1:action:((
-            "list:print all snippet names to stdout"
-            "path:print snippet path to stdout"
-            "read:print snippet content to stdout"
-            "write:set snippet content from stdin"
-            "delete:delete snippet"
-            "edit:open snippet in editor"
-        ))' \
-        '(-h)*:: :->action' \
-        && return
+_arguments -C -s -S -A "-*" : \
+    "(- : *)-h[show the help text]" \
+    "-D[set register directory]:register directory:_files -/" \
+    '1:action:((
+        "list:print all snippet names to stdout"
+        "path:print snippet path to stdout"
+        "read:print snippet content to stdout"
+        "write:set snippet content from stdin"
+        "delete:delete snippet"
+        "edit:open snippet in editor"
+    ))' \
+    '*:: :->action' \
+    && return
 
+case $state in
+action)
     service=$words[1]
-    curcontext=${curcontext%:*}-$service:
+    curcontext=${curcontext%:*}-$service
+
+    local data_dir
+    if (( $+opt_args[-D] )); then
+        data_dir=$opt_args[-D]
+    else
+        data_dir=${SNIPPETS_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/snippets}
+    fi
 
     case $service in
     list) _nothing ;;
     path|read|write|edit|delete)
-        local data_dir
-        if (( $+opt_args[-D] )); then
-            data_dir=$opt_args[-D]
-        else
-            data_dir=${SNIPPETS_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/snippets}
-        fi
         local -a snippet_files=($dir/**(N.))
         (($#snippet_files)) && _values 'snippets' ${snippet_files[@]#$data_dir/}
         ;;
     esac
-}
-
-_snippets "$@"
+    ;;
+esac

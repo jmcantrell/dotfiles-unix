@@ -12,24 +12,4 @@ alias pR='paths -z remove'
 
 alias pc='paths clear'
 
-pcp() {
-    paths -z get | xargs -r cp -vi -t "${1:-$PWD}"
-}
-
-pmv() {
-    paths -z get | xargs -r mv -vi -t "${1:-$PWD}"
-}
-
-pln() {
-    paths -z get | xargs -r ln -vsri -t "${1:-$PWD}" 
-}
-
-prm() {
-    paths -z get | xargs -r rm -vri
-}
-
-pe() {
-    paths -z get | editor-stdin
-}
-
 # vi:ft=sh

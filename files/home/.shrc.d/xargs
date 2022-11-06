@@ -1,0 +1,17 @@
+xzcp() {
+    xargs --null -r cp -vi "$@"
+}
+
+xzmv() {
+    xargs --null -r mv -vi "$@"
+}
+
+xzln() {
+    xargs --null -r ln -vi "$@"
+}
+
+xzrm() {
+    xargs --null -r rm -vi "$@"
+}
+
+# vi:ft=sh

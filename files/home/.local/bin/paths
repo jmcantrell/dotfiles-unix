@@ -40,6 +40,7 @@ do_get() {
 do_set() {
     local list=$1
     shift
+    mkdir -p "$(dirname "$list")"
     printf "%s\0" "$@" >"$list"
 }
 
@@ -47,6 +48,7 @@ do_add() {
     local list=$1
     shift
     do_remove "$list" "$@"
+    mkdir -p "$(dirname "$list")"
     printf "%s\0" "$@" >>"$list"
 }
 
@@ -102,7 +104,8 @@ get | set | add | remove | clear) ;;
     ;;
 esac
 
-list=${TMPDIR:-/tmp}/${0##*/}.$USER-$name
+list_dir=${TMPDIR:-/tmp}/${0##*/}.$USER
+list=$list_dir/$name
 
 case $action in
 get | clear)
@@ -118,3 +121,11 @@ else
 fi
 
 do_"$action" "$list" "${paths[@]}"
+
+case $action in
+remove | clear)
+    if [[ -d $list_dir ]]; then
+        find "$list_dir" -mindepth 1 -empty -delete
+    fi
+    ;;
+esac

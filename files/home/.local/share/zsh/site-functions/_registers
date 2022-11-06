@@ -1,16 +1,20 @@
 #compdef registers
 
-local state state_descr context line
+local state state_descr context line opt_args
 
-_arguments -S \
-    "(- 1)"-h"[show the help text]" \
-    "(-)::action:(read write append clear)" \
-    "(-)::register:->register" \
-    && return 0
+_arguments -s -S -A "-*" : \
+    "(- : *)-h[show the help text]" \
+    '(-h)::action:((
+        "read:output register content to stdout"
+        "write:set register content from stdin"
+        "append:add to register content from stdin"
+        "clear:clear data from register"
+    ))' \
+    "(-h)::register:->register" \
+    && return
 
 if [[ $state == register ]]; then
-    local __registers=(${TMPDIR:/tmp}/registers.$USER-*(N.:t))
-    (($#__registers)) || __registers+=(default)
-    _values 'registers' $__registers
+    local register_dir=${TMPDIR:/tmp}/registers.$USER
+    local -a register_files=($register_dir/**(N.))
+    _values 'registers' default ${register_files#$register_dir/}
 fi
-

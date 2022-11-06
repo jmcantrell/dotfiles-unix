@@ -1,0 +1,38 @@
+#compdef paths
+
+_paths() {
+    local curcontext=$curcontext context state state_descr line opt_args
+
+    _arguments -C -s -S -A "-*" : \
+        "(- : *)-h[show the help text]" \
+        "(-h)-n[set path list]:path list:->path_list" \
+        "(-h)-z[input/output delimited by nulls]" \
+        '(-h)1:action:((
+            "get:output path list"
+            "set:set contents of path list"
+            "add:add paths to list"
+            "remove:remove paths from list"
+            "clear:clear path list"
+        ))' \
+        '(-h)*:: :->action' \
+        && return
+
+    service=$words[1]
+    curcontext=${curcontext%:*}-$service:
+
+    case $state in
+    action)
+        case $service in
+        get|clear) _nothing ;;
+        set|add|remove) _files ;;
+        esac
+        ;;
+    path_list)
+        local list_dir=${TMPDIR:-/tmp}/paths.$USER
+        local -a list_files=($list_dir/**(N.))
+        _values 'path lists' default ${list_files#$list_dir/}
+        ;;
+    esac
+}
+
+_paths "$@"

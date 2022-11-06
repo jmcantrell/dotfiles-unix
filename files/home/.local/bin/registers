@@ -68,6 +68,11 @@ read | write | append | clear) ;;
     ;;
 esac
 
-register=${TMPDIR:-/tmp}/${0##*/}.$USER-${2:-default}
+register_dir=${TMPDIR:-/tmp}/${0##*/}.$USER
+register=$register_dir${2:-default}
 
 do_"$action" "$register"
+
+if [[ $action == clear && -d $register_dir ]]; then
+    find "$register_dir" -mindepth 1 -empty -delete
+fi

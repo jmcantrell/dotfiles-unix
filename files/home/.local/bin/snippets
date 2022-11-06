@@ -93,10 +93,12 @@ list | path | read | write | delete | edit) ;;
     ;;
 esac
 
-if [[ $action == list ]]; then
+case $action in
+list)
     do_list
     exit 0
-fi
+    ;;
+esac
 
 snippet=$data_dir/${2:?missing snippet name}
 
@@ -107,9 +109,10 @@ fi
 
 do_"$action" "$snippet"
 
-# Remove any orphaned directory nesting.
-if [[ -d $data_dir ]]; then
-    case $action in
-    delete | edit) find "$data_dir/" -mindepth 1 -type d -empty -delete ;;
-    esac
-fi
+case $action in
+delete | edit)
+    if [[ -d $data_dir ]]; then
+        find "$data_dir" -mindepth 1 -type d -empty -delete
+    fi
+    ;;
+esac

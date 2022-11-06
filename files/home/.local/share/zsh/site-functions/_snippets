@@ -1,18 +1,38 @@
 #compdef snippets
 
-local state state_descr context line opt_args
-local data_dir=${XDG_DATA_HOME:-$HOME/.local/share}/snippets
+_snippets() {
+    local curcontext=$curcontext context state state_descr line opt_args
 
-_arguments -S \
-    "(- 1)"-h"[show the help text]" \
-    "-D[set register directory]:register directory:_files -/" \
-    "(-)::action:(list path read write append edit delete)" \
-    "(-)::snippet:->snippet" \
-    && return 0
+    _arguments -C -s -S -A "-*" : \
+        "(- : *)-h[show the help text]" \
+        "(-h)-D[set register directory]:register directory:_files -/" \
+        '(-h)1:action:((
+            "list:print all snippet names to stdout"
+            "path:print snippet path to stdout"
+            "read:print snippet content to stdout"
+            "write:set snippet content from stdin"
+            "delete:delete snippet"
+            "edit:open snippet in editor"
+        ))' \
+        '(-h)*:: :->action' \
+        && return
 
-(( $+opt_args[-D] )) && data_dir=$opt_args[-D]
+    service=$words[1]
+    curcontext=${curcontext%:*}-$service:
 
-if [[ $state == snippet ]]; then
-    local -a data_files=($data_dir/**(N.))
-    (($#data_files)) && _values 'snippets' ${data_files[@]#$data_dir/}
-fi
+    case $service in
+    list) _nothing ;;
+    path|read|write|edit|delete)
+        local data_dir
+        if (( $+opt_args[-D] )); then
+            data_dir=$opt_args[-D]
+        else
+            data_dir=${SNIPPETS_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/snippets}
+        fi
+        local -a snippet_files=($dir/**(N.))
+        (($#snippet_files)) && _values 'snippets' ${snippet_files[@]#$data_dir/}
+        ;;
+    esac
+}
+
+_snippets "$@"

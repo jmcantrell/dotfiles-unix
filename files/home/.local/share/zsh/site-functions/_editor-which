@@ -1,0 +1,3 @@
+#compdef editor-which
+
+_path_commands

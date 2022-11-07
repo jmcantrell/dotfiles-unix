@@ -1,8 +1,0 @@
-# Complete executables.
-compdef ex=exec
-compdef eX=exec
-
-# Complete commands in PATH.
-compdef ew=whence
-
-# vi:ft=zsh

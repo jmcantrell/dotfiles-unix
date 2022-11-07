@@ -29,4 +29,9 @@ done && shift $((OPTIND - 1))
 
 IFS= readarray -t "${read_options[@]}" paths
 
+if ((${#paths[@]} == 0)); then
+    printf "No paths to edit\n" >&2
+    exit 1
+fi
+
 exec editor "${paths[@]}" </dev/tty

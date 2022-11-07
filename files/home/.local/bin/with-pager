@@ -1,3 +1,5 @@
 #!/usr/bin/env sh
 
+# Execute a command with stdout sent to the pager.
+
 exec "$@" | pager

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Edit the results of an rg search.
+
+set -euo pipefail
+
+exec editor -q <(rg --vimgrep --line-number --column "$@")

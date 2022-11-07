@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-exec find "$@" -print0 | sk --read0 --preview='previewer {}'

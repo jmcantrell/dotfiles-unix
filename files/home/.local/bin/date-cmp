@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Compare two timestamps.
-# Usage: datecmp LHS RHS
+# Usage: date-cmp LHS RHS
 
 # Returns standard comparison values (-1=less, 0=equal, 1=greater).
 

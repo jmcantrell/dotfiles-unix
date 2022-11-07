@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 # Start an interactive sh that's recorded to a file.
-# Usage: scriptsh [OPTIONS] [FILE]
+# Usage: script-sh [OPTIONS] [FILE]
 # See script(1) for options.
 
 PS1='\$ ' script -q -c 'sh -l' "$@"

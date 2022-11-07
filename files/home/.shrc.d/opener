@@ -1,3 +1,9 @@
 alias o=opener
 
+# Open a file via sk.
+alias osk=opener-sk
+
+# Open a file from an fd search via sk.
+alias ofdsk=opener-fd-sk
+
 # vi:ft=sh

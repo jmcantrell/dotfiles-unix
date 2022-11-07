@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Edit the results of a locate search.
+
+set -euo pipefail
+
+locate "$@" | editor-stdin

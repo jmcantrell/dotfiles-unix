@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# Edit a command in PATH.
+
+set -euo pipefail
+
+type -P "$@" | editor-stdin

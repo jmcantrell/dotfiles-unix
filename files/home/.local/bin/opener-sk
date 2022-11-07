@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Open a file using sk.
+
+set -euo pipefail
+
+path=$(find "${@:-$PWD}" --print0 | sk --read0 --preview='previewer {}')
+
+exec opener "$path"

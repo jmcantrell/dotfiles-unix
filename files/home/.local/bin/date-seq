@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Return a sequence of dates.
-# Usage: dateseq TIMESTAMP INCREMENT COUNT [ARGUMENT...]
+# Usage: date-seq TIMESTAMP INCREMENT COUNT [ARGUMENT...]
 
 # The timestamp and increment parameters can be any string that `date`
 # recognizes as a time specification:

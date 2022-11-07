@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Show the path of a python module."""
+"""Show the file path of a python module."""
 
 import sys
 from argparse import ArgumentParser

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Edit the results of an rg search via sk.
+
 set -euo pipefail
 
 results_file=$(mktemp -t "${0##*/}.XXXXXXXXXX")
@@ -8,8 +10,11 @@ trap '$cleanup' EXIT
 
 sk --ansi --interactive --delimiter=: --multi \
     --bind='ctrl-a:select-all' \
-    --cmd='rg --color=always --line-number --column "{}"' \
+    --cmd='rg --color=always --vimgrep "{}"' \
     --preview='previewer -g {2} {1}' --preview-window '+{2}-/2' \
     "$@" >"$results_file"
 
-exec editor -q "$results_file"
+cat "$results_file"
+exit
+
+editor -q "$results_file"

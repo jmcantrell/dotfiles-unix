@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# Serve a directory over http.
+
 set -euo pipefail
 
 port=${1:?missing port number}

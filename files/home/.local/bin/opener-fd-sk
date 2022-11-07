@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# Open a file from an fd search via sk.
+
+set -euo pipefail
+
+path=$(fd --print0 "$@" | sk --read0 --preview='previewer {}')
+
+exec opener "$path"

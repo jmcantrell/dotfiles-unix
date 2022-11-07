@@ -7,23 +7,15 @@ alias E=sudoedit
 alias ein=editor-stdin
 
 # Edit program(s) in $PATH.
-ew() {
-    command -v "$@" 2>/dev/null | editor-stdin
-}
+alias ew=editor-which
 
-# Edit locate results.
-el() {
-    locate "$@" 2>/dev/null | editor-stdin
-}
+# Edit results of a locate search.
+alias el=editor-locate
 
-# Edit the stdout of a command.
-ex() {
-    "$@" | editor -
-}
+# Edit results of an rg search.
+alias erg=editor-rg
 
-# Edit both stdout and stderr of a command.
-eX() {
-    "$@" 2>&1 | editor -
-}
+# Edit results of an rg search via sk.
+alias ergsk=editor-rg-sk
 
 # vi:ft=sh

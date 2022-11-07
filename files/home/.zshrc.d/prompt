@@ -3,6 +3,7 @@ setopt prompt_subst
 env_info() {
     unset env_info
     local env_names=()
+    [[ -e .git ]] && env_names+=(git)
     [[ -v DIRENV_DIR ]] && env_names+=(direnv)
     [[ -v VIRTUAL_ENV ]] && env_names+=(venv)
     [[ -f package.json || -d node_modules ]] && env_names+=(node)
@@ -10,28 +11,15 @@ env_info() {
     [[ -f Cargo.toml ]] && env_names+=(cargo)
     [[ -r stack.yaml ]] && env_names+=(stack)
     [[ -n *.cabal(#qN) ]] && env_names+=(cabal)
-    (( $#env_names > 0 )) && env_info="%F{3}${env_names[*]}%f"
+    (( $#env_names )) && env_info="%F{3}${env_names[*]}%f"
 }
 precmd_functions+=env_info
-
-autoload -U vcs_info
-formats="%c%u%F{5}%b%f"
-zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' stagedstr "%F{2}+%f"
-zstyle ':vcs_info:*' unstagedstr "%F{1}!%f"
-zstyle ':vcs_info:*' formats "$formats "
-zstyle ':vcs_info:*' actionformats "%a:$formats "
-precmd_functions+=vcs_info
 
 # the current working directory
 PS1='%U%F{7}%d%f%u'
 
 # development environment(s)
 PS1+='${env_info:+ $env_info}'
-
-# version control status
-PS1+='${vcs_info_msg_0_:+ $vcs_info_msg_0_}'
 
 PS1+=$'\n'
 

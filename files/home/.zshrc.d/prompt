@@ -3,7 +3,7 @@ setopt prompt_subst
 env_info() {
     unset env_info
     local env_names=()
-    [[ -e .git ]] && env_names+=(git)
+    git rev-parse &>/dev/null && env_names+=(git)
     [[ -v DIRENV_DIR ]] && env_names+=(direnv)
     [[ -v VIRTUAL_ENV ]] && env_names+=(venv)
     [[ -f package.json || -d node_modules ]] && env_names+=(node)

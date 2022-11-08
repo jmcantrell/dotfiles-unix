@@ -46,8 +46,12 @@ trap '$cleanup' EXIT
 repo=luarocks/luarocks
 
 versions_file=$temp_dir/versions
-git ls-remote --tags --refs "https://github.com/$repo" |
-    sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
+
+while read -r line; do
+    if [[ $line =~ .*refs/tags/v(.*)$ ]]; then
+        printf "%s\n" "${BASH_REMATCH[1]}"
+    fi
+done < <(git ls-remote --tags --refs "https://github.com/$repo") |
     sort -r --version-sort >"$versions_file"
 
 prefix=${1:?missing lua prefix}
@@ -56,8 +60,12 @@ version=${2:-latest}
 cd "$temp_dir"
 
 case $version in
-system) version=$(/usr/bin/luarocks --version | head -n1 | cut -d' ' -f2) ;;
-latest) version=$(grep -v -m1 '[^0-9.]' "$versions_file") ;;
+latest)
+    version=$(grep -v -m1 '[^0-9.]' "$versions_file")
+    ;;
+system)
+    version=$(/usr/bin/luarocks --version | head -n1 | cut -d' ' -f2)
+    ;;
 *)
     if ! grep -q "^$version$" "$versions_file"; then
         printf "Invalid version: %s\n" "$version" >&2

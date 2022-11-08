@@ -66,8 +66,12 @@ printf -v cleanup "rm -rf %q" "$temp_dir"
 trap '$cleanup' EXIT
 
 versions_file=$temp_dir/versions
-git ls-remote --tags --refs "https://github.com/$repo" |
-    sed -n "s:^.*refs/tags/v\(\S*\).*$:\1:p" |
+
+while read -r line; do
+    if [[ $line =~ .*refs/tags/v(.*)$ ]]; then
+        printf "%s\n" "${BASH_REMATCH[1]}"
+    fi
+done < <(git ls-remote --tags --refs "https://github.com/$repo") |
     sort -r --version-sort >"$versions_file"
 
 version=${1:-latest}
@@ -77,10 +81,6 @@ curl_release_json() {
 }
 
 case $version in
-system)
-    version=$(/usr/bin/node --version | cut -c2-)
-    release_json=$(curl_release_json "$version")
-    ;;
 latest)
     while read -r version; do
         release_json=$(curl_release_json "$version")
@@ -90,6 +90,10 @@ latest)
             continue
         fi
     done < <(head -n3 "$versions_file")
+    ;;
+system)
+    version=$(/usr/bin/node --version | cut -c2-)
+    release_json=$(curl_release_json "$version")
     ;;
 *)
     if ! grep -q "^$version$" "$versions_file"; then

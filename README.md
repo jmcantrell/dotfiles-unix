@@ -13,7 +13,7 @@ Initialize repository, install packages, symlink files, and configure system:
 ./scripts/config
 ```
 
-## Additional tasks
+## Maintenance
 
 Upgrade files to latest version:
 

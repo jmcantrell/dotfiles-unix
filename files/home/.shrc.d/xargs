@@ -1,17 +1,13 @@
-# Create commands for common uses of xargs.
+for cmd in cp mv ln rm; do
+    eval "
+    x$cmd() {
+        xargs -o -r \"$SHELL\" -ic '$cmd \"\$@\"' -- \"\$@\"
+    }
 
-# for cmd in cp mv ln rm; do
-#     eval "
-#     # Assume input is newline-delimited.
-#     x$cmd() {
-#         xargs -o -r \"\$SHELL\" -ic "$cmd -vi \\\\"\$@\" \"\$@\"' --
-#     }
-
-#     # Assume input is null-delimited.
-#     xz$cmd() {
-#         xargs -0 -o -r \$SHELL -ic '$cmd -vi \"\$@\" \"\$@\"' --
-#     }
-#     "
-# done
+    xz$cmd() {
+        xargs -0 -o -r \"$SHELL\" -ic '$cmd \"\$@\"' -- \"\$@\"
+    }
+    "
+done
 
 # vi:ft=sh

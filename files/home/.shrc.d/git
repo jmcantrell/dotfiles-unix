@@ -77,8 +77,7 @@ alias glb='gl --branches --not --remotes --simplify-by-decoration --oneline'
 alias glbr='gl --branches --simplify-by-decoration --oneline'
 
 # List tracked files.
-alias gla='g ls-files' # include submodule paths
-alias gls='gla | grep -Fxvf <(g ls-submodule-paths)'
+alias gls='g ls-files'
 
 # List files changed since last commit.
 alias glsd='gd --name-only'
@@ -138,7 +137,7 @@ alias grh='gr --hard'
 # Change the directory to the nearest git directory.
 cdg() {
     local dir
-    dir=$(git root "$@") || return 1
+    dir=$(git -C "${1:-$PWD}" rev-parse --show-toplevel) || return 1
     cd "$dir" || return 1
 }
 

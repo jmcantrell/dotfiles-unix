@@ -1,9 +1,12 @@
+# Define functions for processing files with xargs that is aware of aliases.
 for cmd in cp mv ln rm; do
     eval "
+    # Handle newline-delimited input.
     x$cmd() {
         xargs -o -r \"$SHELL\" -ic '$cmd \"\$@\"' -- \"\$@\"
     }
 
+    # Handle null-delimited input.
     xz$cmd() {
         xargs -0 -o -r \"$SHELL\" -ic '$cmd \"\$@\"' -- \"\$@\"
     }

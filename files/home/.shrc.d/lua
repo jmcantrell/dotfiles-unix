@@ -1,5 +1,3 @@
 export LUA_VERSIONS=${XDG_DATA_HOME:-$HOME/.local/share}/lua
 
-load_prefix "$LUA_VERSIONS"/default
-
 # vi:ft=sh

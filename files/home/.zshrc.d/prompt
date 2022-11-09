@@ -1,6 +1,6 @@
 setopt prompt_subst
 
-env_info() {
+set_env_info() {
     unset env_info
     local env_names=()
     git rev-parse &>/dev/null && env_names+=(git)
@@ -13,7 +13,7 @@ env_info() {
     [[ -n *.cabal(#qN) ]] && env_names+=(cabal)
     (( $#env_names )) && env_info="%F{3}${env_names[*]}%f"
 }
-precmd_functions+=env_info
+precmd_functions+=set_env_info
 
 # the current working directory
 PS1='%U%F{7}%d%f%u'

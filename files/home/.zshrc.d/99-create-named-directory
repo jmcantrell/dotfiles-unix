@@ -5,8 +5,6 @@ create_named_directory() {
     shift 2
 
     eval "
-    $name=${(q)directory}
-
     # Add the named directory.
     hash -d $name=${(q)directory}
 

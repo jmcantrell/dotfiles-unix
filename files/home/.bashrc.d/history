@@ -7,4 +7,4 @@ HISTCONTROL=ignoreboth
 # History is a union of all sessions.
 shopt -s histappend
 
-# vi:ft=bash
+# vi:ft=sh

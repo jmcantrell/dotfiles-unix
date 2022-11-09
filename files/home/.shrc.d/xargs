@@ -1,17 +1,17 @@
-xzcp() {
-    xargs --null -r cp -vi "$@"
-}
+# Create commands for common uses of xargs.
 
-xzmv() {
-    xargs --null -r mv -vi "$@"
-}
+# for cmd in cp mv ln rm; do
+#     eval "
+#     # Assume input is newline-delimited.
+#     x$cmd() {
+#         xargs -o -r \"\$SHELL\" -ic "$cmd -vi \\\\"\$@\" \"\$@\"' --
+#     }
 
-xzln() {
-    xargs --null -r ln -vi "$@"
-}
-
-xzrm() {
-    xargs --null -r rm -vi "$@"
-}
+#     # Assume input is null-delimited.
+#     xz$cmd() {
+#         xargs -0 -o -r \$SHELL -ic '$cmd -vi \"\$@\" \"\$@\"' --
+#     }
+#     "
+# done
 
 # vi:ft=sh

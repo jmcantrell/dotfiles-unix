@@ -1,18 +1,18 @@
 INPUTRC=${XDG_CONFIG_HOME:$HOME/.config}/inputrc
 
 # Mark each prompt so they can be identified in the scrollback.
-_mark_prompt() {
+mark_prompt() {
     printf '\e]133;A\e\\'
 }
-PROMPT_COMMAND=_mark_prompt${PROMPT_COMMAND:+;$PROMPT_COMMAND}
+PROMPT_COMMAND=mark_prompt${PROMPT_COMMAND:+;$PROMPT_COMMAND}
 
 # Update the terminal title to show the current directory.
-_set_title() {
+set_title() {
     printf "\033]0;bash %s\a" "${PWD/$HOME/\~}"
 }
-PROMPT_COMMAND=_set_title${PROMPT_COMMAND:+;$PROMPT_COMMAND}
+PROMPT_COMMAND=set_title${PROMPT_COMMAND:+;$PROMPT_COMMAND}
 
 # Update LINES and COLUMNS after each command.
 shopt -s checkwinsize
 
-# vi:ft=bash
+# vi:ft=sh

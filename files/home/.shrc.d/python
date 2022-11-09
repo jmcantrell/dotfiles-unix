@@ -1,7 +1,5 @@
 export PYTHON_VERSIONS=${XDG_DATA_HOME:-$HOME/.local/share}/python
 
-load_prefix "$PYTHON_VERSIONS"/default
-
 # File that defines what's global in interactive sessions.
 export PYTHONSTARTUP=${XDG_CONFIG_HOME:-$HOME/.config}/python/startup.py
 

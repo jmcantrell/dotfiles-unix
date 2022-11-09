@@ -14,8 +14,6 @@ Usage:
 Options:
     -h               show this help message and exit
 
-    -d               set the requested version as the default
-
     -D DIRECTORY     store versions in DIRECTORY
                      (default: ${versions_dir@Q})
 
@@ -34,11 +32,8 @@ Environment:
     NODE_ARCHIVES    store archives in this directory (same as -A)
     NODE_PACKAGES    install packages listed in this file (same as -P)"
 
-set_as_default=0
-
-while getopts ":dD:A:P:h" option; do
+while getopts ":D:A:P:h" option; do
     case $option in
-    d) set_as_default=1 ;;
     D) versions_dir=$OPTARG ;;
     A) archives_dir=$OPTARG ;;
     P) packages_file=$OPTARG ;;
@@ -129,8 +124,4 @@ if [[ ! -d $version_dir ]]; then
     printf "Node.js v%s is now installed at: %q\n" "$version" "$version_dir"
 else
     printf "Node.js v%s is already installed at: %q\n" "$version" "$version_dir"
-fi
-
-if ((set_as_default)); then
-    ln -vsfn "$version_dir" "$versions_dir"/default
 fi

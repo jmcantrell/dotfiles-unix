@@ -1,8 +1,3 @@
-for file in /etc/profile ~/.profile.d/*; do
-    if test -f "$file" && ! . "$file"; then
-        printf "Unable to source file: %q\n" "$file" >&2
-    fi
+for file in ~/.profile.d/*; do
+    test -f "$file" && . "$file"
 done
-unset file
-
-# vi:ft=sh

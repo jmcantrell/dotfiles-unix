@@ -1,5 +1,3 @@
-setopt vi
-
 # Use <tab> for completion.
 # Complete as much as possible before showing a menu.
 bindkey '^i' complete-word

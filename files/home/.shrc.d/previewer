@@ -1,9 +1,4 @@
 alias p=previewer
-
-# View images sized as wide as the current terminal.
-pi() {
-    [[ -v SWAYSOCK ]] || return 1
-    img2sixel -w "$(sway-window | jq .rect.width)" "$@"
-}
+alias pi=previewer-image
 
 # vi:ft=sh

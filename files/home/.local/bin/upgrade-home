@@ -13,5 +13,6 @@ enable-lua
 enable-secrets
 
 cd ~/.dotfiles
+./scripts/update
 ./scripts/upgrade
 ./scripts/deploy

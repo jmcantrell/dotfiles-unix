@@ -214,3 +214,6 @@
 [submodule "vim-nftables"]
 	path = files/home/.config/nvim/pack/default/start/nftables
 	url = https://github.com/nfnty/vim-nftables.git
+[submodule "vim-snakey-camel"]
+	path = files/home/.config/nvim/pack/default/start/snakey-camel
+	url = https://github.com/scrooloose/vim-snakey-camel.git

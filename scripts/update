@@ -2,4 +2,6 @@
 
 set -euo pipefail
 
-git submodule update --recursive
+git pull origin main
+
+./scripts/init

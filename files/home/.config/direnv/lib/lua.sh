@@ -27,4 +27,3 @@ use_lua() {
 
     log_status "Successfully loaded Lua $version from $prefix"
 }
-

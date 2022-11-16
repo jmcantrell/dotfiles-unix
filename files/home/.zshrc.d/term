@@ -15,9 +15,6 @@ set_title() {
 precmd_functions+=set_title  # before each prompt
 preexec_functions+=set_title # before command executes
 
-# Don't beep on errors.
-setopt no_beep
-
 # Allow comments in interactive shells.
 setopt interactive_comments
 

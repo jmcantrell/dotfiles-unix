@@ -32,4 +32,3 @@ use_deno() {
 
     log_status "Successfully loaded Deno $version from $prefix"
 }
-

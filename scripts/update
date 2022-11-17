@@ -3,5 +3,4 @@
 set -euo pipefail
 
 git pull origin main
-
-./scripts/init
+git submodule update --init --recursive

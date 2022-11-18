@@ -9,6 +9,7 @@ enable-ruby
 enable-node
 enable-deno
 enable-lua
+enable-nim
 
 enable-secrets
 

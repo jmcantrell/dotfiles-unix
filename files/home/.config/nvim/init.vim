@@ -117,8 +117,16 @@ set statusline+=\ %#StatusLinePercentNr#%(\ %P\ %)%*
 let mapleader = "\<space>"
 let maplocalleader = "\<cr>"
 
+" Go to the beginning/end of line.
+nnoremap H ^
+nnoremap L $
+
 " Yank to end of line (similar to D).
 noremap Y y$
+
+" Move visually selected lines up/down.
+vnoremap <silent> K :move '<-2<cr>gv
+vnoremap <silent> J :move '>+1<cr>gv
 
 " Open command window.
 nnoremap <leader>; q:

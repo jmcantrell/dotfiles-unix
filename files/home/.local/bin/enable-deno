@@ -76,6 +76,10 @@ curl_release_json() {
 }
 
 case $version in
+system)
+    version=$(deno --version | cut -c2-)
+    release_json=$(curl_release_json "$version")
+    ;;
 latest)
     while read -r version; do
         release_json=$(curl_release_json "$version")
@@ -85,10 +89,6 @@ latest)
             continue
         fi
     done < <(head -n3 "$versions_file")
-    ;;
-system)
-    version=$(/usr/bin/node --version | cut -c2-)
-    release_json=$(curl_release_json "$version")
     ;;
 *)
     if ! grep -q "^$version$" "$versions_file"; then

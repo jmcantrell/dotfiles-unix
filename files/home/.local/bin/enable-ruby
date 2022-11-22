@@ -74,12 +74,12 @@ done < <(git ls-remote --tags --refs "https://github.com/$repo") |
 version=${1:-latest}
 
 case $version in
+system)
+    version=$(ruby --version | cut -d' ' -f2)
+    version=${version%p*}
+    ;;
 latest)
     version=$(grep -v -m1 '[^0-9.]' "$versions_file")
-    ;;
-system)
-    version=$(/usr/bin/ruby --version | cut -d' ' -f2)
-    version=${version%p*}
     ;;
 *)
     if ! grep -q "^$version$" "$versions_file"; then

@@ -60,11 +60,11 @@ version=${2:-latest}
 cd "$temp_dir"
 
 case $version in
+system)
+    version=$(luarocks --version | head -n1 | cut -d' ' -f2)
+    ;;
 latest)
     version=$(grep -v -m1 '[^0-9.]' "$versions_file")
-    ;;
-system)
-    version=$(/usr/bin/luarocks --version | head -n1 | cut -d' ' -f2)
     ;;
 *)
     if ! grep -q "^$version$" "$versions_file"; then

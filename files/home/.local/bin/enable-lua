@@ -74,7 +74,7 @@ latest)
     version=$(grep -v -m1 '[^0-9.]' "$versions_file")
     ;;
 system)
-    version=$(/usr/bin/lua -v | cut -d' ' -f2)
+    version=$(lua -v | cut -d' ' -f2)
     ;;
 *)
     if ! grep -q "^$version$" "$versions_file"; then

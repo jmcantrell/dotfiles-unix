@@ -70,8 +70,12 @@ done < <(git ls-remote --tags --refs "https://github.com/$repo") |
 version=${1:-latest}
 
 case $version in
-system) version=$(/usr/bin/python --version | cut -d' ' -f2) ;;
-latest) version=$(grep -v -m1 '[^0-9.]' "$versions_file") ;;
+system)
+    version=$(python --version | cut -d' ' -f2)
+    ;;
+latest)
+    version=$(grep -v -m1 '[^0-9.]' "$versions_file")
+    ;;
 *)
     if ! grep -q "^$version$" "$versions_file"; then
         printf "Invalid version: %s\n" "$version" >&2

@@ -1,3 +1,6 @@
+# Use vi-mode editing.
+bindkey -v
+
 # Use <tab> for completion.
 # Complete as much as possible before showing a menu.
 bindkey '^i' complete-word

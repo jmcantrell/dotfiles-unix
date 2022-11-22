@@ -10,6 +10,7 @@ enable-node
 enable-deno
 enable-lua
 enable-nim
+enable-zig
 
 enable-secrets
 

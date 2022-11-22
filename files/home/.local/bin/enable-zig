@@ -1,0 +1,123 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+archives_dir=${ZIG_ARCHIVES:-${XDG_CACHE_HOME:-$HOME/.cache}/zig}
+versions_dir=${ZIG_VERSIONS:-${XDG_DATA_HOME:-$HOME/.local/share}/zig}
+packages_file=${ZIG_PACKAGES:-${XDG_CONFIG_HOME:-$HOME/.config}/zig/packages}
+
+usage="Install a version of Zig.
+
+Usage:
+    ${0##*/} [OPTIONS] [VERSION]
+
+Options:
+    -h               show this help message and exit
+
+    -D DIRECTORY     store versions in DIRECTORY
+                     (default: ${versions_dir@Q})
+
+    -A DIRECTORY     store archives in DIRECTORY
+                     (default: ${archives_dir@Q})
+
+    -P FILE          install packages listed in FILE
+                     (default: ${packages_file@Q})
+
+Arguments:
+    VERSION          install VERSION
+                     (e.g. '0.10.0', 'latest', or 'system')
+
+Environment:
+    ZIG_VERSIONS    store versions in this directory (same as -D
+    ZIG_ARCHIVES    store archives in this directory (same as -A)
+    ZIG_PACKAGES    install packages listed in this file (same as -P)"
+
+while getopts ":D:A:P:h" option; do
+    case $option in
+    D) versions_dir=$OPTARG ;;
+    A) archives_dir=$OPTARG ;;
+    P) packages_file=$OPTARG ;;
+    h)
+        printf "%s\n" "$usage"
+        exit 0
+        ;;
+    :)
+        printf "Option missing argument: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    *)
+        printf "Invalid option: %s\n" "$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done && shift $((OPTIND - 1))
+
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm -rf %q" "$temp_dir"
+trap '$cleanup' EXIT
+
+releases_file=$temp_dir/releases.json
+curl -sSL https://ziglang.org/download/index.json >"$releases_file"
+
+kernel=$(uname --kernel-name)
+machine=$(uname --machine)
+
+version=${1:-latest}
+
+case $version in
+system)
+    version=$(zig version)
+    ;;
+latest)
+    version=$(jq -r 'keys[]' "$releases_file" | sort --reverse --version-sort | grep -v -m1 '[^0-9.]')
+    ;;
+esac
+
+if ! release_json=$(jq -er --arg version "$version" '.[$version]' "$releases_file"); then
+    printf "Invalid version: %s\n" "$version" >&2
+    exit 1
+fi
+
+version_dir=$versions_dir/$version
+archive_file=$archives_dir/zig-$version.tar.xz
+
+if [[ ! -f $archive_file ]]; then
+    arch=$machine-$kernel
+    arch=${arch,,}
+    arch=${arch/darwin/macos}
+
+    if ! build_json=$(jq -er --arg arch "$arch" '.[$arch]' <<<"$release_json"); then
+        printf "Invalid architecture: %s\n" "$arch" >&2
+        exit 1
+    fi
+
+    temp_file=$temp_dir/archive.tar.xz
+    archive_url=$(jq -er .tarball <<<"$build_json")
+
+    printf "Downloading Zig v%s: %s\n" "$version" "$archive_url"
+    curl -L -o "$temp_file" "$archive_url"
+
+    checksum=$(jq -er .shasum <<<"$build_json")
+    printf "%s %s\n" "$checksum" "$temp_file" | sha256sum -c -
+
+    mkdir -p "$(dirname "$archive_file")"
+    mv "$temp_file" "$archive_file"
+fi
+
+if [[ ! -d $version_dir ]]; then
+    mkdir -p "$version_dir"
+    tar -xf "$archive_file" -C "$version_dir" --strip-components=1
+
+    mkdir -p "$version_dir"/bin
+    mv -v "$version_dir"/{zig,bin/zig}
+
+    mkdir -p "$version_dir"/share/doc
+    mv -v "$version_dir"/{doc,share/doc/zig}
+
+    mkdir -p "$version_dir"/share/licenses/zig
+    mv -v "$version_dir"/{LICENSE,share/licenses/zig/LICENSE}
+
+    printf "Zig v%s is now installed at: %q\n" "$version" "$version_dir"
+else
+    printf "Zig v%s is already installed at: %q\n" "$version" "$version_dir"
+fi

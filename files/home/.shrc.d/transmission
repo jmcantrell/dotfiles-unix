@@ -2,10 +2,10 @@ alias tx=transmission-remote
 
 # List IDs of the finished torrents.
 tx_done_ids() {
-    tx -l |
+    tx --list |
+        sed '1d;$d' |
         awk '{print $1,$2}' |
-        tail -n+2 | head -n-1 |
-        grep '\b100%\b' |
+        grep '\b100%$' |
         awk '{print $1}'
 }
 

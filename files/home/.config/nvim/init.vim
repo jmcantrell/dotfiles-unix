@@ -117,10 +117,6 @@ set statusline+=\ %#StatusLinePercentNr#%(\ %P\ %)%*
 let mapleader = "\<space>"
 let maplocalleader = "\<cr>"
 
-" Go to the beginning/end of line.
-nnoremap H ^
-nnoremap L $
-
 " Yank to end of line (similar to D).
 noremap Y y$
 

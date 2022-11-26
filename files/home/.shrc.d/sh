@@ -1,9 +1,9 @@
 alias c=clear
-alias cp='cp -v'
-alias mv='mv -v'
-alias ln='ln -v'
-alias rm='rm -v'
-alias mkdir='mkdir -p'
+alias cp='cp -vi'
+alias mv='mv -vi'
+alias ln='ln -vsf'
+alias rm='rm -vi'
+alias mkdir='mkdir -vp'
 alias rehash='hash -r'
 
 # vi:ft=sh

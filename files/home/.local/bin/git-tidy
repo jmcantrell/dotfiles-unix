@@ -4,8 +4,14 @@
 
 set -euo pipefail
 
+# Verifies the connectivity and validity of the objects in the database.
 git fsck --full
+
+# Prune all reflog entries.
 git reflog expire --expire=now --all
+
+# Pack unpacked local objects into a single pack, removing other redundant packs.
 git repack -a -d -l
-git prune
+
+# Cleanup unnecessary files and optimize the local repository, pruning all unreachable objects.
 git gc --prune=now --aggressive

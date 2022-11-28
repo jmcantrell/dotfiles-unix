@@ -1,8 +1,13 @@
 use_nim() {
     local version
 
-    if ! version=${1:-$(tool_version nim)} || [[ -z $version ]]; then
+    if ! version=${1:-$(tool_version nim)}; then
         log_error "Unable to find Nim version specification"
+        return 1
+    fi
+
+    if [[ -z $version ]]; then
+        log_error "Version for Nim is missing"
         return 1
     fi
 

@@ -9,4 +9,4 @@ name=${1:?missing server name}
 pem=${XDG_CONFIG_HOME:-$HOME/.config}/weechat/$name.pem
 
 openssl ec -noout -text -conv_form compressed -in "$pem" |
-    grep '^pub:' -A 3 | tail -n 3 | tr -d ' \n:' | xxd -r -p | base64
+    grep '^pub:' -A3 | tail -n3 | tr -d ' \n:' | xxd -r -p | base64

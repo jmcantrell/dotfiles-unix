@@ -1,7 +1,7 @@
 use_deno() {
     local version
 
-    if ! version=${1:-$(tool_version deno)} || [[ -z $version ]]; then
+    if ! version=${1:-$(tool_version deno)}; then
         log_error "Unable to find Deno version specification"
         return 1
     fi

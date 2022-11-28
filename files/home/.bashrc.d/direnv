@@ -1,3 +1,6 @@
-eval "$(direnv hook bash)"
+file=${BASH_SOURCE[0]}.cached
+[[ -f $file ]] || direnv hook bash >"$file"
+. "$file"
+unset file
 
-# vi:ft=sh
+# vi:ft=bash

@@ -1,1 +1,3 @@
-autocmd BufRead,BufNewFile *.map setlocal filetype=json
+augroup ftdetect-json
+    autocmd BufRead,BufNewFile *.map setlocal filetype=json
+augroup END

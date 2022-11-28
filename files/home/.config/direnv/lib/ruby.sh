@@ -1,8 +1,13 @@
 use_ruby() {
     local version
 
-    if ! version=${1:-$(tool_version ruby)} || [[ -z $version ]]; then
+    if ! version=${1:-$(tool_version ruby)}; then
         log_error "Unable to find Ruby version specification"
+        return 1
+    fi
+
+    if [[ -z $version ]]; then
+        log_error "Version for Ruby is missing"
         return 1
     fi
 

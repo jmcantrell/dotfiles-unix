@@ -1,8 +1,13 @@
 use_zig() {
     local version
 
-    if ! version=${1:-$(tool_version zig)} || [[ -z $version ]]; then
+    if ! version=${1:-$(tool_version zig)}; then
         log_error "Unable to find Zig version specification"
+        return 1
+    fi
+
+    if [[ -z $version ]]; then
+        log_error "Version for Zig is missing"
         return 1
     fi
 

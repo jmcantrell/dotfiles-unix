@@ -15,4 +15,4 @@ PROMPT_COMMAND=set_title${PROMPT_COMMAND:+;$PROMPT_COMMAND}
 # Update LINES and COLUMNS after each command.
 shopt -s checkwinsize
 
-# vi:ft=sh
+# vi:ft=bash

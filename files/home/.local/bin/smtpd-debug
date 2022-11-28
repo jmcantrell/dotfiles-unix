@@ -4,7 +4,7 @@ set -euo pipefail
 
 port=${1:?missing port number}
 
-cmd=(python -m smtpd -n -d -c DebuggingServer localhost:"$port")
+cmd=(python -m aiosmtpd -n -d -l localhost:"$port")
 
 if ((port < 1024)); then
     cmd=(sudo "${cmd[@]}")

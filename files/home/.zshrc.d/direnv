@@ -1,3 +1,6 @@
-eval "$(direnv hook zsh)"
+file=$0.cached
+[[ -f $file ]] || direnv hook zsh >"$file"
+. "$file"
+unset file
 
 # vi:ft=zsh

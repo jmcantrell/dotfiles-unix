@@ -1,7 +1,7 @@
 use_node() {
     local version
 
-    if ! version=${1:-$(tool_version node .nvmrc)} || [[ -z $version ]]; then
+    if ! version=${1:-$(tool_version node .nvmrc)}; then
         log_error "Unable to find NodeJS version specification"
         return 1
     fi

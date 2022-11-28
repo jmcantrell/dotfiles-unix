@@ -1,8 +1,13 @@
 use_lua() {
     local version
 
-    if ! version=${1:-$(tool_version lua)} || [[ -z $version ]]; then
+    if ! version=${1:-$(tool_version lua)}; then
         log_error "Unable to find Lua version specification"
+        return 1
+    fi
+
+    if [[ -z $version ]]; then
+        log_error "Version for Lua is missing"
         return 1
     fi
 

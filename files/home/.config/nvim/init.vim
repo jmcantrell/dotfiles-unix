@@ -1,5 +1,4 @@
-" Break compatibility with vi.
-set nocompatible
+scriptencoding utf-8
 
 " Separate register contents with newlines.
 set cpoptions+=>

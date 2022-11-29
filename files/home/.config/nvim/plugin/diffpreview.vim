@@ -1,13 +1,13 @@
 function! s:DiffPreview()
     tab split
-    let ft=&ft
+    let ft=&filetype
     diffthis
     vsplit
     enew
     set buftype=nofile
     silent read #
     silent 1 delete
-    let &ft=ft
+    let &filetype=ft
     diffthis
     wincmd l
 endfunction

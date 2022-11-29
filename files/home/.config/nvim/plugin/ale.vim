@@ -7,7 +7,7 @@ let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 
 set omnifunc=ale#completion#OmniFunc
 
-nmap <silent> <c-k> <plug>(ale_previous_wrap)
+nmap <silent> <c-p> <plug>(ale_previous_wrap)
 nmap <silent> <c-n> <plug>(ale_next_wrap)
 nmap <silent> <leader>f <Plug>(ale_fix)
 nmap <silent> <leader>r :ALERename<cr>

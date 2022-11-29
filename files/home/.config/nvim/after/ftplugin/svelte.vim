@@ -14,5 +14,5 @@ let b:fencing_options =
 let b:context_filetype_filetypes =
     \ { 'svelte': [
     \   {'filetype': 'css', 'start': '<style>', 'end': '</style>'},
-    \   {'filetype': 'javascript', 'start': '<script\%( [^>]*\)\?>', 'end': '</script>'},
+    \   {'filetype': 'javascript', 'start': '<script\%( [^>]*\)\?>', 'end': '</script>'}
     \ ] }

@@ -1,6 +1,6 @@
 " Enable syntax highlighting when buffers were loaded through :bufdo, which
 " disables the Syntax autocmd event to speed up processing.
-augroup EnableSyntaxHighlighting
+augroup BufdoSyntaxRestore
     " Filetype processing does happen, so we can detect a buffer initially
     " loaded during :bufdo through a set filetype, but missing b:current_syntax.
     " Also don't do this when the user explicitly turned off syntax highlighting

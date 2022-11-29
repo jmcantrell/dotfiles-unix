@@ -103,12 +103,10 @@ version_dir=$versions_dir/$version
 archive_file=$archives_dir/node-$version.tar.xz
 
 if [[ ! -f $archive_file ]]; then
-    arch=$machine-$kernel
-    arch=${arch,,}
-    arch=${arch/darwin/macos}
-
-    temp_file=$temp_dir/archive.tar.xz
-    archive_file_name=node-v$version-$arch.tar.xz
+    ext=xz
+    [[ $kernel == Darwin ]] && ext=gz
+    temp_file=$temp_dir/archive.tar.$ext
+    archive_file_name=node-v$version-${kernel,,}-${machine/#x86_/x}.tar.$ext
     archive_url=https://nodejs.org/dist/v$version/$archive_file_name
     printf "Downloading Node.js v%s: %s\n" "$version" "$archive_url"
     curl -L -o "$temp_file" "$archive_url"

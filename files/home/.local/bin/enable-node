@@ -117,7 +117,7 @@ if [[ ! -f $archive_file ]]; then
     printf "%s %s\n" "$checksum" "$temp_file" | sha256sum -c -
 
     mkdir -p "$(dirname "$archive_file")"
-    mv "$archive_file_name" "$archive_file"
+    mv "$temp_file" "$archive_file"
 fi
 
 if [[ ! -d $version_dir ]]; then

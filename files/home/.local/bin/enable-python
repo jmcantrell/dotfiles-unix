@@ -95,27 +95,38 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    cd "$temp_dir"
+    src_dir=$temp_dir/src
+    mkdir -p "$src_dir"
+
+    temp_version_dir=$temp_dir/version
+    mkdir -p "$temp_version_dir"
+
+    pushd "$src_dir"
 
     tar -xf "$archive_file" --strip-components=1
 
-    ./configure --prefix="$version_dir"
+    ./configure --prefix="$temp_version_dir"
     make --jobs="$(nproc)" install
 
-    export PATH=$version_dir/bin:$PATH
+    popd
+
+    export PATH=$temp_version_dir/bin:$PATH
 
     major_version=${version%%.*}
 
     for name in pip idle pydoc python; do
-        ln -vsfn "$version_dir/bin/$name$major_version" "$version_dir/bin/$name"
+        ln -vsfrn "$temp_version_dir/bin/$name$major_version" "$temp_version_dir/bin/$name"
     done
-    ln -vsfn "$version_dir/bin/python$major_version"-config "$version_dir"/bin/python-config
+    ln -vsfrn "$temp_version_dir/bin/python$major_version"-config "$temp_version_dir"/bin/python-config
 
     pip install --upgrade pip
 
     if [[ -f $packages_file ]]; then
         xargs -r pip install <"$packages_file"
     fi
+
+    mkdir -p "$(dirname "$version_dir")"
+    mv -v "$temp_version_dir" "$version_dir"
 
     printf "Python v%s is now installed at: %q\n" "$version" "$version_dir"
 else

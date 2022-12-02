@@ -5,12 +5,12 @@
 
 set -euo pipefail
 
-versions_file=$(mktemp -t "${0##*/}".XXXXXXXXXX)
-printf -v cleanup "rm %q" "$versions_file"
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm -vr %q" "$temp_dir"
 trap '$cleanup' EXIT
 
-curl -sSL -o "$versions_file" \
-    https://launchermeta.mojang.com/mc/game/version_manifest.json
+versions_file=$temp_dir/versions.json
+curl -sSL -o "$versions_file" https://launchermeta.mojang.com/mc/game/version_manifest.json
 
 version=${1:-$(jq -er .latest.release "$versions_file")}
 
@@ -19,21 +19,26 @@ if ! version_json=$(jq -er --arg version "$version" '.versions | map(select(.id 
     exit 1
 fi
 
-prefix=${XDG_DATA_HOME:-$HOME/.local/share}/mincraft-server/$version
+version_dir=${XDG_DATA_HOME:-$HOME/.local/share}/mincraft-server/$version
 
-if [[ -d $prefix ]]; then
+if [[ -d $version_dir ]]; then
     exit 0
 fi
 
 downloads_url=$(jq -er .url <<<"$version_json")
-downloads_json=$(curl -sSL "$downloads_url" | jq -er .downloads)
+server_url=$(curl -sSL "$downloads_url" | jq -er .downloads.server.url)
 
-mkdir -p "$prefix"
-cd "$prefix"
+temp_version_dir=$temp_dir/version
+mkdir -p "$temp_version_dir"
 
-server_url=$(jq -er .server.url <<<"$downloads_json")
+pushd "$temp_version_dir"
 
 printf "Downloading Minecraft server v%s: %s\n" "$version" "$server_url"
 curl -L -o server.jar "$server_url"
 
 printf "eula=true\n" >eula.txt
+
+popd
+
+mkdir -p "$(dirname "$version_dir")"
+mv -v "$temp_version_dir" "$version_dir"

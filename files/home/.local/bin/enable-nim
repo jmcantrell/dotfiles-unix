@@ -95,20 +95,27 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    mkdir -p "$version_dir"
-    cd "$version_dir"
+    temp_version_dir=$temp_dir/version
+    mkdir -p "$temp_version_dir"
+
+    pushd "$temp_version_dir"
 
     tar -xf "$archive_file" --strip-components=1
 
     ./build_all.sh
 
-    export PATH=$version_dir/bin:$PATH
+    popd
+
+    export PATH=$temp_version_dir/bin:$PATH
 
     nimble -y install nimble
 
     if [[ -f $packages_file ]]; then
         xargs -r nimble -y install <"$packages_file"
     fi
+
+    mkdir -p "$(dirname "$version_dir")"
+    mv -v "$temp_version_dir" "$version_dir"
 
     printf "Nim v%s is now installed at: %q\n" "$version" "$version_dir"
 else

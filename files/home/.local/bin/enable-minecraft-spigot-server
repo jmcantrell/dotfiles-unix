@@ -5,12 +5,12 @@
 
 set -euo pipefail
 
-versions_file=$(mktemp -t "${0##*/}".XXXXXXXXXX)
-printf -v cleanup "rm %q" "$versions_file"
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm -vr %q" "$temp_dir"
 trap '$cleanup' EXIT
 
-curl -sSL -o "$versions_file" \
-    https://launchermeta.mojang.com/mc/game/version_manifest.json
+versions_file=$temp_dir/versions.json
+curl -sSL -o "$versions_file" https://launchermeta.mojang.com/mc/game/version_manifest.json
 
 version=${1:-$(jq -er .latest.release "$versions_file")}
 
@@ -19,14 +19,16 @@ if ! jq -er --arg version "$version" '.versions[] | select(.id == $version)' "$v
     exit 1
 fi
 
-prefix=${XDG_DATA_HOME:-$HOME/.local/share}/mincraft-spigot-server/$version
+version_dir=${XDG_DATA_HOME:-$HOME/.local/share}/mincraft-spigot-server/$version
 
-if [[ -d $prefix ]]; then
+if [[ -d $version_dir ]]; then
     exit 0
 fi
 
-mkdir -p "$prefix"
-cd "$prefix"
+temp_version_dir=$temp_dir/version
+mkdir -p "$temp_version_dir"
+
+pushd "$temp_version_dir"
 
 printf "Downloading Spigot build tools\n"
 curl -L -O https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
@@ -35,3 +37,8 @@ java -jar BuildTools.jar --rev "$version"
 output_file=$(grep -m1 "Saved as" BuildTools.log.txt | sed 's:^.* \.\/\(.*\)$:\1:')
 ln -vsfn "$output_file" server.jar
 printf "eula=true\n" >eula.txt
+
+popd
+
+mkdir -p "$(dirname "$version_dir")"
+mv -v "$temp_version_dir" "$version_dir"

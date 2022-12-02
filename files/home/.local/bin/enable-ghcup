@@ -16,6 +16,6 @@ fi
 export PATH=$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH
 
 for package in cabal ghc stack hls; do
-    ghcup install "$package" latest
-    ghcup set "$package" latest
+    ghcup install "$package" recommended
+    ghcup set "$package" recommended
 done

@@ -95,24 +95,31 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    cd "$temp_dir"
+    temp_version_dir=$temp_dir/version
+    mkdir -p "$temp_version_dir"
+
+    pushd "$temp_version_dir"
 
     tar -xf "$archive_file" --strip-components=1
 
-    sed -i -e "/^INSTALL_TOP=/s:=.*:= ${version_dir//:/\\:}:" Makefile
-
+    sed -i -e "/^INSTALL_TOP=/s:=.*:= ${temp_version_dir//:/\\:}:" Makefile
     make --jobs="$(nproc)"
     make install
 
-    enable-luarocks "$version_dir"
+    popd
 
-    export PATH=$version_dir/bin:$PATH
+    enable-luarocks "$temp_version_dir"
+
+    export PATH=$temp_version_dir/bin:$PATH
 
     if [[ -f $packages_file ]]; then
         while read -r package; do
             luarocks install "$package"
         done
     fi
+
+    mkdir -p "$(dirname "$version_dir")"
+    mv -v "$temp_version_dir" "$version_dir"
 
     printf "Lua v%s is now installed at: %q\n" "$version" "$version_dir"
 else

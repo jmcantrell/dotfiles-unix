@@ -5,27 +5,30 @@
 
 set -euo pipefail
 
-version_file=$(mktemp -t "${0##*/}".XXXXXXXXXX)
-printf -v cleanup "rm %q" "$version_file"
+temp_dir=$(mktemp -d -t "${0##*/}".XXXXXXXXXX)
+printf -v cleanup "rm -vr %q" "$temp_dir"
 trap '$cleanup' EXIT
 
-curl -sSL -o "$version_file" https://launchermeta.mojang.com/mc/game/version_manifest.json
+versions_file=$temp_dir/versions.json
+curl -sSL -o "$versions_file" https://launchermeta.mojang.com/mc/game/version_manifest.json
 
-version=${1:-$(jq -er .latest.release "$version_file")}
+version=${1:-$(jq -er .latest.release "$versions_file")}
 
-if ! jq -er --arg version "$version" '.versions[] | select(.id == $version)' "$version_file" >/dev/null; then
+if ! jq -er --arg version "$version" '.versions[] | select(.id == $version)' "$versions_file" >/dev/null; then
     printf "Invalid version: %s\n" "$version" >&2
     exit 1
 fi
 
-prefix=${XDG_DATA_HOME:-$HOME/.local/share}/mincraft-fabric-server/$version
+version_dir=${XDG_DATA_HOME:-$HOME/.local/share}/mincraft-fabric-server/$version
 
-if [[ -d $prefix ]]; then
+if [[ -d $version_dir ]]; then
     exit 0
 fi
 
-mkdir -p "$prefix"
-cd "$prefix"
+temp_version_dir=$temp_dir/version
+mkdir -p "$temp_version_dir"
+
+pushd "$temp_version_dir"
 
 installer_url=$(curl -sSL https://meta.fabricmc.net/v2/versions/installer | jq -er .[0].url)
 
@@ -35,6 +38,11 @@ curl -L -o installer.jar "$installer_url"
 java -jar installer.jar server -mcversion "$version" -downloadMinecraft
 
 mv server.jar vanilla.jar
-ln -vsfn fabric-server-launch.jar server.jar
+ln -vsfrn fabric-server-launch.jar server.jar
 printf "serverJar=vanilla.jar\n" >fabric-server-launcher.properties
 printf "eula=true\n" >eula.txt
+
+popd
+
+mkdir -p "$(dirname "$version_dir")"
+mv -v "$temp_version_dir" "$version_dir"

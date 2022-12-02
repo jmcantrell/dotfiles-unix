@@ -103,21 +103,32 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    cd "$temp_dir"
+    src_dir=$temp_dir/src
+    mkdir -p "$src_dir"
+
+    temp_version_dir=$temp_dir/version
+    mkdir -p "$temp_version_dir"
+
+    pushd "$src_dir"
 
     tar -xf "$archive_file" --strip-components=1
 
     ./autogen.sh
-    ./configure --prefix="$version_dir"
+    ./configure --prefix="$temp_version_dir"
     make --jobs="$(nproc)" install
 
-    export PATH=$version_dir/bin:$PATH
+    popd
+
+    export PATH=$temp_version_dir/bin:$PATH
 
     gem update --system
 
     if [[ -f $packages_file ]]; then
         xargs -r gem install <"$packages_file"
     fi
+
+    mkdir -p "$(dirname "$version_dir")"
+    mv -v "$temp_version_dir" "$version_dir"
 
     printf "Ruby v%s is now installed at: %q\n" "$version" "$version_dir"
 else

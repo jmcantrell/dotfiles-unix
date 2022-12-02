@@ -105,17 +105,26 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    mkdir -p "$version_dir"
-    tar -xf "$archive_file" -C "$version_dir" --strip-components=1
+    temp_version_dir=$temp_dir/version
+    mkdir -p "$temp_version_dir"
 
-    mkdir -p "$version_dir"/bin
-    mv -v "$version_dir"/{zig,bin/zig}
+    pushd "$temp_version_dir"
 
-    mkdir -p "$version_dir"/share/doc
-    mv -v "$version_dir"/{doc,share/doc/zig}
+    tar -xf "$archive_file" --strip-components=1
 
-    mkdir -p "$version_dir"/share/licenses/zig
-    mv -v "$version_dir"/{LICENSE,share/licenses/zig/LICENSE}
+    mkdir -p bin
+    mv -v zig bin
+
+    mkdir -p share/doc
+    mv -v doc share/doc/zig
+
+    mkdir -p share/licenses/zig
+    mv -v LICENSE share/licenses/zig
+
+    popd
+
+    mkdir -p "$(dirname "$version_dir")"
+    mv -v "$temp_version_dir" "$version_dir"
 
     printf "Zig v%s is now installed at: %q\n" "$version" "$version_dir"
 else

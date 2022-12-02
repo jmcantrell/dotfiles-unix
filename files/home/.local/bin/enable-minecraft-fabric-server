@@ -28,7 +28,7 @@ fi
 temp_version_dir=$temp_dir/version
 mkdir -p "$temp_version_dir"
 
-pushd "$temp_version_dir"
+pushd "$temp_version_dir" >/dev/null
 
 installer_url=$(curl -sSL https://meta.fabricmc.net/v2/versions/installer | jq -er .[0].url)
 
@@ -42,7 +42,7 @@ ln -vsfrn fabric-server-launch.jar server.jar
 printf "serverJar=vanilla.jar\n" >fabric-server-launcher.properties
 printf "eula=true\n" >eula.txt
 
-popd
+popd >/dev/null
 
 mkdir -p "$(dirname "$version_dir")"
 mv -v "$temp_version_dir" "$version_dir"

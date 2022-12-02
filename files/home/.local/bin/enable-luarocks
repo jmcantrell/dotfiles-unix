@@ -83,7 +83,7 @@ if [[ ! -f $archive_file ]]; then
     curl -L -o "$archive_file" "$archive_url"
 fi
 
-pushd "$temp_dir"
+pushd "$temp_dir" >/dev/null
 
 tar -xf "$archive_file" --strip-components=1
 

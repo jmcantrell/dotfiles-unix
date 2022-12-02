@@ -31,14 +31,14 @@ server_url=$(curl -sSL "$downloads_url" | jq -er .downloads.server.url)
 temp_version_dir=$temp_dir/version
 mkdir -p "$temp_version_dir"
 
-pushd "$temp_version_dir"
+pushd "$temp_version_dir" >/dev/null
 
 printf "Downloading Minecraft server v%s: %s\n" "$version" "$server_url"
 curl -L -o server.jar "$server_url"
 
 printf "eula=true\n" >eula.txt
 
-popd
+popd >/dev/null
 
 mkdir -p "$(dirname "$version_dir")"
 mv -v "$temp_version_dir" "$version_dir"

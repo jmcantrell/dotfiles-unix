@@ -28,7 +28,7 @@ fi
 temp_version_dir=$temp_dir/version
 mkdir -p "$temp_version_dir"
 
-pushd "$temp_version_dir"
+pushd "$temp_version_dir" >/dev/null
 
 printf "Downloading Spigot build tools\n"
 curl -L -O https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
@@ -38,7 +38,7 @@ output_file=$(grep -m1 "Saved as" BuildTools.log.txt | sed 's:^.* \.\/\(.*\)$:\1
 ln -vsfn "$output_file" server.jar
 printf "eula=true\n" >eula.txt
 
-popd
+popd >/dev/null
 
 mkdir -p "$(dirname "$version_dir")"
 mv -v "$temp_version_dir" "$version_dir"

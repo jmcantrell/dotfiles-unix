@@ -3,6 +3,7 @@ let g:ale_completion_enabled = 1
 let g:ale_floating_preview = 1
 let g:ale_hover_to_floating_preview = 1
 let g:ale_detail_to_floating_preview = 1
+let g:ale_virtualtext_cursor = 0
 let g:ale_fixers = { '*': ['remove_trailing_lines', 'trim_whitespace'] }
 
 set omnifunc=ale#completion#OmniFunc

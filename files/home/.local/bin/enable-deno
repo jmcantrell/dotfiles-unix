@@ -4,7 +4,6 @@ set -euo pipefail
 
 archives_dir=${DENO_ARCHIVES:-${XDG_CACHE_HOME:-$HOME/.cache}/deno}
 versions_dir=${DENO_VERSIONS:-${XDG_DATA_HOME:-$HOME/.local/share}/deno}
-packages_file=${DENO_PACKAGES:-${XDG_CONFIG_HOME:-$HOME/.config}/deno/packages}
 
 usage="Install a version of Deno.
 
@@ -20,23 +19,18 @@ Options:
     -A DIRECTORY     store archives in DIRECTORY
                      (default: ${archives_dir@Q})
 
-    -P FILE          install packages listed in FILE
-                     (default: ${packages_file@Q})
-
 Arguments:
     VERSION          install VERSION
                      (e.g. '1.26.1', 'latest', or 'system')
 
 Environment:
     DENO_VERSIONS    store versions in this directory (same as -D
-    DENO_ARCHIVES    store archives in this directory (same as -A)
-    DENO_PACKAGES    install packages listed in this file (same as -P)"
+    DENO_ARCHIVES    store archives in this directory (same as -A)"
 
 while getopts ":D:A:P:h" option; do
     case $option in
     D) versions_dir=$OPTARG ;;
     A) archives_dir=$OPTARG ;;
-    P) packages_file=$OPTARG ;;
     h)
         printf "%s\n" "$usage"
         exit 0

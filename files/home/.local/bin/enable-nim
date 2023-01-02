@@ -95,10 +95,10 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    temp_version_dir=$temp_dir/version
-    mkdir -p "$temp_version_dir"
+    src_dir=$temp_dir/src
+    mkdir -p "$src_dir"
 
-    pushd "$temp_version_dir" >/dev/null
+    pushd "$src_dir" >/dev/null
 
     tar -xf "$archive_file" --strip-components=1
 
@@ -106,7 +106,15 @@ if [[ ! -d $version_dir ]]; then
 
     popd >/dev/null
 
-    export PATH=$temp_version_dir/bin:$PATH
+    printf "Nim v%s is now installed at: %q\n" "$version" "$version_dir"
+else
+    printf "Nim v%s is already installed at: %q\n" "$version" "$version_dir"
+fi
+
+packages_done=$version_dir/.packages
+
+if [[ ! -f $packages_done ]]; then
+    export PATH=$version_dir/bin:$PATH
 
     nimble -y install nimble
 
@@ -114,10 +122,5 @@ if [[ ! -d $version_dir ]]; then
         xargs -r nimble -y install <"$packages_file"
     fi
 
-    mkdir -p "$(dirname "$version_dir")"
-    mv -v "$temp_version_dir" "$version_dir"
-
-    printf "Nim v%s is now installed at: %q\n" "$version" "$version_dir"
-else
-    printf "Nim v%s is already installed at: %q\n" "$version" "$version_dir"
+    cp "$packages_file" "$packages_done"
 fi

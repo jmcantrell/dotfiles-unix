@@ -124,7 +124,18 @@ if [[ ! -d $version_dir ]]; then
 
     tar -xf "$archive_file" -C "$temp_version_dir" --strip-components=1
 
-    export PATH=$temp_version_dir/bin:$PATH
+    mkdir -p "$(dirname "$version_dir")"
+    mv -v "$temp_version_dir" "$version_dir"
+
+    printf "Node.js v%s is now installed at: %q\n" "$version" "$version_dir"
+else
+    printf "Node.js v%s is already installed at: %q\n" "$version" "$version_dir"
+fi
+
+packages_done=$version_dir/.packages
+
+if [[ ! -f $packages_done ]]; then
+    export PATH=$version_dir/bin:$PATH
 
     npm install --global npm
 
@@ -132,10 +143,5 @@ if [[ ! -d $version_dir ]]; then
         xargs -r npm install --global <"$packages_file"
     fi
 
-    mkdir -p "$(dirname "$version_dir")"
-    mv -v "$temp_version_dir" "$version_dir"
-
-    printf "Node.js v%s is now installed at: %q\n" "$version" "$version_dir"
-else
-    printf "Node.js v%s is already installed at: %q\n" "$version" "$version_dir"
+    cp "$packages_file" "$packages_done"
 fi

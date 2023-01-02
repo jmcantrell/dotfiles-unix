@@ -4,7 +4,6 @@ set -euo pipefail
 
 archives_dir=${ZIG_ARCHIVES:-${XDG_CACHE_HOME:-$HOME/.cache}/zig}
 versions_dir=${ZIG_VERSIONS:-${XDG_DATA_HOME:-$HOME/.local/share}/zig}
-packages_file=${ZIG_PACKAGES:-${XDG_CONFIG_HOME:-$HOME/.config}/zig/packages}
 
 usage="Install a version of Zig.
 
@@ -20,23 +19,18 @@ Options:
     -A DIRECTORY     store archives in DIRECTORY
                      (default: ${archives_dir@Q})
 
-    -P FILE          install packages listed in FILE
-                     (default: ${packages_file@Q})
-
 Arguments:
     VERSION          install VERSION
                      (e.g. '0.10.0', 'latest', or 'system')
 
 Environment:
     ZIG_VERSIONS    store versions in this directory (same as -D
-    ZIG_ARCHIVES    store archives in this directory (same as -A)
-    ZIG_PACKAGES    install packages listed in this file (same as -P)"
+    ZIG_ARCHIVES    store archives in this directory (same as -A)"
 
 while getopts ":D:A:P:h" option; do
     case $option in
     D) versions_dir=$OPTARG ;;
     A) archives_dir=$OPTARG ;;
-    P) packages_file=$OPTARG ;;
     h)
         printf "%s\n" "$usage"
         exit 0
@@ -105,10 +99,10 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    temp_version_dir=$temp_dir/version
-    mkdir -p "$temp_version_dir"
+    src_dir=$temp_dir/src
+    mkdir -p "$src_dir"
 
-    pushd "$temp_version_dir" >/dev/null
+    pushd "$src_dir" >/dev/null
 
     tar -xf "$archive_file" --strip-components=1
 
@@ -122,9 +116,6 @@ if [[ ! -d $version_dir ]]; then
     mv -v LICENSE share/licenses/zig
 
     popd >/dev/null
-
-    mkdir -p "$(dirname "$version_dir")"
-    mv -v "$temp_version_dir" "$version_dir"
 
     printf "Zig v%s is now installed at: %q\n" "$version" "$version_dir"
 else

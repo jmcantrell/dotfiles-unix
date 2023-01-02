@@ -95,22 +95,32 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    temp_version_dir=$temp_dir/version
-    mkdir -p "$temp_version_dir"
+    src_dir=$temp_dir/src
+    mkdir -p "$src_dir"
 
-    pushd "$temp_version_dir" >/dev/null
+    pushd "$src_dir" >/dev/null
 
     tar -xf "$archive_file" --strip-components=1
 
-    sed -i -e "/^INSTALL_TOP=/s:=.*:= ${temp_version_dir//:/\\:}:" Makefile
+    sed -i -e "/^INSTALL_TOP=/s:=.*:= ${version_dir//:/\\:}:" Makefile
     make --jobs="$(nproc)"
     make install
 
     popd >/dev/null
 
-    enable-luarocks "$temp_version_dir"
+    printf "Lua v%s is now installed at: %q\n" "$version" "$version_dir"
+else
+    printf "Lua v%s is already installed at: %q\n" "$version" "$version_dir"
+fi
 
-    export PATH=$temp_version_dir/bin:$PATH
+if [[ ! -f $version_dir/bin/luarocks ]]; then
+    enable-luarocks "$version_dir" || exit
+fi
+
+packages_done=$version_dir/.packages
+
+if [[ ! -f $packages_done ]]; then
+    export PATH=$version_dir/bin:$PATH
 
     if [[ -f $packages_file ]]; then
         while read -r package; do
@@ -118,10 +128,5 @@ if [[ ! -d $version_dir ]]; then
         done
     fi
 
-    mkdir -p "$(dirname "$version_dir")"
-    mv -v "$temp_version_dir" "$version_dir"
-
-    printf "Lua v%s is now installed at: %q\n" "$version" "$version_dir"
-else
-    printf "Lua v%s is already installed at: %q\n" "$version" "$version_dir"
+    cp "$packages_file" "$packages_done"
 fi

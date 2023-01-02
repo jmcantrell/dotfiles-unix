@@ -106,20 +106,25 @@ if [[ ! -d $version_dir ]]; then
     src_dir=$temp_dir/src
     mkdir -p "$src_dir"
 
-    temp_version_dir=$temp_dir/version
-    mkdir -p "$temp_version_dir"
-
     pushd "$src_dir" >/dev/null
 
     tar -xf "$archive_file" --strip-components=1
 
     ./autogen.sh
-    ./configure --prefix="$temp_version_dir"
+    ./configure --prefix="$version_dir"
     make --jobs="$(nproc)" install
 
     popd >/dev/null
 
-    export PATH=$temp_version_dir/bin:$PATH
+    printf "Ruby v%s is now installed at: %q\n" "$version" "$version_dir"
+else
+    printf "Ruby v%s is already installed at: %q\n" "$version" "$version_dir"
+fi
+
+packages_done=$version_dir/.packages
+
+if [[ ! -f $packages_done ]]; then
+    export PATH=$version_dir/bin:$PATH
 
     gem update --system
 
@@ -127,10 +132,5 @@ if [[ ! -d $version_dir ]]; then
         xargs -r gem install <"$packages_file"
     fi
 
-    mkdir -p "$(dirname "$version_dir")"
-    mv -v "$temp_version_dir" "$version_dir"
-
-    printf "Ruby v%s is now installed at: %q\n" "$version" "$version_dir"
-else
-    printf "Ruby v%s is already installed at: %q\n" "$version" "$version_dir"
+    cp "$packages_file" "$packages_done"
 fi

@@ -136,7 +136,6 @@ if [[ ! -f $packages_done ]]; then
 
     if [[ -f $packages_file ]]; then
         xargs -r npm install --global <"$packages_file"
+        cp "$packages_file" "$packages_done"
     fi
-
-    cp "$packages_file" "$packages_done"
 fi

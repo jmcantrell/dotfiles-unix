@@ -126,7 +126,7 @@ if [[ ! -f $packages_done ]]; then
         while read -r package; do
             luarocks install "$package"
         done <"$packages_file"
-    fi
 
-    cp "$packages_file" "$packages_done"
+        cp "$packages_file" "$packages_done"
+    fi
 fi

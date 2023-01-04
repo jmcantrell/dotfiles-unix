@@ -119,13 +119,8 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    temp_version_dir=$temp_dir/version
-    mkdir -p "$temp_version_dir"
-
-    tar -xf "$archive_file" -C "$temp_version_dir" --strip-components=1
-
-    mkdir -p "$(dirname "$version_dir")"
-    mv -v "$temp_version_dir" "$version_dir"
+    mkdir -p "$version_dir"
+    tar -xf "$archive_file" -C "$version_dir" --strip-components=1
 
     printf "Node.js v%s is now installed at: %q\n" "$version" "$version_dir"
 else

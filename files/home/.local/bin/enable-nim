@@ -95,10 +95,9 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    src_dir=$temp_dir/src
-    mkdir -p "$src_dir"
+    mkdir -p "$version_dir"
 
-    pushd "$src_dir" >/dev/null
+    pushd "$version_dir" >/dev/null
 
     tar -xf "$archive_file" --strip-components=1
 
@@ -114,12 +113,12 @@ fi
 packages_done=$version_dir/.packages
 
 if [[ ! -f $packages_done ]]; then
-    export PATH=$version_dir/bin:$PATH
-
-    nimble -y install nimble
-
     if [[ -f $packages_file ]]; then
+        export PATH=$version_dir/bin:$PATH
+        nimble -y install nimble
         xargs -r nimble -y install <"$packages_file"
         cp "$packages_file" "$packages_done"
+    else
+        touch "$packages_done"
     fi
 fi

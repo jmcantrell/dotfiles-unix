@@ -124,12 +124,12 @@ fi
 packages_done=$version_dir/.packages
 
 if [[ ! -f $packages_done ]]; then
-    export PATH=$version_dir/bin:$PATH
-
-    gem update --system
-
     if [[ -f $packages_file ]]; then
+        export PATH=$version_dir/bin:$PATH
+        gem update --system
         xargs -r gem install <"$packages_file"
         cp "$packages_file" "$packages_done"
+    else
+        touch "$packages_done"
     fi
 fi

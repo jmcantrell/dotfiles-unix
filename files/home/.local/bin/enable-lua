@@ -120,13 +120,13 @@ fi
 packages_done=$version_dir/.packages
 
 if [[ ! -f $packages_done ]]; then
-    export PATH=$version_dir/bin:$PATH
-
     if [[ -f $packages_file ]]; then
+        export PATH=$version_dir/bin:$PATH
         while read -r package; do
             luarocks install "$package"
         done <"$packages_file"
-
         cp "$packages_file" "$packages_done"
+    else
+        touch "$packages_done"
     fi
 fi

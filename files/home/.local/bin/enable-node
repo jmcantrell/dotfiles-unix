@@ -130,12 +130,12 @@ fi
 packages_done=$version_dir/.packages
 
 if [[ ! -f $packages_done ]]; then
-    export PATH=$version_dir/bin:$PATH
-
-    npm install --global npm
-
     if [[ -f $packages_file ]]; then
+        export PATH=$version_dir/bin:$PATH
+        npm install --global npm
         xargs -r npm install --global <"$packages_file"
         cp "$packages_file" "$packages_done"
+    else
+        touch "$packages_done"
     fi
 fi

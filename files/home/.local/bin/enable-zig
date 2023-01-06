@@ -99,10 +99,9 @@ if [[ ! -f $archive_file ]]; then
 fi
 
 if [[ ! -d $version_dir ]]; then
-    src_dir=$temp_dir/src
-    mkdir -p "$src_dir"
+    mkdir -p "$version_dir"
 
-    pushd "$src_dir" >/dev/null
+    pushd "$version_dir" >/dev/null
 
     tar -xf "$archive_file" --strip-components=1
 
